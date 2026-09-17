@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Relatar Problemas - FURIA</title>
+</head>
+<body>
+
+  <div>
+    <header>
+      <div>
+        <span>FURIA</span>
+      </div>
+
+      <h1>Relatar Problemas</h1>
+
+      <div>
+        <span>👤</span>
+      </div>
+    </header>
+
+    <main>
+      <form>
+        
+        <div>
+          <label for="categoria">Categoria do Problema:</label>
+          <select id="categoria" name="categoria" required>
+            <option value="" disabled selected>Selecione a categoria...</option>
+            <option value="sistema">Erro no Sistema / Software</option>
+            <option value="equipamento">Falha em Equipamento</option>
+            <option value="acesso">Problema de Acesso / Senha</option>
+            <option value="processo">Falha Operacional / Processo</option>
+            <option value="outro">Outro Problema</option>
+          </select>
+        </div>
+
+        <div>
+          <label for="titulo">Título do Relato:</label>
+          <input type="text" id="titulo" name="titulo" placeholder="Ex: Erro ao gerar relatório mensal" required>
+        </div>
+
+        <div>
+          <label for="descricao">Descrição Detalhada:</label>
+          <textarea id="descricao" name="descricao" rows="5" placeholder="Descreva o que aconteceu, os passos para reproduzir o erro ou qualquer detalhe relevante..." required></textarea>
+        </div>
+
+        <div>
+          <label for="anexo">Anexar Captura de Tela ou Imagem (Opcional):</label>
+          <input type="file" id="anexo" name="anexo" accept="image/*,.pdf">
+        </div>
+
+        <div>
+          <button type="submit">Enviar Relatório</button>
+        </div>
+
+      </form>
+    </main>
+  </div>
+
+</body>
+</html>

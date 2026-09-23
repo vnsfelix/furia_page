@@ -1,18 +1,103 @@
+/* Reset global de margens e fontes */
 * {
-    padding: 0;
-    margin: 0;
-    box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Segoe UI', Roboto, system-ui, sans-serif;
 }
 
 body {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    min-height: 100vh;
-    background: linear-gradient(45deg, hsl(0, 0%, 0%), #555555);
-    background-repeat: no-repeat;
-    background-attachment: fixed;
-    color: white;
-    font-family: 'Poppins', sans-serif;
-    padding: 1rem;
+  background-color: #0a0a0c;
+  color: #ffffff;
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  padding: 20px;
+}
+
+/* Container principal para centralizar e limitar a largura */
+.container {
+  width: 100%;
+  max-width: 1000px;
+}
+
+/* Cabeçalho */
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px 0;
+  margin-bottom: 40px;
+  border-bottom: 1px solid #22222b;
+}
+
+.brand {
+  font-weight: 800;
+  font-size: 1.2rem;
+  letter-spacing: 2px;
+  color: #ffffff;
+}
+
+.header h1 {
+  font-size: 1.4rem;
+  font-weight: 600;
+  color: #e0e0e0;
+}
+
+.user-profile {
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  background-color: #1a1a24;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  border: 1px solid #333344;
+  transition: background-color 0.2s ease;
+}
+
+.user-profile:hover {
+  background-color: #282838;
+}
+
+/* Grid de Cards (Menu Principal) */
+.cards-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 20px;
+}
+
+/* Estilo individual dos Cards */
+.card {
+  background-color: #13131a;
+  border: 1px solid #22222f;
+  border-radius: 12px;
+  padding: 35px 20px;
+  text-decoration: none;
+  color: #ffffff;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.card-icon {
+  font-size: 2.8rem;
+}
+
+.card span {
+  font-size: 1.05rem;
+  font-weight: 600;
+  text-align: center;
+}
+
+/* Efeito ao passar o mouse (Hover) */
+.card:hover {
+  transform: translateY(-5px);
+  border-color: #555577;
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.4);
 }

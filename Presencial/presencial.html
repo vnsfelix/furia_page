@@ -13,7 +13,7 @@
 
   <div class="box-background">
     <header>
-      <div>
+      <div class="nome">
         <span>FURIA</span>
       </div>
 
@@ -23,55 +23,58 @@
         <img src="./do-utilizador (2) 1.png" alt="">
       </div>
     </header>
+    <div class="CENTER">
 
-    <main>
-      <form>
-        
-        <div class="LocalOco">
-          <label for="local">Local da Ocorrência:</label>
-          <select id="local" name="local" required>
-            <option value="" disabled selected>Selecione o local...</option>
-            <option value="recepcao">Recepção</option>
-            <option value="estudio">Estúdio / Arena</option>
-            <option value="escritorio-adm">Escritório Administrativo</option>
-            <option value="sala-reunioes">Sala de Reuniões</option>
-            <option value="refeitorio">Refeitório</option>
-            <option value="deposito">Depósito / Almoxarifado</option>
-          </select>
-        </div>
 
-        <div>
-          <label for="tipo-servico">Tipo de Chamado:</label>
-          <select id="tipo-servico" name="tipo-servico" required>
-            <option value="" disabled selected>Selecione o tipo de problema...</option>
-            <option value="hardware">Suporte de Informática / Hardware</option>
-            <option value="redes">Rede / Internet</option>
-            <option value="eletrica">Manutenção Elétrica</option>
-            <option value="limpeza">Limpeza / Organização</option>
-            <option value="estrutura">Infraestrutura / Reparo Geral</option>
-          </select>
-        </div>
-
-        <div>
-          <label for="descricao">Descrição do Problema:</label>
-          <textarea id="descricao" name="descricao" rows="5" placeholder="Descreva detalhadamente o erro ou o que precisa ser corrigido no local..." required></textarea>
-        </div>
-
-        <div>
-          <label for="urgencia">Nível de Urgência:</label>
-          <select id="urgencia" name="urgencia" required>
-            <option value="baixa">Baixa</option>
-            <option value="media" selected>Média</option>
-            <option value="alta">Alta (Impede o trabalho)</option>
-          </select>
-        </div>
-
-        <div>
-          <button type="submit">Solicitar Presença do Técnico</button>
-        </div>
-
-      </form>
-    </main>
+      <main>
+        <form>
+          
+          <div class="LocalOco">
+            <label for="local">Local da Ocorrência:</label>
+            <select id="local" name="local" required>
+              <option value="" disabled selected>Selecione o local...</option>
+              <option value="recepcao">Recepção</option>
+              <option value="estudio">Estúdio / Arena</option>
+              <option value="escritorio-adm">Escritório Administrativo</option>
+              <option value="sala-reunioes">Sala de Reuniões</option>
+              <option value="refeitorio">Refeitório</option>
+              <option value="deposito">Depósito / Almoxarifado</option>
+            </select>
+          </div>
+  
+          <div>
+            <label for="tipo-servico">Tipo de Chamado:</label>
+            <select id="tipo-servico" name="tipo-servico" required>
+              <option value="" disabled selected>Selecione o tipo de problema...</option>
+              <option value="hardware">Suporte de Informática / Hardware</option>
+              <option value="redes">Rede / Internet</option>
+              <option value="eletrica">Manutenção Elétrica</option>
+              <option value="limpeza">Limpeza / Organização</option>
+              <option value="estrutura">Infraestrutura / Reparo Geral</option>
+            </select>
+          </div>
+  
+          <div>
+            <label for="descricao">Descrição do Problema:</label>
+            <textarea id="descricao" name="descricao" rows="5" placeholder="Descreva detalhadamente o erro ou o que precisa ser corrigido no local..." required></textarea>
+          </div>
+  
+          <div>
+            <label for="urgencia">Nível de Urgência:</label>
+            <select id="urgencia" name="urgencia" required>
+              <option value="baixa">Baixa</option>
+              <option value="media" selected>Média</option>
+              <option value="alta">Alta (Impede o trabalho)</option>
+            </select>
+          </div>
+  
+          <div>
+            <button type="submit">Solicitar Presença do Técnico</button>
+          </div>
+  
+        </form>
+      </main>
+    </div>
   </div>
 
 </body>

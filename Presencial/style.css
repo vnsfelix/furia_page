@@ -87,7 +87,7 @@ label {
 select, textarea, button {
   width: 100%;
   padding: 10px;
-  border-radius: 8px;
+  border-radius: 30px;
   font-size: 0.95rem;
   outline: none;
   

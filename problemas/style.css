@@ -2,44 +2,38 @@
   margin: 0;
   padding: 0;
   box-sizing: border-box;
+  font-family: 'Poppins', sans-serif;
 }
 
-body {
-  background: linear-gradient(45deg, hsl(0, 0%, 0%), #555555);
-  color: #ffffff;
-  min-height: 100vh;
+h1 {
+  font-size: 2rem;
+  margin-bottom: 1rem;
+  font-family: poppins, sans-serif;
+  font-weight: 600;
+}
+
+p {
+  font-size: 1rem;
+  margin-bottom: 1rem;
+  font-family: poppins, sans-serif;
+  font-weight: 400;
+}
+
+body{
   display: flex;
   justify-content: center;
-  align-items: flex-start;
-  font-family: 'Poppins', sans-serif;
-  padding: 20px;
+   background: linear-gradient(45deg, hsl(0, 0%, 0%), #555555);
+   color: #ffffff;
+   min-height: 100vh;
 }
 
-.header {
+
+header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 20px 0;
-  margin-bottom: 40px;
-  border-bottom: 1px solid #f0f0f3;
-}
-
-.nome {
-  font-weight: 800;
-  font-size: 1.2rem;
-  letter-spacing: 2px;
-  color: #ffffff;
-}
-
-.header h1 {
-  font-size: 1.4rem;
-  font-weight: 600;
-  color: #ffff;
-}
-
-.container {
-  width: 100%;
-  max-width: 1000px;
+  padding: 20px 40px;
+  margin-top: 30px;
 }
 
 .user-icon {
@@ -57,11 +51,17 @@ body {
 }
 
 main {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+}
+
+main {
     width: 1000px;
     height: 580px;
     padding: 2.5rem 1.5rem;
-    display: flex;
-    flex-direction: row;
     gap: 16px;
     background: rgba(255, 255, 255, 0.1);
     backdrop-filter: blur(12px);
@@ -69,19 +69,50 @@ main {
     border: 1px solid rgba(255, 255, 255, 0.25);
     border-radius: 16px;
     box-shadow: 0 8px 32px rgba(0, 0, 0, 0.37);
-    align-items: center;
-    justify-content: center;
     margin-top: 1rem;
+    display: flex;
+    justify-content: center;
+    flex-direction: row;
 }
 
-.Parte1{
-    width: 200px;
-    height: 200px;
-    background-color: #ffffff;
+form{
+  width: 900px;
+  height: 500px;
+  display: flex;
+  justify-content: space-around
 }
 
-.{
-    width: 200x;
-    height: 200px;
-    background-color: #ffffff;
+.Parte1 {
+  width: 350px;
+  height: 500px;
+  background-color: red;
+  border-radius: 20px;
+  padding: 2.5rem 1.5rem;
+    gap: 16px;
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.25);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.37);
+    margin-top: 1rem;
+    display: flex;
+    justify-content: ;
+    flex-direction: column;
+}
+
+.Parte2 {
+  width: 350px;
+  height: 500px;
+  background-color: red;
+  border-radius: 20px;
+      gap: 16px;
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.25);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.37);
+    margin-top: 1rem;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
 }

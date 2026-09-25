@@ -6,12 +6,13 @@
 }
 
 body {
-  background-color: #0a0a0c;
+  background: linear-gradient(45deg, hsl(0, 0%, 0%), #555555);
   color: #ffffff;
   min-height: 100vh;
   display: flex;
   justify-content: center;
   align-items: flex-start;
+  font-family: 'Poppins', sans-serif;
   padding: 20px;
 }
 
@@ -26,7 +27,7 @@ body {
   align-items: center;
   padding: 20px 0;
   margin-bottom: 40px;
-  border-bottom: 1px solid #22222b;
+  border-bottom: 1px solid #f0f0f3;
 }
 
 .nome {
@@ -39,20 +40,21 @@ body {
 .header h1 {
   font-size: 1.4rem;
   font-weight: 600;
-  color: #e0e0e0;
+  color: #ffff;
 }
 
-.user-profile {
-  width: 42px;
-  height: 42px;
+.user-icon {
+  width: 80px;
+  height: 80px;
+  background: rgba(255, 255, 255, 0.2);
   border-radius: 50%;
-  background-color: #1a1a24;
   display: flex;
   align-items: center;
   justify-content: center;
-  cursor: pointer;
-  border: 1px solid #333344;
-  transition: background-color 0.6s ease, transform 0.6s ease;
+}
+
+.user-icon img {
+  width: 70px;
 }
 
 .user-profile:hover {
@@ -67,8 +69,10 @@ body {
 }
 
 .card {
-  background-color: #13131a;
-  border: 1px solid #22222f;
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid #4c4c55;
   border-radius: 12px;
   padding: 35px 20px;
   text-decoration: none;
@@ -81,9 +85,27 @@ body {
   transition: transform 0.4s ease, border-color 1.5s ease, box-shadow 0.6s ease;
 }
 
-.card-icon {
-  font-size: 2.8rem;
+/* ICONES */
+.card-icon1 {
+  width: 60px;
+  height: 60px;
+  background-image: url(./3.png);
+  
 }
+
+.card-icon2 {
+  width: 60px;
+  height: 60px;
+  background-image: url(./2.png);
+}
+
+.card-icon3 {
+  width: 60px;
+  height: 60px;
+  background-image: url(./1.png);
+}
+
+/* ##################################################### */
 
 .card span {
   font-size: 1.05rem;
@@ -93,6 +115,6 @@ body {
 
 .card:hover {
   transform: translateY(-5px);
-  border-color: #555577;
-  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.4);
+  border-color: #f3f2ef;
+  box-shadow: 0 20px 30px rgba(0, 0, 0, 0.4);
 }

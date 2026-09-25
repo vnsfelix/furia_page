@@ -4,56 +4,62 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Relatar Problemas - FURIA</title>
+  <link rel="stylesheet" href="style.css">
+  <link
+        href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
+        rel="stylesheet">
+  
 </head>
 <body>
 
-  <div>
-    <header>
-      <div>
+  <div clas="ALL">
+    <header class="header">
+      <div class="nome">
         <span>FURIA</span>
       </div>
 
       <h1>Relatar Problemas</h1>
 
-      <div>
-        <span>👤</span>
+      <div class="user-icon">
+        <img src="./do-utilizador (2) 1.png" alt="">
       </div>
     </header>
 
     <main>
       <form>
-        
-        <div>
-          <label for="categoria">Categoria do Problema:</label>
-          <select id="categoria" name="categoria" required>
-            <option value="" disabled selected>Selecione a categoria...</option>
-            <option value="sistema">Erro no Sistema / Software</option>
-            <option value="equipamento">Falha em Equipamento</option>
-            <option value="acesso">Problema de Acesso / Senha</option>
-            <option value="processo">Falha Operacional / Processo</option>
-            <option value="outro">Outro Problema</option>
-          </select>
-        </div>
+            <section class="Parte1">
+                    <div>
+                      <label for="categoria">Categoria do Problema:</label>
+                      <select id="categoria" name="categoria" required>
+                        <option value="" disabled selected>Selecione a categoria...</option>
+                        <option value="sistema">Erro no Sistema / Software</option>
+                        <option value="equipamento">Falha em Equipamento</option>
+                        <option value="acesso">Problema de Acesso / Senha</option>
+                        <option value="processo">Falha Operacional / Processo</option>
+                        <option value="outro">Outro Problema</option>
+                      </select>
+                        </div>
 
-        <div>
-          <label for="titulo">Título do Relato:</label>
-          <input type="text" id="titulo" name="titulo" placeholder="Ex: Erro ao gerar relatório mensal" required>
-        </div>
+                        <div>
+                      <label for="titulo">Título do Relato:</label>
+                      <input type="text" id="titulo" name="titulo" placeholder="Ex: Erro ao gerar relatório mensal" required>
+                    </div>
 
-        <div>
-          <label for="descricao">Descrição Detalhada:</label>
-          <textarea id="descricao" name="descricao" rows="5" placeholder="Descreva o que aconteceu, os passos para reproduzir o erro ou qualquer detalhe relevante..." required></textarea>
-        </div>
-
-        <div>
-          <label for="anexo">Anexar Captura de Tela ou Imagem (Opcional):</label>
-          <input type="file" id="anexo" name="anexo" accept="image/*,.pdf">
-        </div>
-
-        <div>
-          <button type="submit">Enviar Relatório</button>
-        </div>
-
+                    <div>
+                      <label for="descricao">Descrição Detalhada:</label>
+                      <textarea id="descricao" name="descricao" rows="5" placeholder="Descreva o que aconteceu, os passos para reproduzir o erro ou qualquer detalhe relevante..." required></textarea>
+                    </div>
+                  </section>
+                
+              <section class="Parte2">
+                  <div>
+                    <label for="anexo">Anexar Captura de Tela ou Imagem (Opcional):</label><br>
+                    <input type="file" id="anexo" name="anexo" accept="image/*,.pdf">
+                  </div>
+              </section>
+              <button type="submit">Enviar Relatório</button>
+          </div>
+            
       </form>
     </main>
   </div>

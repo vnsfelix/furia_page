@@ -2,7 +2,7 @@
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-  font-family: sans-serif;
+  font-family: 'Poppins', sans-serif;
 }
 
 h1 {
@@ -44,6 +44,10 @@ header {
   display: flex;
   align-items: center;
   justify-content: center;
+}
+
+.user-icon img {
+  width: 70px;
 }
 
 main {

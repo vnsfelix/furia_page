@@ -2,38 +2,20 @@
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-  font-family: sans-serif;
+  font-family: 'Poppins', sans-serif;
 }
 
-h1 {
-  font-size: 2rem;
-  margin-bottom: 1rem;
-  font-family: poppins, sans-serif;
-  font-weight: 600;
-}
-
-p {
-  font-size: 1rem;
-  margin-bottom: 1rem;
-  font-family: poppins, sans-serif;
-  font-weight: 400;
-}
-
-
-.box-background {
-  min-height: 100vh;
+body {
   display: flex;
-  flex-direction: column;
- background: linear-gradient(45deg, hsl(0, 0%, 0%), #555555);
-  color: #ffffff;
-}
-
-header {
-  display: flex;
-  justify-content: space-between;
   align-items: center;
-  padding: 20px 40px;
-  margin-top: 30px;
+  justify-content: center;
+  background: linear-gradient(45deg, hsl(0, 0%, 0%), #555555);
+  min-height: 100vh;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  color: white;
+  font-family: 'Poppins', sans-serif;
+  padding: 1rem;
 }
 
 .user-icon {
@@ -44,68 +26,41 @@ header {
   display: flex;
   align-items: center;
   justify-content: center;
+  transition: transform 0.5s ease
 }
 
-main {
-  flex: 1;
+.user-icon img {
+  width: 70px;
+}
+
+.user-icon:hover {
+  transform: translateY(-5px);
+}
+
+h1 {
+  font-size: 2rem;
+  margin-bottom: 1px;
+  font-family: poppins, sans-serif;
+  font-weight: 600;
+}
+
+p {
+  font-size: 1rem;
+  margin-bottom: 12px;
+  font-family: poppins, sans-serif;
+  font-weight: 400;
+}
+
+.container {
+  width: 100%;
+  max-width: 1000px;
+}
+
+.header {
   display: flex;
-  justify-content: center;
+  justify-content: space-between;
   align-items: center;
-  padding: 20px;
-}
-
-form {
-  width: 100%;
-  max-width: 420px;
-  padding: 30px;
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
-  
-  background: rgba(255, 255, 255, 0.1);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  border: 1px solid rgba(255, 255, 255, 0.25);
-  border-radius: 16px;
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.37);
-}
-
-form > div {
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
-}
-
-label {
-  font-size: 0.9rem;
-}
-
-select, textarea, button {
-  width: 100%;
-  padding: 10px;
-  border-radius: 8px;
-  font-size: 0.95rem;
-  outline: none;
-  
-  background: rgba(255, 255, 255, 0.15);
-  color: #ffffff;
-  border: 1px solid rgba(255, 255, 255, 0.3);
-}
-
-select option {
-  background: #2b2b2b;
-  color: #ffffff;
-}
-
-button {
-  background: #ffffff;
-  color: #111111;
-  font-weight: bold;
-  border: none;
-  cursor: pointer;
-  margin-top: 10px;
-}
-
-button:hover {
-  background: #dddddd;
+  padding: 20px 0;
+  margin-bottom: 40px;
+  border-bottom: 1px solid #f0f0f3;
 }

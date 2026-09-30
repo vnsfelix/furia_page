@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Comunicação entre Áreas - FURIA</title>
+</head>
+<body>
+
+  <div>
+    <header>
+      <div>
+        <span>FURIA</span>
+      </div>
+
+      <h1>Comunicação entre Áreas</h1>
+
+      <div>
+        <span>👤</span>
+      </div>
+    </header>
+
+    <main>
+      <form>
+        
+        <div>
+          <label for="area-destino">Selecione a área de destino:</label>
+          <select id="area-destino" name="area-destino" required>
+            <option value="" disabled selected>Escolha uma área...</option>
+            <option value="ti">Tecnologia da Informação (TI)</option>
+            <option value="manutencao">Manutenção</option>
+            <option value="rh">Recursos Humanos</option>
+            <option value="financeiro">Financeiro</option>
+            <option value="operacoes">Operações</option>
+          </select>
+        </div>
+
+        <div>
+          <label for="assunto">Assunto:</label>
+          <input type="text" id="assunto" name="assunto" placeholder="Digite o assunto principal..." required>
+        </div>
+
+        <div>
+          <label for="mensagem">Mensagem:</label>
+          <textarea id="mensagem" name="mensagem" rows="6" placeholder="Escreva aqui a mensagem para o setor..." required></textarea>
+        </div>
+
+        <div>
+          <button type="submit">Enviar Mensagem</button>
+        </div>
+
+      </form>
+    </main>
+  </div>
+
+</body>
+</html>

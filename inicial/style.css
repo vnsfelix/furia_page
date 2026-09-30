@@ -51,14 +51,14 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
+  transition: transform 0.5s ease
 }
 
 .user-icon img {
   width: 70px;
 }
 
-.user-profile:hover {
-  background-color: #282838;
+.user-icon:hover {
   transform: translateY(-5px);
 }
 

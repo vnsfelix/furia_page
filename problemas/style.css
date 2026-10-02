@@ -60,8 +60,8 @@ main {
 
 main {
     width: 1000px;
-    height: 580px;
-    padding: 2.5rem 1.5rem;
+    height: 650px;
+    padding: 2rem 1.5rem;
     gap: 16px;
     background: rgba(255, 255, 255, 0.1);
     backdrop-filter: blur(12px);
@@ -72,18 +72,18 @@ main {
     margin-top: 1rem;
     display: flex;
     justify-content: center;
-    flex-direction: row;
+    flex-direction: column;
 }
 
 form{
   width: 900px;
   height: 500px;
   display: flex;
-  justify-content: space-around
+  justify-content: space-around;
 }
 
 .Parte1 {
-  width: 350px;
+  width: 400px;
   height: 500px;
   background-color: red;
   border-radius: 20px;
@@ -101,7 +101,7 @@ form{
 }
 
 .Parte2 {
-  width: 350px;
+  width: 400px;
   height: 500px;
   background-color: red;
   border-radius: 20px;
@@ -115,4 +115,63 @@ form{
     display: flex;
     justify-content: center;
     flex-direction: column;
+}
+
+button {
+  width: 150px;
+  height: 60px;
+  padding: 10px;
+  background-color: #ffffff;
+  border: 0;
+  border-radius: 100px;
+  margin-top: 25px;
+  cursor: pointer;
+}
+
+button a {
+  text-decoration: none;
+  color: black;
+  font-weight: 600;
+}
+
+select, textarea,input {
+  width: 100%;
+  padding: 10px;
+  border-radius: 30px;
+  font-size: 0.95rem;
+  outline: none;
+  
+  background: rgba(255, 255, 255, 0.15);
+  color: #ffffff;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+select option {
+  background: #2b2b2b;
+  color: #ffffff;
+}
+
+#arquivos {
+  width: 330px;
+  height: 400px;
+  margin-top: -15px;
+  border-radius: 20px;
+}
+#arquivos::file-selector-button {
+    width: 170px;
+    height: 170px;
+    background: rgba(255, 255, 255, 0.15);
+    color: #ffffff;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    padding: 8px 14px;
+    border-radius: 5px;
+    cursor: pointer;
+    border-radius: 30px;
+}
+
+.arquivosa{
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  margin-left: 30px;
 }

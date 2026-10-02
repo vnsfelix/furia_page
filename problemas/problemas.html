@@ -25,42 +25,40 @@
       </div>
     </header>
 
-    <main>
+  <main>
       <form>
             <section class="Parte1">
-                    <div>
-                      <label for="categoria">Categoria do Problema:</label>
-                      <select id="categoria" name="categoria" required>
-                        <option value="" disabled selected>Selecione a categoria...</option>
-                        <option value="sistema">Erro no Sistema / Software</option>
-                        <option value="equipamento">Falha em Equipamento</option>
-                        <option value="acesso">Problema de Acesso / Senha</option>
-                        <option value="processo">Falha Operacional / Processo</option>
-                        <option value="outro">Outro Problema</option>
-                      </select>
-                        </div>
-
-                        <div>
-                      <label for="titulo">Título do Relato:</label>
-                      <input type="text" id="titulo" name="titulo" placeholder="Ex: Erro ao gerar relatório mensal" required>
-                    </div>
-
-                    <div>
-                      <label for="descricao">Descrição Detalhada:</label>
-                      <textarea id="descricao" name="descricao" rows="5" placeholder="Descreva o que aconteceu, os passos para reproduzir o erro ou qualquer detalhe relevante..." required></textarea>
-                    </div>
-                  </section>
-                
-              <section class="Parte2">
                   <div>
-                    <label for="anexo">Anexar Captura de Tela ou Imagem (Opcional):</label><br>
-                    <input type="file" id="anexo" name="anexo" accept="image/*,.pdf">
+                    <label for="categoria">Categoria do Problema:</label>
+                    <select id="categoria" name="categoria" required>
+                      <option value="" disabled selected>Selecione a categoria...</option>
+                      <option value="sistema">Erro no Sistema / Software</option>
+                      <option value="equipamento">Falha em Equipamento</option>
+                      <option value="acesso">Problema de Acesso / Senha</option>
+                      <option value="processo">Falha Operacional / Processo</option>
+                      <option value="outro">Outro Problema</option>
+                    </select>
                   </div>
+
+                  <div>
+                    <label for="titulo">Título do Relato:</label>
+                    <input type="text" id="titulo" name="titulo" placeholder="Ex: Erro ao gerar relatório mensal" required>
+                  </div>
+
+                  <div>
+                    <label for="descricao">Descrição Detalhada:</label><br>
+                    <textarea id="descricao" name="descricao" rows="5" placeholder="Descreva o que aconteceu, os passos para reproduzir o erro ou qualquer detalhe relevante..." required></textarea>
+                </div>
               </section>
-            </div>
-            
-          </form>
-          <button type="submit">Enviar Relatório</button>
+                
+            <section class="Parte2">
+                  <div class="arquivosa">
+                    <label for="anexo">Anexar Capturabr de Tela ou Imagem (Opcional):</label><br>
+                    <input type="file" id="arquivos" name="anexo" accept="image/*,.pdf">
+                  </div>
+            </section>
+      </form>
+      <button type="button"><a href="../enviados/enviados.html">Enviar Relatório</a></button>
     </main>
   </div>
 

@@ -19,12 +19,11 @@ p {
   font-weight: 400;
 }
 
-
 .box-background {
   min-height: 100vh;
   display: flex;
   flex-direction: column;
- background: linear-gradient(45deg, hsl(0, 0%, 0%), #555555);
+  background: linear-gradient(45deg, hsl(0, 0%, 0%), #555555);
   color: #ffffff;
 }
 
@@ -65,7 +64,6 @@ form {
   display: flex;
   flex-direction: column;
   gap: 16px;
-  
   background: rgba(255, 255, 255, 0.1);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
@@ -90,7 +88,6 @@ select, textarea, button {
   border-radius: 30px;
   font-size: 0.95rem;
   outline: none;
-  
   background: rgba(255, 255, 255, 0.15);
   color: #ffffff;
   border: 1px solid rgba(255, 255, 255, 0.3);
@@ -108,8 +105,14 @@ button {
   border: none;
   cursor: pointer;
   margin-top: 10px;
+  text-decoration: none;
 }
 
 button:hover {
   background: #dddddd;
+}
+
+a, button a, a:visited, a:hover, a:active {
+  color: #111111;
+  text-decoration: none;
 }

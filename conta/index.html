@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Minha Conta | FURIA</title>
+
+    <link rel="stylesheet" href="style.css">
+    <script src="script.js" defer></script>
+</head>
+
+<body>
+    <div class="container">
+
+        <header class="header">
+            <a href="../inicial/inicial.html" class="logo">FURIA</a>
+
+            <h1>Minha Conta</h1>
+
+            <a href="../inicial/inicial.html" class="voltar">
+                ← Voltar
+            </a>
+        </header>
+
+        <main class="perfil-container">
+
+            <section class="perfil-topo">
+                <div class="avatar" id="avatar">U</div>
+
+                <div class="perfil-identificacao">
+                    <h2 id="nomeExibido">Nome do usuário</h2>
+                    <p id="emailExibido">usuario@email.com</p>
+                    <span class="status">Minha conta</span>
+                </div>
+
+                <button id="editarBtn" class="btn btn-secundario"
+                        type="button">
+                    Editar perfil
+                </button>
+            </section>
+
+            <form id="perfilForm">
+
+                <section class="secao">
+                    <h3>Informações pessoais</h3>
+                    <p class="descricao">
+                        Consulte e atualize os dados da sua conta.
+                    </p>
+
+                    <div class="form-grid">
+
+                        <div class="campo">
+                            <label for="nome">Nome completo</label>
+                            <input id="nome" name="nome"
+                                   type="text"
+                                   placeholder="Seu nome completo"
+                                   autocomplete="name"
+                                   required disabled>
+                        </div>
+
+                        <div class="campo">
+                            <label for="usuario">Nome de usuário</label>
+                            <input id="usuario" name="usuario"
+                                   type="text"
+                                   placeholder="Como deseja ser identificado?"
+                                   autocomplete="username"
+                                   disabled>
+                        </div>
+
+                        <div class="campo">
+                            <label for="email">E-mail</label>
+                            <input id="email" name="email"
+                                   type="email"
+                                   placeholder="seuemail@exemplo.com"
+                                   autocomplete="email"
+                                   required disabled>
+                        </div>
+
+                        <div class="campo">
+                            <label for="telefone">Telefone</label>
+                            <input id="telefone" name="telefone"
+                                   type="tel"
+                                   placeholder="(11) 99999-9999"
+                                   autocomplete="tel"
+                                   disabled>
+                        </div>
+
+                        <div class="campo">
+                            <label for="nascimento">Data de nascimento</label>
+                            <input id="nascimento" name="nascimento"
+                                   type="date"
+                                   autocomplete="bday"
+                                   disabled>
+                        </div>
+
+                        <div class="campo">
+                            <label for="setor">Área / Setor</label>
+                            <select id="setor" name="setor" disabled>
+                                <option value="">Selecione uma área</option>
+                                <option value="Tecnologia">Tecnologia</option>
+                                <option value="Comunicação">Comunicação</option>
+                                <option value="Administrativo">Administrativo</option>
+                                <option value="Recursos Humanos">Recursos Humanos</option>
+                                <option value="Operações">Operações</option>
+                                <option value="Outro">Outro</option>
+                            </select>
+                        </div>
+
+                    </div>
+                </section>
+
+                <section class="secao">
+                    <h3>Conta</h3>
+
+                    <div class="informacao-conta">
+                        <span>Tipo de conta</span>
+                        <strong>Usuário</strong>
+                    </div>
+
+                    <div class="informacao-conta">
+                        <span>Cadastro</span>
+                        <strong id="dataCadastro">Não informado</strong>
+                    </div>
+                </section>
+
+                <div class="acoes" id="acoes" hidden>
+                    <button type="button" id="cancelarBtn"
+                            class="btn btn-cancelar">
+                        Cancelar
+                    </button>
+
+                    <button type="submit" class="btn btn-principal">
+                        Salvar alterações
+                    </button>
+                </div>
+
+                <p id="mensagem" class="mensagem"
+                   role="status" aria-live="polite"></p>
+
+            </form>
+        </main>
+    </div>
+</body>
+</html>

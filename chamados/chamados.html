@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Meus Chamados - FURIA</title>
+  <script src="../javascript/script.js" defer></script>
+  <link rel="stylesheet" href="style.css">
+  <link
+        href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
+        rel="stylesheet">
+</head>
+<body>
+
+  <div class="container">
+    
+    <!-- Header com Sistema de Perfil Interativo -->
+    <header class="header">
+      <div class="nome">
+        <span>FURIA</span>
+      </div>
+      
+      <h1>Meus Chamados</h1>
+      
+      <!-- Contentor do Perfil com Menu Suspenso -->
+      <div class="user-container">
+        <div class="user-icon" id="iconeUsuario">
+          <img src="./do-utilizador (2) 1.png" alt="Ícone do Usuário">
+        </div>
+
+        <div class="user-menu" id="menuUsuario">
+          <ul>
+            <li><a href="#">Conta</a></li>
+            <li><a href="../chamados/chamados.html">Chamados</a></li>
+          </ul>
+          <hr>
+          <div class="logout">
+            <a href="#">Logout &rarr;</a>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <!-- Botão de Voltar -->
+    <div class="nav-bar">
+      <a href="../inicial/inicial.html" class="btn-voltar">&larr; Voltar para a Tela Inicial</a>
+    </div>
+
+    <!-- Lista de Chamados -->
+    <main class="chamados-grid">
+
+      <article class="chamado-card">
+        <div class="chamado-header">
+          <span class="chamado-id">#CH-1042</span>
+          <span class="status-badge status-andamento">Em Andamento</span>
+        </div>
+        <h2 class="chamado-titulo">Relatar Problemas</h2>
+        <p class="chamado-descricao">Falha na rede local do laboratório do Bloco B. Computadores sem conexão com a internet.</p>
+        <div class="chamado-footer">
+          <span class="chamado-categoria">Rede & Conectividade</span>
+          <span class="chamado-data">08/10/2026</span>
+        </div>
+      </article>
+
+      <article class="chamado-card">
+        <div class="chamado-header">
+          <span class="chamado-id">#CH-1038</span>
+          <span class="status-badge status-concluido">Concluído</span>
+        </div>
+        <h2 class="chamado-titulo">Chamados Presenciais</h2>
+        <p class="chamado-descricao">Substituição do cabo de vídeo e alinhamento do monitor na estação de trabalho 03.</p>
+        <div class="chamado-footer">
+          <span class="chamado-categoria">Suporte Presencial</span>
+          <span class="chamado-data">05/10/2026</span>
+        </div>
+      </article>
+
+      <article class="chamado-card">
+        <div class="chamado-header">
+          <span class="chamado-id">#CH-1025</span>
+          <span class="status-badge status-pendente">Pendente</span>
+        </div>
+        <h2 class="chamado-titulo">Comunicação entre áreas</h2>
+        <p class="chamado-descricao">Ajuste de permissões de acesso às pastas compartilhadas entre as equipes de TI e Logística.</p>
+        <div class="chamado-footer">
+          <span class="chamado-categoria">Acessos & Sistema</span>
+          <span class="chamado-data">01/10/2026</span>
+        </div>
+      </article>
+
+    </main>
+  </div>
+
+  <!-- Vinculação do Script de Interatividade -->
+  <script src="script.js"></script>
+
+</body>
+</html>

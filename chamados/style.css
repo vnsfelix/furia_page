@@ -25,7 +25,7 @@ body {
   justify-content: space-between;
   align-items: center;
   padding: 20px 0;
-  margin-bottom: 40px;
+  margin-bottom: 30px;
   border-bottom: 1px solid #f0f0f3;
 }
 
@@ -42,7 +42,7 @@ body {
   color: #ffffff;
 }
 
-/* ESTRUTURA E ANIMAÇÃO DO ÍCONE E MENU DO UTILIZADOR */
+/* ESTRUTURA E ANIMAÇÃO DO ÍCONE E MENU */
 .user-container {
   position: relative;
   display: inline-block;
@@ -68,7 +68,6 @@ body {
   transform: translateY(-5px);
 }
 
-/* Caixa do menu com estilo Glassmorphism e Animação suave de entrada */
 .user-menu {
   position: absolute;
   top: 90px;
@@ -85,7 +84,6 @@ body {
   display: flex;
   flex-direction: column;
 
-  /* Propriedades iniciais da Animação (Invisível + deslocado para cima) */
   opacity: 0;
   visibility: hidden;
   transform: translateY(-15px) scale(0.95);
@@ -94,7 +92,6 @@ body {
               visibility 0.3s ease;
 }
 
-/* Estado ativo (ativado pelo clique) */
 .user-menu.ativo {
   opacity: 1;
   visibility: visible;
@@ -146,7 +143,7 @@ body {
   color: #cccccc;
 }
 
-/* GRADE DE CARDS */
+/* GRADE DE CARDS (TELA INICIAL) */
 .cards-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
@@ -170,7 +167,6 @@ body {
   transition: transform 0.4s ease, border-color 1.5s ease, box-shadow 0.6s ease;
 }
 
-/* ÍCONES DOS CARDS */
 .card-icon1 {
   width: 60px;
   height: 60px;
@@ -199,4 +195,133 @@ body {
   transform: translateY(-5px);
   border-color: #f3f2ef;
   box-shadow: 0 20px 30px rgba(0, 0, 0, 0.4);
+}
+
+/* ==========================================
+   ESTILOS DA PÁGINA DE CHAMADOS
+   ========================================== */
+
+.nav-bar {
+  margin-bottom: 25px;
+}
+
+.btn-voltar {
+  color: #ffffff;
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 0.95rem;
+  opacity: 0.85;
+  transition: opacity 0.3s ease, transform 0.3s ease;
+  display: inline-block;
+}
+
+.btn-voltar:hover {
+  opacity: 1;
+  transform: translateX(-4px);
+}
+
+.chamados-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+/* Card de chamado usando o mesmo Glassmorphism da Tela Inicial */
+.chamado-card {
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid #4c4c55;
+  border-radius: 12px;
+  padding: 28px 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  transition: transform 0.4s ease, border-color 1.5s ease, box-shadow 0.6s ease;
+}
+
+.chamado-card:hover {
+  transform: translateY(-5px);
+  border-color: #f3f2ef;
+  box-shadow: 0 20px 30px rgba(0, 0, 0, 0.4);
+}
+
+.chamado-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.chamado-id {
+  font-weight: 700;
+  color: #ffffff;
+  font-size: 0.95rem;
+  letter-spacing: 1.5px;
+}
+
+/* Badges em harmonia com o tema escuro */
+.status-badge {
+  padding: 6px 14px;
+  border-radius: 20px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.status-andamento {
+  background: rgba(241, 196, 15, 0.2);
+  color: #f1c40f;
+  border: 1px solid rgba(241, 196, 15, 0.4);
+}
+
+.status-concluido {
+  background: rgba(46, 204, 113, 0.2);
+  color: #2ecc71;
+  border: 1px solid rgba(46, 204, 113, 0.4);
+}
+
+.status-pendente {
+  background: rgba(231, 76, 60, 0.2);
+  color: #e74c3c;
+  border: 1px solid rgba(231, 76, 60, 0.4);
+}
+
+.chamado-titulo {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: #ffffff;
+}
+
+.chamado-descricao {
+  font-size: 1rem;
+  color: #ffffff;
+  opacity: 0.9;
+  line-height: 1.6;
+  font-weight: 400;
+}
+
+.chamado-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 4px;
+  padding-top: 14px;
+  border-top: 1px solid rgba(255, 255, 255, 0.15);
+  font-size: 0.85rem;
+}
+
+.chamado-categoria {
+  font-weight: 600;
+  color: #ffffff;
+  background: rgba(255, 255, 255, 0.12);
+  padding: 5px 12px;
+  border-radius: 6px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.chamado-data {
+  color: #ffffff;
+  opacity: 0.8;
+  font-weight: 500;
 }

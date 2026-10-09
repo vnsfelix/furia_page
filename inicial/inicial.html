@@ -4,6 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Tela Inicial - FURIA</title>
+  <script src="../javascript/script.js" defer></script>
   <link rel="stylesheet" href="style.css">
   <link
         href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
@@ -20,8 +21,23 @@
       
       <h1>Tela Inicial</h1>
       
-      <div class="user-icon">
-        <img src="./do-utilizador (2) 1.png" alt="">
+      <!-- Contentor do Utilizador e Menu Suspenso -->
+      <div class="user-container">
+        <div class="user-icon" id="iconeUsuario">
+          <img src="./do-utilizador (2) 1.png" alt="Ícone do Utilizador">
+        </div>
+
+        <!-- Caixa do Menu (Imagem 2) -->
+        <div class="user-menu" id="menuUsuario">
+          <ul>
+            <li><a href="#">Conta</a></li>
+            <li><a href="../chamados/chamados.html">Chamados</a></li>
+          </ul>
+          <hr>
+          <div class="logout">
+            <a href="../index.html">Logout &rarr;</a>
+          </div>
+        </div>
       </div>
     </header>
 

@@ -2,44 +2,54 @@
 <html lang="pt-br">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="style.css">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
-    <title>Furia - Login</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="style.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <title>Furia - Login</title>
 </head>
 
 <body>
-    <div id="page" class="flex">
-        <div>
-            <header>
-                <img src="./img/Design_sem_nome_2.png" alt="Logo Furia">
-            </header>
-            <main>
-                <div class="box">
-                    <h2>Login</h2>
-                    <form id="loginForm">
-                        <div class="input-login">
-                            <label for="name">Nome Completo:</label>
-                            <input type="text" name="name" id="name" placeholder="Digite seu nome" required>
-                        </div>
-                        <div class="input-login">
-                            <div class="label-login">
-                                <label for="rm">RM</label>
-                                <a href="#" id="esqueciRm">Esqueci meu RM!</a>
-                            </div>
-                            <input type="password" name="rm" id="rm" placeholder="Digite seu RM" required>
-                        </div>
-                        <button type="submit">Entrar</button>
-                    </form>
-                </div>
-            </main>
-        </div>
-    </div>
+  <div id="page" class="flex">
+    <div>
+      <header>
+        <img src="./img/Design_sem_nome_2.png" alt="Logo Furia">
+      </header>
+      <main>
+        <div class="box">
+          <h2>Login</h2>
 
-    <script src="javascript/index.js"></script>
+          <div class="role-selector">
+            <button type="button" class="role-btn active" data-role="funcionario">Funcionário</button>
+            <button type="button" class="role-btn" data-role="admin">Admin</button>
+          </div>
+
+          <form id="loginForm">
+            <input type="hidden" id="userRole" name="userRole" value="funcionario">
+
+            <div class="input-login">
+              <label for="name">Nome Completo:</label>
+              <input type="text" name="name" id="name" placeholder="Digite seu nome" required>
+            </div>
+
+            <div class="input-login">
+              <div class="label-login">
+                <label for="rm">RM</label>
+                <a href="#" id="esqueciRm">Esqueci meu RM!</a>
+              </div>
+              <input type="password" name="rm" id="rm" placeholder="Digite seu RM" required>
+            </div>
+
+            <button type="submit">Entrar</button>
+          </form>
+        </div>
+      </main>
+    </div>
+  </div>
+
+  <script src="javascript/index.js"></script>
 </body>
 
 </html>

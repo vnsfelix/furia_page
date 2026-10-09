@@ -1,166 +1,137 @@
 * {
-    padding: 0;
-    margin: 0;
-    box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Poppins', sans-serif;
 }
 
 body {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    min-height: 100vh;
-    background: linear-gradient(45deg, hsl(0, 0%, 0%), #555555);
-    background-repeat: no-repeat;
-    background-attachment: fixed;
-    color: white;
-    font-family: 'Poppins', sans-serif;
-    padding: 1rem;
-}
-
-.flex {
-    display: flex;
+  background: #1c1c1c;
+  color: #ffffff;
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 #page {
-    width: 100%;
-    display: flex;
-    justify-content: center;
-}
-
-#page > div {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    width: 100%;
-    max-width: 620px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
 }
 
 header {
-    display: flex;
-    justify-content: center;
-    width: 100%;
-    margin-bottom: 1rem;
+  text-align: center;
+  margin-bottom: 20px;
 }
 
 header img {
-    width: 6rem;
-    max-width: 100%;
-    height: auto;
-}
-
-main {
-    width: 300px;
-    height: 470px;
-    padding: 2.5rem 1.5rem;
-    display: flex;
-    flex-direction: column;
-    gap: 16px;
-    background: rgba(255, 255, 255, 0.1);
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
-    border: 1px solid rgba(255, 255, 255, 0.25);
-    border-radius: 16px;
-    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.37);
-    align-items: center;
-    justify-content: center;
-    margin-top: 1rem;
+  width: 120px;
 }
 
 .box {
-    width: 100%;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+  background-color: #383838;
+  padding: 30px;
+  border-radius: 12px;
+  width: 360px;
+  box-shadow: 0px 8px 24px rgba(0, 0, 0, 0.5);
+  text-align: center;
 }
 
 .box h2 {
-    display: flex;
-    justify-content: center;
-    font-size: clamp(1.8rem, 5vw, 2.5rem);
-    font-weight: bold;
-    margin-bottom: 1.5rem;
+  font-size: 28px;
+  font-weight: 700;
+  margin-bottom: 15px;
 }
 
-form {
-    width: 100%;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
+.role-selector {
+  display: flex;
+  background-color: #262626;
+  border-radius: 8px;
+  padding: 4px;
+  margin-bottom: 20px;
 }
 
-.headline {
-    max-width: 35rem;
-    width: 100%;
+.role-btn {
+  flex: 1;
+  padding: 8px 0;
+  border: none;
+  background: transparent;
+  color: #aaaaaa;
+  font-size: 13px;
+  font-weight: 600;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.role-btn.active {
+  background-color: #ffffff;
+  color: #000000;
 }
 
 .input-login {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 0.4rem;
-    width: 100%; /* Ajustado para se adaptar perfeitamente aos 300px do main */
-    background-color: transparent; 
+  text-align: left;
+  margin-bottom: 18px;
 }
 
-form .input-login + .input-login {
-    margin-top: 1.5rem;
+.input-login label {
+  display: block;
+  font-size: 13px;
+  font-weight: 500;
+  margin-bottom: 6px;
 }
 
-/* Garante que a linha do label ocupe toda a largura e jogue o link para o canto direito */
 .label-login {
-    display: flex;
-    justify-content: space-between;
-    width: 100%;
-    align-items: center;
-    flex-wrap: nowrap;
-    font-size: 0.9rem;
-    font-weight: 500;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
-/* Inputs ocupando 100% da largura do bloco alinhado à esquerda */
-form input {
-    width: 100%;
-    background: #6a6a6a; 
-    border: 0.1rem solid rgba(255, 255, 255, 0.4);
-    border-radius: 8px;
-    padding: 0.8rem 1rem;
-    color: white;
-    font-family: 'Poppins', sans-serif;
+.label-login a {
+  color: #4da6ff;
+  font-size: 12px;
+  text-decoration: none;
 }
 
-form input::placeholder {
-    color: #d1d1d1;
+.label-login a:hover {
+  text-decoration: underline;
 }
 
-form button {
-    all: unset;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    padding: 0.8rem 2.4rem;
-    background-color: rgb(252, 252, 252);
-    border-radius: 40px;
-    height: auto;
-    color: rgb(0, 0, 0);
-    cursor: pointer;
-    margin-top: 2rem;
-    font-weight: bold;
-    transition: all 0.6s ease;
+.input-login input {
+  width: 100%;
+  padding: 10px 12px;
+  background-color: #525252;
+  border: 1px solid #666666;
+  border-radius: 6px;
+  color: #ffffff;
+  font-size: 14px;
+  outline: none;
 }
 
-form button:hover {
-    background-color: black;
-    border: 2px solid white;
-    color: white;
+.input-login input::placeholder {
+  color: #bbbbbb;
 }
 
-form a {
-    color: #60a5fa;
-    text-decoration: none;
-    font-size: 0.85rem;
+.input-login input:focus {
+  border-color: #ffffff;
 }
 
-form a:hover {
-    text-decoration: none;
+button[type="submit"] {
+  width: 100%;
+  padding: 10px;
+  background-color: #ffffff;
+  color: #000000;
+  border: none;
+  border-radius: 20px;
+  font-size: 15px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: opacity 0.2s ease;
+  margin-top: 10px;
+}
+
+button[type="submit"]:hover {
+  opacity: 0.9;
 }

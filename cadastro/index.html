@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tela Inicial - FURIA</title>
+  <link rel="stylesheet" href="style.css">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+
+  <div class="container">
+    
+    <header class="header">
+      <div class="nome">
+        <span>FURIA</span>
+      </div>
+      
+      <h1>Tela Inicial</h1>
+      
+      <div class="profile-container">
+        <div class="user-icon" id="profileIcon">
+          <img src="./img/do-utilizador (2) 1.png" alt="Perfil">
+        </div>
+
+        <div class="profile-dropdown" id="profileDropdown">
+          <a href="#perfil">Meu Perfil</a>
+          <a href="#configuracoes">Configurações</a>
+          <hr>
+          <a href="index.html" class="logout" id="logoutBtn">Sair</a>
+        </div>
+      </div>
+    </header>
+
+    <main class="cards-grid">
+      
+      <a href="../problemas/problemas.html" class="card">
+        <div class="card-icon1"></div>
+        <span>Relatar Problemas</span>
+      </a>
+
+      <a href="../Presencial/presencial.html" class="card">
+        <div class="card-icon2"></div>
+        <span>Chamados Presenciais</span>
+      </a>
+
+      <a href="../comunicacao/comunicacao.html" class="card">
+        <div class="card-icon3"></div>
+        <span>Comunicação entre áreas</span>
+      </a>
+
+      <div class="card admin-card" id="cadastrarCard" style="display: none;">
+        <div class="card-icon-admin">+</div>
+        <span>Cadastrar Usuários</span>
+      </div>
+
+    </main>
+  </div>
+
+  <div class="modal-overlay" id="cadastrarModal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2>Cadastrar Novo Usuário</h2>
+        <span class="close-modal" id="closeModal">&times;</span>
+      </div>
+      <form id="cadastrarForm">
+        <div class="input-group">
+          <label for="newNombre">Nome Completo:</label>
+          <input type="text" id="newNombre" placeholder="Digite o nome do funcionário/cliente" required>
+        </div>
+        <div class="input-group">
+          <label for="newRm">RM / Identificação:</label>
+          <input type="text" id="newRm" placeholder="Digite o RM" required>
+        </div>
+        <div class="input-group">
+          <label for="newTipo">Tipo de Conta:</label>
+          <select id="newTipo" required>
+            <option value="funcionario">Funcionário</option>
+            <option value="admin">Administrador</option>
+          </select>
+        </div>
+        <button type="submit" class="btn-submit">Salvar Cadastro</button>
+      </form>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>

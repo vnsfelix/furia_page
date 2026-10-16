@@ -1,0 +1,188 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Poppins', sans-serif;
+}
+
+body {
+  min-height: 100vh;
+  font-family: Arial, Helvetica, sans-serif;
+  color: #fff;
+  background: linear-gradient(45deg, hsl(0, 0%, 0%), #555555);
+}
+
+p {
+  font-size: 1rem;
+  margin-bottom: 1rem;
+  font-family: poppins, sans-serif;
+  font-weight: 400;
+}
+
+.container {
+  min-height: 100vh;
+  padding: 40px 36px;
+}
+
+header {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+  margin-bottom: 65px;
+}
+
+.logo {
+  font-size: 14px;
+  font-weight: bold;
+}
+
+header h1 {
+  font-size: 30px;
+  text-align: center;
+  font-weight: 600;
+}
+
+.profile {
+  width: 72px;
+  height: 72px;
+  justify-self: end;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background: #777;
+  font-size: 28px;
+}
+
+main {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+form {
+  margin-top: 20px;
+  height: 500px;
+  width: 420px;
+  padding: 30px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  border-radius: 16px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.37);
+}
+
+.form-group {
+  margin-bottom: 18px;
+}
+
+label {
+  display: block;
+  margin-bottom: 8px;
+  font-size: 14px;
+  font-weight: 400;
+}
+
+input,
+select,
+textarea {
+  width: 100%;
+  padding: 12px;
+  color: #fff;
+  font: inherit;
+  font-size: 14px;
+  background: #606060;
+  border: 1px solid #888;
+  border-radius: 24px;
+  outline: none;
+}
+
+select {
+  cursor: pointer;
+}
+
+select option {
+  color: #fff;
+  background: #333;
+}
+
+textarea {
+  min-height: 125px;
+  resize: vertical;
+  border-radius: 26px;
+  line-height: 1.5;
+}
+
+input::placeholder,
+textarea::placeholder {
+  color: #bcbcbc;
+}
+
+input:focus,
+select:focus,
+textarea:focus {
+  border-color: #fff;
+  box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.12);
+}
+
+button {
+  width: 100%;
+  padding: 13px;
+  margin-top: 4px;
+  color: #111;
+  background: #fff;
+  border: none;
+  border-radius: 28px;
+  font-size: 14px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background 0.2s, transform 0.2s;
+}
+
+button:hover {
+  background: #e5e5e5;
+  transform: translateY(-1px);
+}
+
+button:focus-visible {
+  outline: 2px solid #fff;
+  outline-offset: 4px;
+}
+
+@media (max-width: 600px) {
+  .container {
+    padding: 24px 18px;
+  }
+
+  header {
+    grid-template-columns: auto 1fr auto;
+    gap: 12px;
+    margin-bottom: 45px;
+  }
+
+  header h1 {
+    font-size: 20px;
+  }
+
+  .profile {
+    width: 42px;
+    height: 42px;
+    font-size: 20px;
+  }
+
+  form {
+    padding: 22px;
+  }
+}
+
+a {
+    text-decoration: none;
+    color: #111;
+}
+@media (max-width: 600px) {
+  form { width: 100%; height: auto; }
+}

@@ -183,12 +183,6 @@ body {
   background-image: url(./2.png);
 }
 
-.card-icon3 {
-  width: 60px;
-  height: 60px;
-  background-image: url(./1.png);
-}
-
 .card span {
   font-size: 1.05rem;
   font-weight: 600;

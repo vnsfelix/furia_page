@@ -2,15 +2,33 @@ const profileIcon = document.getElementById('profileIcon');
 const profileDropdown = document.getElementById('profileDropdown');
 
 if (profileIcon && profileDropdown) {
+  profileIcon.setAttribute('aria-haspopup', 'true');
+  const toggleProfile = (open) => {
+    const isOpen = open ?? !profileDropdown.classList.contains('active');
+    profileDropdown.classList.toggle('active', isOpen);
+    profileIcon.setAttribute('aria-expanded', String(isOpen));
+  };
+
   profileIcon.addEventListener('click', (event) => {
     event.stopPropagation();
-    profileDropdown.classList.toggle('active');
+    toggleProfile();
+  });
+
+  profileIcon.addEventListener('keydown', (event) => {
+    if (event.key === 'Enter' || event.key === ' ') {
+      event.preventDefault();
+      toggleProfile();
+    }
   });
 
   document.addEventListener('click', (event) => {
     if (!profileDropdown.contains(event.target) && !profileIcon.contains(event.target)) {
-      profileDropdown.classList.remove('active');
+      toggleProfile(false);
     }
+  });
+
+  document.addEventListener('keydown', (event) => {
+    if (event.key === 'Escape') toggleProfile(false);
   });
 }
 

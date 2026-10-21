@@ -4,8 +4,9 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="icon" href="img/Design_sem_nome_2.png">
-  <link rel="stylesheet" href="style.css">
+  <link rel="icon" href="img/Subtract.png" type="image/png">
+  <link rel="stylesheet" href="./css/style.css">
+  <link rel="stylesheet" href="./css/theme.css">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
@@ -14,37 +15,42 @@
 
 <body>
   <div id="page" class="flex">
-    <div>
-      <header>
-        <img src="./img/Design_sem_nome_2.png" alt="Logo Furia">
+    <div class="login-layout">
+      <header class="login-brand">
+        <img class="brand-mark login-logo" src="./img/Subtract.png" alt="Logo FURIA">
+        <span>FURIA <span class="brand-divider">/</span> CENTRAL INTERNA</span>
       </header>
       <main>
         <div class="box">
-          <h2>Login</h2>
+          <p class="login-eyebrow">ACESSO SEGURO</p>
+          <h2>Bem-vindo de volta</h2>
+          <p class="login-description">Entre para acessar os serviços internos da FURIA.</p>
 
           <div class="role-selector">
-            <button type="button" class="role-btn active" data-role="funcionario">Funcionário</button>
-            <button type="button" class="role-btn" data-role="admin">Admin</button>
+            <button type="button" class="role-btn active" data-role="funcionario" aria-pressed="true">Funcionário</button>
+            <button type="button" class="role-btn" data-role="admin" aria-pressed="false">Admin</button>
           </div>
 
           <form id="loginForm">
             <input type="hidden" id="userRole" name="userRole" value="funcionario">
 
             <div class="input-login">
-              <label for="name">Nome Completo:</label>
-              <input type="text" name="name" id="name" placeholder="Digite seu nome" required>
+              <label for="name">Nome completo</label>
+              <input type="text" name="name" id="name" placeholder="Como podemos chamar você?" autocomplete="name" required>
             </div>
 
             <div class="input-login">
               <div class="label-login">
-                <label for="rm">RM</label>
+                <label for="rm">RM / identificação</label>
                 <a href="#" id="esqueciRm">Esqueci meu RM!</a>
               </div>
-              <input type="password" name="rm" id="rm" placeholder="Digite seu RM" required>
+              <input type="password" name="rm" id="rm" placeholder="Digite seu RM" autocomplete="current-password" required>
             </div>
 
             <button type="submit">Entrar</button>
           </form>
+          <p id="loginMessage" class="login-message" role="alert" aria-live="assertive"></p>
+          <p class="login-footnote">Ao continuar, você acessa o ambiente interno de atendimento.</p>
         </div>
       </main>
     </div>

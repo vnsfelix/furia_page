@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" href="../img/Subtract.png" type="image/png">
+  <title>Painel Administrativo - FURIA</title>
+  <link rel="stylesheet" href="../theme.css">
+  <link rel="stylesheet" href="style.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <script src="../javascript/script.js" defer></script>
+  <script src="script.js" defer></script>
+</head>
+<body>
+  <div class="container admin-container">
+    <header class="header">
+      <a class="logo brand-link" href="index.html" aria-label="FURIA Admin - início">
+        <img class="brand-mark" src="../img/Subtract.png" alt="">
+        <span>FURIA</span><span class="admin-tag">ADMIN</span>
+      </a>
+      <h1>Painel administrativo</h1>
+      <div class="user-container">
+        <button class="user-icon" id="iconeUsuario" type="button" aria-label="Abrir menu do perfil" aria-expanded="false">
+          <img src="../inicial/do-utilizador (2) 1.png" alt="">
+        </button>
+        <nav class="user-menu" id="menuUsuario" aria-label="Navegação da conta">
+          <ul>
+            <li><a href="index.html">Painel administrativo</a></li>
+            <li><a href="../inicial/inicial.html">Área do funcionário</a></li>
+            <li><a href="../conta/index.html">Minha conta</a></li>
+            <li><a href="../chamados/chamados.html">Meus chamados</a></li>
+          </ul>
+          <hr>
+          <div class="logout"><a href="../index.html">Sair</a></div>
+        </nav>
+      </div>
+    </header>
+
+    <main class="admin-main">
+      <section class="admin-welcome">
+        <div>
+          <p class="eyebrow">CENTRAL DE CONTROLE</p>
+          <h2>Olá, <span id="adminName">Administrador</span></h2>
+          <p>Acompanhe as solicitações e gerencie os acessos da equipe.</p>
+        </div>
+        <a class="admin-quick-link" href="../inicial/inicial.html">Abrir área do funcionário <span aria-hidden="true">↗</span></a>
+      </section>
+
+      <section class="admin-stats" aria-label="Resumo">
+        <article class="stat-card">
+          <span class="stat-icon" aria-hidden="true">▤</span>
+          <div><p>Solicitações</p><strong id="totalRequests">0</strong></div>
+        </article>
+        <article class="stat-card">
+          <span class="stat-icon pending" aria-hidden="true">◷</span>
+          <div><p>Em andamento</p><strong id="openRequests">0</strong></div>
+        </article>
+        <article class="stat-card">
+          <span class="stat-icon team" aria-hidden="true">♙</span>
+          <div><p>Usuários cadastrados</p><strong id="totalUsers">0</strong></div>
+        </article>
+      </section>
+
+      <section class="admin-panel requests-panel">
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow">OPERAÇÃO</p>
+            <h2>Solicitações recentes</h2>
+          </div>
+          <label class="search-field">
+            <span class="sr-only">Buscar solicitações</span>
+            <input id="requestSearch" type="search" placeholder="Buscar solicitação...">
+          </label>
+        </div>
+        <p id="adminMessage" class="admin-message" role="status" aria-live="polite"></p>
+        <div class="table-scroll">
+          <table>
+            <thead>
+              <tr>
+                <th>Solicitação</th>
+                <th>Detalhes</th>
+                <th>Data</th>
+                <th>Status</th>
+              </tr>
+            </thead>
+            <tbody id="requestsList"></tbody>
+          </table>
+        </div>
+      </section>
+
+      <section class="admin-panel users-panel">
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow">ACESSOS</p>
+            <h2>Usuários da equipe</h2>
+          </div>
+        </div>
+        <form id="userForm" class="user-form">
+          <label>Nome completo<input name="name" type="text" placeholder="Ex.: Ana Silva" required></label>
+          <label>RM / Identificação<input name="rm" type="text" placeholder="Ex.: 12345" required></label>
+          <label>Perfil
+            <select name="role" required>
+              <option value="funcionario">Funcionário</option>
+              <option value="admin">Administrador</option>
+            </select>
+          </label>
+          <button class="btn" type="submit">Adicionar usuário</button>
+        </form>
+        <p id="userMessage" class="admin-message" role="status" aria-live="polite"></p>
+        <div class="user-list-wrap">
+          <ul id="usersList" class="users-list" aria-label="Usuários cadastrados"></ul>
+        </div>
+      </section>
+    </main>
+  </div>
+</body>
+</html>

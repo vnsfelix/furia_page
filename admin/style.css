@@ -1,0 +1,363 @@
+.admin-container {
+  max-width: 1180px;
+}
+
+.admin-container > .admin-main {
+  display: block;
+  padding: 8px 0 36px;
+}
+
+.admin-tag {
+  margin-left: 9px;
+  padding: 4px 7px;
+  border: 1px solid rgba(212, 255, 63, 0.35);
+  border-radius: 6px;
+  color: var(--accent);
+  font-size: 0.58rem;
+  letter-spacing: 1px;
+  vertical-align: middle;
+}
+
+.admin-welcome {
+  display: flex;
+  align-items: end;
+  justify-content: space-between;
+  gap: 24px;
+  margin: 20px 0 30px;
+}
+
+.admin-welcome h2 {
+  margin: 0 0 5px;
+  font-size: clamp(1.7rem, 4vw, 2.4rem);
+  letter-spacing: -0.04em;
+}
+
+.admin-welcome p:not(.eyebrow) {
+  margin: 0;
+  color: var(--text-muted);
+}
+
+.eyebrow {
+  margin: 0 0 8px;
+  color: var(--accent);
+  font-size: 0.69rem;
+  font-weight: 700;
+  letter-spacing: 0.13em;
+}
+
+.admin-quick-link {
+  flex-shrink: 0;
+  padding: 11px 15px;
+  border: 1px solid var(--panel-border);
+  border-radius: 11px;
+  color: #ececf0;
+  font-size: 0.82rem;
+  text-decoration: none;
+  transition: border-color 0.2s ease, color 0.2s ease;
+}
+
+.admin-quick-link:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+.admin-quick-link span {
+  margin-left: 8px;
+  color: var(--accent);
+}
+
+.admin-stats {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 16px;
+  margin-bottom: 20px;
+}
+
+.stat-card,
+.admin-panel {
+  border: 1px solid var(--panel-border);
+  border-radius: var(--radius-panel);
+  background: var(--panel-background);
+  box-shadow: 0 18px 44px rgba(0, 0, 0, 0.2);
+}
+
+.stat-card {
+  min-height: 118px;
+  padding: 22px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.stat-icon {
+  width: 48px;
+  height: 48px;
+  display: grid;
+  place-items: center;
+  flex: 0 0 auto;
+  border: 1px solid rgba(212, 255, 63, 0.22);
+  border-radius: 14px;
+  background: rgba(212, 255, 63, 0.08);
+  color: var(--accent);
+  font-size: 1.35rem;
+}
+
+.stat-icon.pending {
+  border-color: rgba(255, 190, 90, 0.22);
+  background: rgba(255, 190, 90, 0.08);
+  color: #ffca76;
+}
+
+.stat-icon.team {
+  border-color: rgba(115, 184, 255, 0.22);
+  background: rgba(115, 184, 255, 0.08);
+  color: #8cc5ff;
+}
+
+.stat-card p {
+  margin: 0 0 3px;
+  color: var(--text-muted);
+  font-size: 0.78rem;
+}
+
+.stat-card strong {
+  font-size: 1.7rem;
+  font-weight: 700;
+  line-height: 1.2;
+}
+
+.admin-panel {
+  margin-top: 20px;
+  padding: 24px;
+}
+
+.section-heading {
+  display: flex;
+  align-items: end;
+  justify-content: space-between;
+  gap: 18px;
+  margin-bottom: 18px;
+}
+
+.section-heading h2 {
+  margin: 0;
+  font-size: 1.2rem;
+}
+
+.section-heading .eyebrow {
+  margin-bottom: 4px;
+}
+
+.search-field {
+  width: min(100%, 270px);
+}
+
+.search-field input {
+  min-height: 42px;
+  font-size: 0.82rem;
+}
+
+.table-scroll {
+  overflow-x: auto;
+}
+
+.requests-panel table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+}
+
+.requests-panel th {
+  padding: 11px 14px;
+  border-bottom: 1px solid var(--panel-border);
+  color: var(--text-muted);
+  font-size: 0.69rem;
+  font-weight: 600;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+}
+
+.requests-panel td {
+  padding: 15px 14px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+  color: #d9dae0;
+  font-size: 0.82rem;
+}
+
+.requests-panel td:first-child {
+  min-width: 190px;
+}
+
+.requests-panel td:nth-child(2) {
+  max-width: 320px;
+  overflow-wrap: anywhere;
+}
+
+.requests-panel tbody tr:last-child td {
+  border-bottom: 0;
+}
+
+.table-subtitle {
+  display: block;
+  margin-top: 3px;
+  color: var(--text-muted);
+  font-size: 0.72rem;
+  text-transform: capitalize;
+}
+
+.status-select {
+  width: auto;
+  min-width: 132px;
+  min-height: 36px;
+  padding: 6px 10px;
+  font-size: 0.76rem;
+}
+
+.empty-state {
+  padding: 28px 14px !important;
+  color: var(--text-muted) !important;
+  text-align: center;
+}
+
+.admin-message {
+  margin: 0;
+  color: var(--accent);
+  font-size: 0.8rem;
+}
+
+.admin-message:empty {
+  display: none;
+}
+
+.user-form {
+  display: grid;
+  grid-template-columns: 1.2fr 1fr 0.8fr auto;
+  align-items: end;
+  gap: 12px;
+  padding-bottom: 18px;
+  border-bottom: 1px solid var(--panel-border);
+}
+
+.user-form label {
+  display: grid;
+  gap: 6px;
+  color: var(--text-muted);
+  font-size: 0.75rem;
+}
+
+.user-form input,
+.user-form select {
+  min-height: 42px;
+  font-size: 0.82rem;
+}
+
+.user-form .btn {
+  min-height: 42px;
+  padding: 9px 14px;
+  white-space: nowrap;
+}
+
+.users-list {
+  display: grid;
+  gap: 0;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.users-list li:not(.empty-state) {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 13px 4px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.users-list li:last-child {
+  border-bottom: 0;
+}
+
+.users-list li div {
+  display: grid;
+  gap: 2px;
+}
+
+.users-list strong {
+  font-size: 0.84rem;
+}
+
+.users-list li div span {
+  color: var(--text-muted);
+  font-size: 0.73rem;
+}
+
+.role-badge {
+  padding: 5px 9px;
+  border: 1px solid var(--panel-border);
+  border-radius: 999px;
+  color: #e2e2e5;
+  font-size: 0.68rem;
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  clip-path: inset(50%);
+}
+
+@media (max-width: 760px) {
+  .admin-stats {
+    grid-template-columns: 1fr;
+  }
+
+  .stat-card {
+    min-height: 92px;
+  }
+
+  .user-form {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 560px) {
+  .admin-welcome,
+  .section-heading {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .admin-quick-link,
+  .search-field {
+    width: 100%;
+  }
+
+  .admin-panel {
+    padding: 18px 14px;
+  }
+
+  .user-form {
+    grid-template-columns: 1fr;
+  }
+
+  .requests-panel th,
+  .requests-panel td {
+    padding: 11px 9px;
+  }
+
+  .requests-panel th {
+    font-size: 0.61rem;
+  }
+
+  .requests-panel td {
+    font-size: 0.74rem;
+  }
+
+  .status-select {
+    min-width: 112px;
+  }
+}

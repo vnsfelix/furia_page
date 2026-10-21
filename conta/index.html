@@ -3,11 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="icon" href="../img/Design_sem_nome_2.png">
+  <link rel="icon" href="../img/Subtract.png" type="image/png">
 
     <title>Minha Conta | FURIA</title>
 
     <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="../theme.css">
+    <script src="../javascript/script.js" defer></script>
     <script src="script.js" defer></script>
 </head>
 
@@ -15,14 +17,31 @@
     <div class="container">
 
         <header class="header">
-            <a href="../inicial/inicial.html" class="logo">FURIA</a>
+            <a href="../inicial/inicial.html" class="logo brand-link" aria-label="FURIA - início">
+                <img class="brand-mark" src="../img/Subtract.png" alt="">
+                <span>FURIA</span>
+            </a>
 
             <h1>Minha Conta</h1>
 
-            <a href="../inicial/inicial.html" class="voltar">
-                ← Voltar
-            </a>
+            <div class="user-container">
+                <button class="user-icon" id="iconeUsuario" type="button" aria-label="Abrir menu do perfil">
+                    <img src="../inicial/do-utilizador (2) 1.png" alt="">
+                </button>
+                <nav class="user-menu" id="menuUsuario" aria-label="Navegação da conta">
+                    <ul>
+                        <li><a href="../inicial/inicial.html">Início</a></li>
+                        <li><a href="../conta/index.html">Conta</a></li>
+                        <li><a href="../chamados/chamados.html">Chamados</a></li>
+                    </ul>
+                    <hr>
+                    <div class="logout"><a href="../index.html">Sair</a></div>
+                </nav>
+            </div>
         </header>
+        <nav class="nav-bar" aria-label="Navegação">
+            <a href="../inicial/inicial.html" class="btn-voltar">← Voltar para o início</a>
+        </nav>
 
         <main class="perfil-container">
 
@@ -31,7 +50,7 @@
 
                 <div class="perfil-identificacao">
                     <h2 id="nomeExibido">Nome do usuário</h2>
-                    <p id="emailExibido">usuario@email.com</p>
+                    <p id="rmExibido">RM não informado</p>
                     <span class="status">Minha conta</span>
                 </div>
 
@@ -44,9 +63,9 @@
             <form id="perfilForm">
 
                 <section class="secao">
-                    <h3>Informações pessoais</h3>
+                    <h3>Dados do usuário</h3>
                     <p class="descricao">
-                        Consulte e atualize os dados da sua conta.
+                        Consulte e atualize seu nome e RM.
                     </p>
 
                     <div class="form-grid">
@@ -61,67 +80,14 @@
                         </div>
 
                         <div class="campo">
-                            <label for="usuario">Nome de usuário</label>
-                            <input id="usuario" name="usuario"
+                            <label for="rm">RM / Identificação</label>
+                            <input id="rm" name="rm"
                                    type="text"
-                                   placeholder="Como deseja ser identificado?"
-                                   autocomplete="username"
-                                   disabled>
-                        </div>
-
-                        <div class="campo">
-                            <label for="email">E-mail</label>
-                            <input id="email" name="email"
-                                   type="email"
-                                   placeholder="seuemail@exemplo.com"
-                                   autocomplete="email"
+                                   placeholder="Seu RM"
+                                   autocomplete="off"
                                    required disabled>
                         </div>
 
-                        <div class="campo">
-                            <label for="telefone">Telefone</label>
-                            <input id="telefone" name="telefone"
-                                   type="tel"
-                                   placeholder="(11) 99999-9999"
-                                   autocomplete="tel"
-                                   disabled>
-                        </div>
-
-                        <div class="campo">
-                            <label for="nascimento">Data de nascimento</label>
-                            <input id="nascimento" name="nascimento"
-                                   type="date"
-                                   autocomplete="bday"
-                                   disabled>
-                        </div>
-
-                        <div class="campo">
-                            <label for="setor">Área / Setor</label>
-                            <select id="setor" name="setor" disabled>
-                                <option value="">Selecione uma área</option>
-                                <option value="Tecnologia">Tecnologia</option>
-                                <option value="Comunicação">Comunicação</option>
-                                <option value="Administrativo">Administrativo</option>
-                                <option value="Recursos Humanos">Recursos Humanos</option>
-                                <option value="Operações">Operações</option>
-                                <option value="Outro">Outro</option>
-                            </select>
-                        </div>
-
-                    </div>
-                </section>
-
-                <section class="secao">
-                    <h3>Conta</h3>
-
-                    <div class="informacao-conta">
-                        <span>Tipo de conta</span>
-                        <strong>Usuário</strong>
-                    </div>
-
-                    <div class="informacao-conta">
-                        <span>Cadastro</span>
-                        <strong id="dataCadastro">Não informado</strong>
                     </div>
                 </section>
 

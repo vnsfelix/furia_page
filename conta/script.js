@@ -4,49 +4,31 @@ document.addEventListener("DOMContentLoaded", () => {
     const cancelarBtn = document.getElementById("cancelarBtn");
     const acoes = document.getElementById("acoes");
     const mensagem = document.getElementById("mensagem");
-
-    const campos = [
-        "nome",
-        "usuario",
-        "email",
-        "telefone",
-        "nascimento",
-        "setor"
-    ];
-
+    const campos = ["nome", "rm"];
     const chave = "furia_perfil";
+    const camposForm = campos.map(id => document.getElementById(id));
     let dadosOriginais = {};
 
-    const camposForm = campos.map(id => document.getElementById(id));
-
     function lerFormulario() {
-        const dados = {};
-
-        campos.forEach(id => {
-            dados[id] = document.getElementById(id).value.trim();
-        });
-
-        return dados;
+        return Object.fromEntries(campos.map(id => [
+            id,
+            document.getElementById(id).value.trim()
+        ]));
     }
 
     function preencherFormulario(dados) {
         campos.forEach(id => {
             document.getElementById(id).value = dados[id] || "";
         });
-
         atualizarResumo();
     }
 
     function atualizarResumo() {
-        const nome = document.getElementById("nome").value.trim();
-        const email = document.getElementById("email").value.trim();
-
+        const { nome, rm } = lerFormulario();
         document.getElementById("nomeExibido").textContent =
             nome || "Nome do usuário";
-
-        document.getElementById("emailExibido").textContent =
-            email || "E-mail não informado";
-
+        document.getElementById("rmExibido").textContent =
+            rm ? `RM ${rm}` : "RM não informado";
         document.getElementById("avatar").textContent =
             nome ? nome.charAt(0).toUpperCase() : "U";
     }
@@ -55,7 +37,6 @@ document.addEventListener("DOMContentLoaded", () => {
         camposForm.forEach(campo => {
             campo.disabled = !ativo;
         });
-
         editarBtn.hidden = ativo;
         acoes.hidden = !ativo;
         mensagem.textContent = "";
@@ -68,26 +49,24 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     function carregarDados() {
-        let salvos = {};
+        let usuario = {};
+        let perfilSalvo = {};
 
         try {
-            const rm = localStorage.getItem("usuarioRM");
-            salvos = {
-                nome: localStorage.getItem("usuarioNome") || "",
-                email: rm ? `${rm}@furia.com` : "",
-                ...(JSON.parse(localStorage.getItem(chave)) || {})
-            };
+            usuario = JSON.parse(localStorage.getItem("currentUser")) || {};
+            perfilSalvo = JSON.parse(localStorage.getItem(chave)) || {};
         } catch {
-            salvos = {};
+            mostrarMensagem(
+                "Não foi possível carregar os dados salvos da conta.",
+                true
+            );
         }
 
-        preencherFormulario(salvos);
-
-        const cadastro = localStorage.getItem("furia_data_cadastro");
-
-        document.getElementById("dataCadastro").textContent =
-            cadastro || "Não informado";
-
+        const dados = {
+            nome: perfilSalvo.nome || usuario.name || localStorage.getItem("usuarioNome") || "",
+            rm: perfilSalvo.rm || usuario.rm || localStorage.getItem("usuarioRM") || ""
+        };
+        preencherFormulario(dados);
         dadosOriginais = lerFormulario();
     }
 
@@ -105,34 +84,32 @@ document.addEventListener("DOMContentLoaded", () => {
 
     form.addEventListener("submit", event => {
         event.preventDefault();
-
-        if (!form.reportValidity()) {
-            return;
-        }
+        if (!form.reportValidity()) return;
 
         const dados = lerFormulario();
-
+        let usuario = {};
         try {
+            usuario = JSON.parse(localStorage.getItem("currentUser")) || {};
             localStorage.setItem(chave, JSON.stringify(dados));
-
-            if (!localStorage.getItem("furia_data_cadastro")) {
-                const hoje = new Date().toLocaleDateString("pt-BR");
-                localStorage.setItem("furia_data_cadastro", hoje);
-            }
-
-            dadosOriginais = { ...dados };
-            document.getElementById("dataCadastro").textContent =
-                localStorage.getItem("furia_data_cadastro");
-
-            atualizarResumo();
-            definirEdicao(false);
-            mostrarMensagem("Perfil salvo com sucesso!");
+            localStorage.setItem("usuarioNome", dados.nome);
+            localStorage.setItem("usuarioRM", dados.rm);
+            localStorage.setItem("currentUser", JSON.stringify({
+                ...usuario,
+                name: dados.nome,
+                rm: dados.rm
+            }));
         } catch {
             mostrarMensagem(
                 "Não foi possível salvar. Verifique o armazenamento do navegador.",
                 true
             );
+            return;
         }
+
+        dadosOriginais = { ...dados };
+        atualizarResumo();
+        definirEdicao(false);
+        mostrarMensagem("Perfil salvo com sucesso!");
     });
 
     carregarDados();

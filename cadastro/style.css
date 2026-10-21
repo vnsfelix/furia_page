@@ -231,7 +231,6 @@ body {
 .btn-submit:hover {
   opacity: 0.9;
 }
-.card-icon1, .card-icon2, .card-icon3 { width: 60px; height: 60px; margin-bottom: 16px; }
+.card-icon1, .card-icon2 { width: 60px; height: 60px; margin-bottom: 16px; }
 .card-icon1 { background-image: url(../inicial/3.png); }
 .card-icon2 { background-image: url(../inicial/2.png); }
-.card-icon3 { background-image: url(../inicial/1.png); }

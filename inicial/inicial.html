@@ -3,10 +3,11 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="icon" href="../img/Design_sem_nome_2.png">
+  <link rel="icon" href="../img/Subtract.png" type="image/png">
   <title>Tela Inicial - FURIA</title>
   <script src="../javascript/script.js" defer></script>
   <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="../theme.css">
   <link
         href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap"
         rel="stylesheet">
@@ -16,21 +17,23 @@
   <div class="container">
     
     <header class="header">
-      <div class="nome">
+      <a class="nome brand-link" href="../inicial/inicial.html" aria-label="FURIA - início">
+        <img class="brand-mark" src="../img/Subtract.png" alt="">
         <span>FURIA</span>
-      </div>
+      </a>
       
-      <h1>Tela Inicial</h1>
+      <h1>Central de atendimento</h1>
       
       <!-- Contentor do Utilizador e Menu Suspenso -->
       <div class="user-container">
-        <div class="user-icon" id="iconeUsuario">
+        <button class="user-icon" id="iconeUsuario" type="button" aria-label="Abrir menu do perfil">
           <img src="./do-utilizador (2) 1.png" alt="Ícone do Utilizador">
-        </div>
+        </button>
 
         <!-- Caixa do Menu (Imagem 2) -->
         <div class="user-menu" id="menuUsuario">
           <ul>
+            <li><a href="../inicial/inicial.html">Início</a></li>
             <li><a href="../conta/index.html">Conta</a></li>
             <li><a href="../chamados/chamados.html">Chamados</a></li>
           </ul>
@@ -42,24 +45,39 @@
       </div>
     </header>
 
+    <section class="home-intro">
+      <div>
+        <p class="home-eyebrow">SUPORTE INTERNO • FURIA</p>
+        <h2>Como podemos<br><span>ajudar você hoje?</span></h2>
+        <p>Escolha um serviço para falar com o time certo. Sua solicitação será registrada e encaminhada para acompanhamento.</p>
+      </div>
+      <div class="home-mark" aria-hidden="true">
+        <img src="../img/Subtract.png" alt="">
+      </div>
+    </section>
+
     <main class="cards-grid">
-      
-      <a href="../problemas/problemas.html" class="card">
-        <div class="card-icon1"></div>
-        <span>Relatar Problemas</span>
+      <a href="../problemas/problemas.html" class="card service-card">
+        <span class="service-number">01 / SUPORTE</span>
+        <span class="service-icon card-icon1" aria-hidden="true"></span>
+        <span class="service-title">Relatar um problema</span>
+        <span class="service-description">Conte o que aconteceu com um sistema, equipamento ou processo.</span>
+        <span class="service-action">Abrir solicitação <span aria-hidden="true">→</span></span>
       </a>
 
-      <a href="../Presencial/presencial.html" class="card">
-        <div class="card-icon2"></div>
-        <span>Chamados Presenciais</span>
-      </a>
-
-      <a href="../comunicacao/comunicacao.html" class="card">
-        <div class="card-icon3"></div>
-        <span>Comunicação entre áreas</span>
+      <a href="../Presencial/presencial.html" class="card service-card">
+        <span class="service-number">02 / ATENDIMENTO LOCAL</span>
+        <span class="service-icon card-icon2" aria-hidden="true"></span>
+        <span class="service-title">Solicitar atendimento presencial</span>
+        <span class="service-description">Peça apoio técnico ou manutenção em um local da FURIA.</span>
+        <span class="service-action">Solicitar visita <span aria-hidden="true">→</span></span>
       </a>
 
     </main>
+    <footer class="home-footer">
+      <span>FURIA · Central de atendimento interno</span>
+      <a href="../chamados/chamados.html">Acompanhar meus chamados <span aria-hidden="true">↗</span></a>
+    </footer>
   </div>
 
 </body>

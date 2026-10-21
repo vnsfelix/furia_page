@@ -3,22 +3,45 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="icon" href="../img/Design_sem_nome_2.png">
-  <title>Dados enviados</title>
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@600;700&display=swap" rel="stylesheet">
+  <link rel="icon" href="../img/Subtract.png" type="image/png">
+  <title>Solicitação enviada - FURIA</title>
   <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="../theme.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 </head>
 <body>
-  <div class="card">
-    <div class="perfil">
-      <img src="perfil.png" alt="Perfil">
-    </div>
-
-    <div class="conteudo">
-      <img class="check" src="verificado.png" alt="Verificado">
-      <h1>Seus dados foram enviados!</h1>
-      <a href="../inicial/inicial.html" class="botao">voltar para o início</a>
-    </div>
+  <div class="container">
+    <header class="header">
+      <a class="logo brand-link" href="../inicial/inicial.html" aria-label="FURIA - início">
+        <img class="brand-mark" src="../img/Subtract.png" alt="">
+        <span>FURIA</span>
+      </a>
+      <h1>Solicitação enviada</h1>
+      <div class="user-container">
+        <button class="user-icon" id="iconeUsuario" type="button" aria-label="Abrir menu do perfil">
+          <img src="../inicial/do-utilizador (2) 1.png" alt="">
+        </button>
+        <nav class="user-menu" id="menuUsuario" aria-label="Navegação da conta">
+          <ul>
+            <li><a href="../inicial/inicial.html">Início</a></li>
+            <li><a href="../conta/index.html">Conta</a></li>
+            <li><a href="../chamados/chamados.html">Chamados</a></li>
+          </ul>
+          <hr>
+          <div class="logout"><a href="../index.html">Sair</a></div>
+        </nav>
+      </div>
+    </header>
+    <main class="state-card">
+      <div class="conteudo">
+        <img class="check" src="verificado.png" alt="">
+        <h1>Seus dados foram enviados!</h1>
+        <a href="../inicial/inicial.html" class="botao">Voltar para o início</a>
+      </div>
+    </main>
   </div>
+  <script src="../javascript/script.js" defer></script>
 </body>
 </html>

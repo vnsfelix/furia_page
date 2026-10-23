@@ -6,6 +6,7 @@ export const userRoutes = Router();
 
 // Todas as rotas de gerenciamento de usuários exigem autenticação de Administrador
 userRoutes.get('/', userController.getAll);
+userRoutes.get('/:id', userController.getById);
 userRoutes.post('/', userController.create);
 userRoutes.put('/:id', userController.updateUser);
 userRoutes.put('/:id/role', userController.updateRole);

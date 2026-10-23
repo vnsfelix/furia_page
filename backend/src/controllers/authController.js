@@ -63,7 +63,7 @@ export const authController = {
         return res.status(401).json({ error: 'E-mail ou senha incorretos.' });
       }
 
-      const { password: _, ...safeUser } = user;
+      const { password: _p, senha: _s, ...safeUser } = user;
 
       return res.json({
         message: 'Login realizado com sucesso!',

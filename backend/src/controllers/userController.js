@@ -15,6 +15,20 @@ export const userController = {
     }
   },
 
+  // GET /api/users/:id
+  async getById(req, res, next) {
+    try {
+      const { id } = req.params;
+      const user = await Database.findUserById(id);
+      if (!user) {
+        return res.status(404).json({ error: 'Usuário não encontrado.' });
+      }
+      return res.json(user);
+    } catch (error) {
+      next(error);
+    }
+  },
+
   // POST /api/users
   async create(req, res, next) {
     try {

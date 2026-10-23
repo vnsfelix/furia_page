@@ -1,7 +1,3 @@
-/**
- * FURIA Helpdesk - Servidor Backend Express
- */
-
 import express from 'express';
 import cors from 'cors';
 import path from 'node:path';
@@ -19,7 +15,6 @@ const rootDir = path.resolve(__dirname, '..');
 
 const app = express();
 
-// Configuração de CORS para permitir requisições de outros domínios / Live Server
 app.use(cors({
   origin: config.corsOrigin,
   credentials: true,

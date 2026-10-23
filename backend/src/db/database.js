@@ -1,224 +1,297 @@
 /**
- * Camada de Acesso a Dados / Banco de Dados (Database Layer)
- * 
- * Este arquivo foi estruturado de forma modular para que você possa conectar
- * facilmente seu banco de dados favorito (SQLite, PostgreSQL, MySQL, MongoDB ou Prisma).
- * 
- * Por padrão, inclui um repositório em memória/arquivo totalmente funcional,
- * permitindo que a API rode imediatamente sem necessidade de configurações extras.
+ * Camada de Dados - SQLite3 Nativo (Node.js 24 node:sqlite)
+ *
+ * Utiliza o arquivo SQLite `backend/database.sqlite` diretamente compatível
+ * com extensões do VS Code (SQLite Viewer/Editor, SQLite3 Editor) e softwares
+ * como DB Browser for SQLite.
  */
 
+import { DatabaseSync } from 'node:sqlite';
 import crypto from 'node:crypto';
-import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
-const DB_FILE = path.join(__dirname, 'database.json');
+const DB_PATH = path.resolve(__dirname, '../../database.sqlite');
 
-// Função para hash seguro de senha utilizando crypto nativo do Node
+// Inicialização da conexão SQLite
+export const db = new DatabaseSync(DB_PATH);
+
+// Habilita chaves estrangeiras
+db.exec('PRAGMA foreign_keys = ON;');
+
+// Criação das tabelas conforme esquema SQL do projeto
+db.exec(`
+CREATE TABLE IF NOT EXISTS users (
+  id VARCHAR(50) PRIMARY KEY,
+  nome VARCHAR(100) NOT NULL,
+  email VARCHAR(100) UNIQUE NOT NULL,
+  senha VARCHAR(255) NOT NULL,
+  role VARCHAR(20) NOT NULL DEFAULT 'funcionario',
+  department VARCHAR(50) DEFAULT 'Geral',
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE IF NOT EXISTS tickets (
+  id VARCHAR(50) PRIMARY KEY,
+  user_id VARCHAR(50) NOT NULL,
+  user_name VARCHAR(100) NOT NULL,
+  user_email VARCHAR(100) NOT NULL,
+  tipo VARCHAR(30) NOT NULL,
+  titulo VARCHAR(150) NOT NULL,
+  categoria VARCHAR(50),
+  local VARCHAR(50),
+  tiposervico VARCHAR(50),
+  descricao TEXT NOT NULL,
+  urgencia VARCHAR(20) DEFAULT 'media',
+  anexo VARCHAR(255),
+  status VARCHAR(30) DEFAULT 'Recebido',
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
+);
+`);
+
+// Função de hash SHA-256 para senhas
 export function hashPassword(password) {
   return crypto.createHash('sha256').update(String(password).trim()).digest('hex');
 }
 
-export function comparePassword(inputPassword, storedHash) {
-  return hashPassword(inputPassword) === storedHash;
-}
-
 /**
- * ESQUEMA SQL SUGERIDO PARA QUANDO VOCÊ FOR CONECTAR SEU BANCO:
- * 
- * CREATE TABLE users (
- *   id VARCHAR(50) PRIMARY KEY,
- *   name VARCHAR(100) NOT NULL,
- *   email VARCHAR(100) UNIQUE NOT NULL,
- *   password VARCHAR(255) NOT NULL,
- *   role VARCHAR(20) NOT NULL DEFAULT 'funcionario', -- 'funcionario', 'tecnico', 'admin'
- *   department VARCHAR(50) DEFAULT 'Geral',
- *   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
- * );
- * 
- * CREATE TABLE tickets (
- *   id VARCHAR(50) PRIMARY KEY,
- *   user_id VARCHAR(50) NOT NULL,
- *   user_name VARCHAR(100) NOT NULL,
- *   user_email VARCHAR(100) NOT NULL,
- *   tipo VARCHAR(30) NOT NULL, -- 'problemas', 'presencial'
- *   titulo VARCHAR(150) NOT NULL,
- *   categoria VARCHAR(50),
- *   local VARCHAR(50),
- *   tiposervico VARCHAR(50),
- *   descricao TEXT NOT NULL,
- *   urgencia VARCHAR(20) DEFAULT 'media',
- *   anexo VARCHAR(255),
- *   status VARCHAR(30) DEFAULT 'Recebido', -- 'Recebido', 'Em andamento', 'Concluído'
- *   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
- *   FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
- * );
+ * Valida a senha digitada.
+ * Aceita tanto o hash SHA-256 quanto a senha em texto puro caso
+ * tenha sido inserida diretamente por você no SQLite3 Editor.
  */
-
-// Dados iniciais: apenas o Administrador de teste
-const SEED_DATA = {
-  users: [
-    {
-      id: 'usr_admin',
-      name: 'Administrador FURIA',
-      email: 'admin@furia.gg',
-      password: hashPassword('admin'),
-      role: 'admin',
-      department: 'Tecnologia & Operações',
-      createdAt: new Date().toISOString()
-    }
-  ],
-  tickets: []
-};
-
-// Carrega ou inicializa a base de dados
-function loadData() {
-  try {
-    if (fs.existsSync(DB_FILE)) {
-      const content = fs.readFileSync(DB_FILE, 'utf-8');
-      return JSON.parse(content);
-    }
-  } catch {
-    // se falhar leitura, usa seed
-  }
-  saveData(SEED_DATA);
-  return JSON.parse(JSON.stringify(SEED_DATA));
+export function comparePassword(inputPassword, storedValue) {
+  const cleanInput = String(inputPassword).trim();
+  const cleanStored = String(storedValue).trim();
+  return hashPassword(cleanInput) === cleanStored || cleanInput === cleanStored;
 }
 
-function saveData(data) {
-  try {
-    fs.writeFileSync(DB_FILE, JSON.stringify(data, null, 2), 'utf-8');
-  } catch (err) {
-    console.error('Aviso ao persistir dados no arquivo:', err.message);
+// Inicializa o Administrador padrão se a tabela de usuários estiver sem ele
+(function seedAdmin() {
+  const checkStmt = db.prepare('SELECT id FROM users WHERE email = ?');
+  const existing = checkStmt.get('admin@furia.gg');
+
+  if (!existing) {
+    const insertAdmin = db.prepare(`
+      INSERT INTO users (id, nome, email, senha, role, department)
+      VALUES (?, ?, ?, ?, ?, ?)
+    `);
+    insertAdmin.run(
+      'usr_admin',
+      'Administrador FURIA',
+      'admin@furia.gg',
+      hashPassword('admin'),
+      'admin',
+      'Tecnologia & Operações'
+    );
+    console.log('⚡ Administrador de teste padrão criado no SQLite (admin@furia.gg / admin)');
   }
+})();
+
+// Helper para formatar usuário de forma segura (sem senha)
+function formatSafeUser(row) {
+  if (!row) return null;
+  return {
+    id: row.id,
+    name: row.nome,
+    nome: row.nome,
+    email: row.email,
+    role: row.role,
+    department: row.department,
+    createdAt: row.created_at,
+    created_at: row.created_at
+  };
 }
 
-let db = loadData();
+// Helper para formatar chamados com suporte dual (camelCase e snake_case)
+function formatTicket(row) {
+  if (!row) return null;
+  return {
+    id: row.id,
+    userId: row.user_id,
+    user_id: row.user_id,
+    userName: row.user_name,
+    user_name: row.user_name,
+    userEmail: row.user_email,
+    user_email: row.user_email,
+    tipo: row.tipo,
+    titulo: row.titulo,
+    categoria: row.categoria,
+    local: row.local,
+    tiposervico: row.tiposervico,
+    descricao: row.descricao,
+    urgencia: row.urgencia,
+    anexo: row.anexo,
+    status: row.status,
+    data: row.created_at,
+    createdAt: row.created_at,
+    created_at: row.created_at
+  };
+}
 
 export const Database = {
   // --- MÉTODOS DE USUÁRIOS ---
   async findUsers() {
-    return db.users.map(({ password, ...user }) => user);
+    const stmt = db.prepare('SELECT id, nome, email, role, department, created_at FROM users ORDER BY created_at DESC');
+    const rows = stmt.all();
+    return rows.map(formatSafeUser);
   },
 
   async findUserByEmail(email) {
     if (!email) return null;
-    const clean = email.trim().toLowerCase();
-    return db.users.find(u => u.email.toLowerCase() === clean) || null;
+    const stmt = db.prepare('SELECT * FROM users WHERE LOWER(email) = LOWER(?)');
+    const row = stmt.get(email.trim());
+    if (!row) return null;
+    return {
+      ...formatSafeUser(row),
+      senha: row.senha,
+      password: row.senha
+    };
   },
 
   async findUserById(id) {
-    const user = db.users.find(u => u.id === id);
-    if (!user) return null;
-    const { password, ...safeUser } = user;
-    return safeUser;
+    if (!id) return null;
+    const stmt = db.prepare('SELECT id, nome, email, role, department, created_at FROM users WHERE id = ?');
+    const row = stmt.get(id);
+    return formatSafeUser(row);
   },
 
   async createUser(userData) {
-    const cleanEmail = userData.email.trim().toLowerCase();
-    if (db.users.some(u => u.email.toLowerCase() === cleanEmail)) {
-      throw new Error('Este e-mail já está cadastrado no sistema.');
+    const cleanEmail = String(userData.email).trim().toLowerCase();
+    const nome = String(userData.nome || userData.name || '').trim();
+    const senhaRaw = userData.senha || userData.password || '123';
+    const senha = hashPassword(senhaRaw);
+    const role = userData.role || 'funcionario';
+    const department = userData.department || 'Geral';
+    const id = userData.id || `usr_${Date.now()}_${Math.random().toString(36).substring(2, 6)}`;
+
+    try {
+      const stmt = db.prepare(`
+        INSERT INTO users (id, nome, email, senha, role, department)
+        VALUES (?, ?, ?, ?, ?, ?)
+      `);
+      stmt.run(id, nome, cleanEmail, senha, role, department);
+      return this.findUserById(id);
+    } catch (error) {
+      if (String(error.message).includes('UNIQUE') || error.code === 'SQLITE_CONSTRAINT_UNIQUE') {
+        throw new Error('Este e-mail já está cadastrado no sistema.');
+      }
+      throw error;
     }
-
-    const newUser = {
-      id: `usr_${Date.now()}_${Math.random().toString(36).substring(2, 6)}`,
-      name: userData.name.trim(),
-      email: cleanEmail,
-      password: hashPassword(userData.password),
-      role: userData.role || 'funcionario',
-      department: userData.department || 'Geral',
-      createdAt: new Date().toISOString()
-    };
-
-    db.users.push(newUser);
-    saveData(db);
-
-    const { password, ...safeUser } = newUser;
-    return safeUser;
   },
 
   async updateUser(id, updates) {
-    const user = db.users.find(u => u.id === id);
-    if (!user) throw new Error('Usuário não encontrado.');
-    if (updates.role) user.role = updates.role;
-    if (updates.department) user.department = updates.department;
-    if (updates.name) user.name = updates.name;
-    saveData(db);
-    const { password, ...safeUser } = user;
-    return safeUser;
+    const current = await this.findUserById(id);
+    if (!current) throw new Error('Usuário não encontrado.');
+
+    const newNome = updates.nome || updates.name || current.nome;
+    const newRole = updates.role || current.role;
+    const newDept = updates.department || current.department;
+
+    const stmt = db.prepare(`
+      UPDATE users
+      SET nome = ?, role = ?, department = ?
+      WHERE id = ?
+    `);
+    stmt.run(newNome, newRole, newDept, id);
+
+    return this.findUserById(id);
   },
 
   async updateUserRole(id, role) {
-    const user = db.users.find(u => u.id === id);
-    if (!user) throw new Error('Usuário não encontrado.');
-    user.role = role;
-    saveData(db);
-    const { password, ...safeUser } = user;
-    return safeUser;
+    const current = await this.findUserById(id);
+    if (!current) throw new Error('Usuário não encontrado.');
+
+    const stmt = db.prepare('UPDATE users SET role = ? WHERE id = ?');
+    stmt.run(role, id);
+
+    return this.findUserById(id);
   },
 
   async deleteUser(id) {
-    const initialLength = db.users.length;
-    db.users = db.users.filter(u => u.id !== id);
-    if (db.users.length === initialLength) throw new Error('Usuário não encontrado.');
-    saveData(db);
+    const stmt = db.prepare('DELETE FROM users WHERE id = ?');
+    const result = stmt.run(id);
+    if (result.changes === 0) throw new Error('Usuário não encontrado.');
     return true;
   },
 
-  // --- MÉTODOS DE TICKETS ---
+  // --- MÉTODOS DE TICKETS / CHAMADOS ---
   async findTickets(filter = {}) {
-    let results = [...db.tickets];
-    if (filter.userId) {
-      results = results.filter(t => t.userId === filter.userId);
+    let sql = 'SELECT * FROM tickets';
+    const params = [];
+    const clauses = [];
+
+    if (filter.userId || filter.user_id) {
+      clauses.push('user_id = ?');
+      params.push(filter.userId || filter.user_id);
     }
+
     if (filter.status) {
-      results = results.filter(t => t.status.toLowerCase() === filter.status.toLowerCase());
+      clauses.push('LOWER(status) = LOWER(?)');
+      params.push(filter.status);
     }
-    return results;
+
+    if (clauses.length > 0) {
+      sql += ' WHERE ' + clauses.join(' AND ');
+    }
+
+    sql += ' ORDER BY created_at DESC';
+
+    const stmt = db.prepare(sql);
+    const rows = stmt.all(...params);
+    return rows.map(formatTicket);
   },
 
   async findTicketById(id) {
-    return db.tickets.find(t => t.id === id) || null;
+    const stmt = db.prepare('SELECT * FROM tickets WHERE id = ?');
+    const row = stmt.get(id);
+    return formatTicket(row);
   },
 
   async createTicket(ticketData) {
-    const newTicket = {
-      id: `TK-${Math.floor(1000 + Math.random() * 9000)}`,
-      userId: ticketData.userId,
-      userName: ticketData.userName,
-      userEmail: ticketData.userEmail,
-      tipo: ticketData.tipo || 'problemas',
-      titulo: ticketData.titulo || 'Solicitação de Suporte',
-      categoria: ticketData.categoria || 'Geral',
-      local: ticketData.local || '',
-      tiposervico: ticketData.tiposervico || '',
-      descricao: ticketData.descricao || '',
-      urgencia: ticketData.urgencia || 'media',
-      anexo: ticketData.anexo || null,
-      status: 'Recebido',
-      data: new Date().toISOString()
-    };
+    const id = ticketData.id || `TK-${Math.floor(1000 + Math.random() * 9000)}`;
+    const userId = ticketData.userId || ticketData.user_id || 'usr_anon';
+    const userName = ticketData.userName || ticketData.user_name || 'Usuário';
+    const userEmail = ticketData.userEmail || ticketData.user_email || 'usuario@furia.gg';
+    const tipo = ticketData.tipo || 'problemas';
+    const titulo = ticketData.titulo || (tipo === 'presencial' ? 'Chamado Presencial' : 'Relato de Problema');
+    const categoria = ticketData.categoria || 'Geral';
+    const local = ticketData.local || '';
+    const tiposervico = ticketData.tiposervico || '';
+    const descricao = ticketData.descricao || '';
+    const urgencia = ticketData.urgencia || 'media';
+    const anexo = ticketData.anexo || null;
+    const status = ticketData.status || 'Recebido';
 
-    db.tickets.unshift(newTicket);
-    saveData(db);
-    return newTicket;
+    const stmt = db.prepare(`
+      INSERT INTO tickets (
+        id, user_id, user_name, user_email, tipo, titulo,
+        categoria, local, tiposervico, descricao, urgencia, anexo, status
+      )
+      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+    `);
+
+    stmt.run(
+      id, userId, userName, userEmail, tipo, titulo,
+      categoria, local, tiposervico, descricao, urgencia, anexo, status
+    );
+
+    return this.findTicketById(id);
   },
 
   async updateTicketStatus(id, newStatus) {
-    const ticket = db.tickets.find(t => t.id === id);
-    if (!ticket) throw new Error('Chamado não encontrado.');
-    ticket.status = newStatus;
-    saveData(db);
-    return ticket;
+    const stmt = db.prepare('UPDATE tickets SET status = ? WHERE id = ?');
+    const result = stmt.run(newStatus, id);
+    if (result.changes === 0) throw new Error('Chamado não encontrado.');
+    return this.findTicketById(id);
   },
 
   async deleteTicket(id) {
-    db.tickets = db.tickets.filter(t => t.id !== id);
-    saveData(db);
+    const stmt = db.prepare('DELETE FROM tickets WHERE id = ?');
+    const result = stmt.run(id);
+    if (result.changes === 0) throw new Error('Chamado não encontrado.');
     return true;
   }
 };
-

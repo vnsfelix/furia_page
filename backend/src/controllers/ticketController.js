@@ -65,6 +65,20 @@ export const ticketController = {
     }
   },
 
+  // GET /api/tickets/:id (Chamado por ID)
+  async getById(req, res, next) {
+    try {
+      const { id } = req.params;
+      const ticket = await Database.findTicketById(id);
+      if (!ticket) {
+        return res.status(404).json({ error: 'Chamado não encontrado.' });
+      }
+      return res.json(ticket);
+    } catch (error) {
+      next(error);
+    }
+  },
+
   // PUT /api/tickets/:id/status
   async updateStatus(req, res, next) {
     try {

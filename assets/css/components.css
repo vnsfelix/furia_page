@@ -1,0 +1,543 @@
+/* ==========================================================================
+   FURIA HELPDESK - COMMON COMPONENTS
+   ========================================================================== */
+
+/* Layout Containers */
+.container {
+  width: min(1140px, calc(100% - 32px));
+  margin: 0 auto;
+  padding: 24px 0 40px;
+}
+
+.box-background {
+  min-height: 100vh;
+  width: min(1040px, 100%);
+  margin: 0 auto;
+  padding: 0 20px 40px;
+}
+
+/* ==========================================================================
+   HEADER PRINCIPAL & PERFIL
+   ========================================================================== */
+
+.app-header,
+.header,
+.box-background > header {
+  width: 100%;
+  min-height: 84px;
+  margin: 0 auto 28px;
+  padding: 16px 0;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+  align-items: center;
+  gap: 16px;
+  border-bottom: 1px solid var(--panel-border);
+}
+
+.brand-link,
+.logo,
+.nome {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  color: var(--text-primary);
+  font-size: 1.15rem;
+  font-weight: 800;
+  letter-spacing: 2px;
+  white-space: nowrap;
+}
+
+.brand-link:hover,
+.logo:hover,
+.nome:hover {
+  color: var(--accent);
+}
+
+.brand-mark {
+  width: 36px;
+  height: 36px;
+  flex-shrink: 0;
+  object-fit: contain;
+}
+
+.header h1,
+.app-header h1,
+.box-background > header h1 {
+  margin: 0;
+  color: var(--text-primary);
+  font-size: clamp(1.15rem, 2.5vw, 1.5rem);
+  font-weight: 600;
+  text-align: center;
+  letter-spacing: -0.02em;
+}
+
+/* User Container & Dropdown */
+.user-container {
+  position: relative;
+  justify-self: end;
+}
+
+.user-icon {
+  width: 52px;
+  height: 52px;
+  padding: 0;
+  border: 1px solid var(--panel-border);
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.08);
+  color: var(--text-primary);
+  display: grid;
+  place-items: center;
+  cursor: pointer;
+  transition: transform 0.2s ease, border-color 0.2s ease, background 0.2s ease;
+}
+
+.user-icon:hover,
+.user-icon:focus-visible {
+  transform: translateY(-2px);
+  border-color: var(--accent);
+  background: var(--accent-glow);
+}
+
+.user-icon img {
+  width: 44px;
+  height: 44px;
+  object-fit: contain;
+  border-radius: 50%;
+}
+
+.user-menu {
+  position: absolute;
+  top: calc(100% + 12px);
+  right: 0;
+  width: 250px;
+  padding: 14px;
+  border: 1px solid var(--panel-border);
+  border-radius: var(--radius-panel);
+  background: #1e2025;
+  box-shadow: var(--shadow-lg);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  z-index: 100;
+  display: flex;
+  flex-direction: column;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(-8px) scale(0.97);
+  transition: opacity 0.2s cubic-bezier(0.16, 1, 0.3, 1),
+              transform 0.2s cubic-bezier(0.16, 1, 0.3, 1),
+              visibility 0.2s ease;
+}
+
+.user-menu.ativo {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0) scale(1);
+}
+
+.user-menu-header {
+  padding: 4px 8px 12px;
+  border-bottom: 1px solid var(--panel-border);
+  margin-bottom: 8px;
+}
+
+.user-menu-name {
+  display: block;
+  font-size: 0.92rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.user-menu-email {
+  display: block;
+  font-size: 0.74rem;
+  color: var(--text-muted);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.user-menu-role {
+  display: inline-block;
+  margin-top: 6px;
+  padding: 2px 8px;
+  border-radius: var(--radius-full);
+  font-size: 0.65rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  background: rgba(212, 255, 63, 0.15);
+  color: var(--accent);
+  border: 1px solid rgba(212, 255, 63, 0.3);
+}
+
+.user-menu ul {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin: 0;
+  padding: 0;
+}
+
+.user-menu ul li a {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 12px;
+  border-radius: var(--radius-sm);
+  color: var(--text-secondary);
+  font-size: 0.88rem;
+  font-weight: 500;
+  transition: background 0.18s ease, color 0.18s ease;
+}
+
+.user-menu ul li a:hover {
+  background: rgba(255, 255, 255, 0.08);
+  color: var(--accent);
+}
+
+.user-menu hr {
+  width: 100%;
+  margin: 8px 0;
+  border: 0;
+  border-top: 1px solid var(--panel-border);
+}
+
+.user-menu .logout a {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 12px;
+  border-radius: var(--radius-sm);
+  color: #ff8b8b;
+  font-size: 0.88rem;
+  font-weight: 600;
+}
+
+.user-menu .logout a:hover {
+  background: var(--danger-bg);
+  color: #ffadad;
+}
+
+/* ==========================================================================
+   NAVEGAÇÃO E BOTÃO DE VOLTAR
+   ========================================================================== */
+
+.nav-bar {
+  margin-bottom: 24px;
+}
+
+.btn-voltar {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--text-secondary);
+  font-size: 0.88rem;
+  font-weight: 600;
+  transition: transform 0.2s ease, color 0.2s ease;
+}
+
+.btn-voltar:hover {
+  color: var(--accent);
+  transform: translateX(-4px);
+}
+
+/* ==========================================================================
+   BOTÕES PADRONIZADOS
+   ========================================================================== */
+
+.btn,
+button[type="submit"],
+.botao,
+.btn-retry {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-height: 46px;
+  padding: 11px 22px;
+  border: 1px solid var(--accent);
+  border-radius: var(--radius-full);
+  background: var(--accent);
+  color: #121316;
+  font-family: inherit;
+  font-size: 0.92rem;
+  font-weight: 700;
+  text-decoration: none;
+  cursor: pointer;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.btn:hover,
+button[type="submit"]:hover,
+.botao:hover,
+.btn-retry:hover {
+  border-color: var(--accent-hover);
+  background: var(--accent-hover);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 18px rgba(212, 255, 63, 0.25);
+}
+
+.btn:active,
+button[type="submit"]:active {
+  transform: translateY(0);
+}
+
+.btn:disabled,
+button:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+  transform: none !important;
+  box-shadow: none !important;
+}
+
+/* Variações de Botões */
+.btn-secondary {
+  border-color: var(--panel-border);
+  background: rgba(255, 255, 255, 0.08);
+  color: var(--text-primary);
+}
+
+.btn-secondary:hover {
+  border-color: rgba(255, 255, 255, 0.25);
+  background: rgba(255, 255, 255, 0.14);
+  color: #ffffff;
+  box-shadow: none;
+}
+
+.btn-outline {
+  border-color: var(--panel-border);
+  background: transparent;
+  color: var(--text-secondary);
+}
+
+.btn-outline:hover {
+  border-color: var(--accent);
+  background: var(--accent-glow);
+  color: var(--accent);
+}
+
+.btn-danger {
+  border-color: var(--danger-border);
+  background: var(--danger-bg);
+  color: #ff9999;
+}
+
+.btn-danger:hover {
+  border-color: var(--danger);
+  background: var(--danger);
+  color: #ffffff;
+}
+
+/* ==========================================================================
+   INPUTS & CAMPOS DE FORMULÁRIO
+   ========================================================================== */
+
+.form-group,
+.campo,
+.input-login {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+  margin-bottom: 18px;
+  text-align: left;
+}
+
+label {
+  color: var(--text-secondary);
+  font-size: 0.86rem;
+  font-weight: 500;
+}
+
+input:not([type="file"]):not([type="checkbox"]):not([type="radio"]),
+select,
+textarea {
+  width: 100%;
+  min-height: 46px;
+  padding: 11px 14px;
+  border: 1px solid var(--field-border);
+  border-radius: var(--radius-control);
+  outline: none;
+  background: var(--field-background);
+  color: var(--text-primary);
+  font-family: inherit;
+  font-size: 0.92rem;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+}
+
+input:not([type="file"]):focus,
+select:focus,
+textarea:focus {
+  border-color: var(--field-border-focus);
+  box-shadow: 0 0 0 3px rgba(212, 255, 63, 0.15);
+  background: rgba(18, 20, 24, 0.95);
+}
+
+input::placeholder,
+textarea::placeholder {
+  color: #7b808e;
+}
+
+select option {
+  background: #1c1d22;
+  color: #ffffff;
+}
+
+textarea {
+  min-height: 120px;
+  resize: vertical;
+}
+
+/* Custom Password input container with show/hide toggle */
+.input-password-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.input-password-wrapper input {
+  padding-right: 44px;
+}
+
+.toggle-password-btn {
+  position: absolute;
+  right: 12px;
+  background: transparent;
+  border: none;
+  color: var(--text-muted);
+  cursor: pointer;
+  padding: 4px;
+  font-size: 1.1rem;
+  line-height: 1;
+  transition: color 0.2s ease;
+}
+
+.toggle-password-btn:hover {
+  color: var(--text-primary);
+}
+
+/* ==========================================================================
+   ALERTS E FEEDBACKS
+   ========================================================================== */
+
+.alert,
+.form-message,
+.login-message,
+.admin-message,
+.mensagem {
+  padding: 12px 16px;
+  border-radius: var(--radius-control);
+  font-size: 0.84rem;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 14px;
+  margin-bottom: 14px;
+}
+
+.alert:empty,
+.form-message:empty,
+.login-message:empty,
+.admin-message:empty,
+.mensagem:empty {
+  display: none !important;
+}
+
+/* Error Alert */
+.alert-error,
+.form-message.erro,
+.mensagem.erro,
+.login-message {
+  background: var(--danger-bg);
+  border: 1px solid var(--danger-border);
+  color: #ffa3a3;
+}
+
+/* Success Alert */
+.alert-success,
+.form-message.sucesso,
+.mensagem.sucesso {
+  background: var(--success-bg);
+  border: 1px solid var(--success-border);
+  color: #73f0be;
+}
+
+/* Info Alert */
+.alert-info {
+  background: rgba(59, 130, 246, 0.12);
+  border: 1px solid rgba(59, 130, 246, 0.35);
+  color: #93c5fd;
+}
+
+/* ==========================================================================
+   STATUS BADGES
+   ========================================================================== */
+
+.status-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 5px 12px;
+  border-radius: var(--radius-full);
+  font-size: 0.74rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  border: 1px solid transparent;
+}
+
+.status-badge.status-pendente,
+.status-badge.status-recebido {
+  background: rgba(245, 158, 11, 0.15);
+  border-color: rgba(245, 158, 11, 0.35);
+  color: #fbbf24;
+}
+
+.status-badge.status-andamento {
+  background: rgba(59, 130, 246, 0.15);
+  border-color: rgba(59, 130, 246, 0.35);
+  color: #60a5fa;
+}
+
+.status-badge.status-concluido {
+  background: rgba(16, 185, 129, 0.15);
+  border-color: rgba(16, 185, 129, 0.35);
+  color: #34d399;
+}
+
+/* ==========================================================================
+   RESPONSIVIDADE GERAL
+   ========================================================================== */
+
+@media (max-width: 640px) {
+  .app-header,
+  .header,
+  .box-background > header {
+    grid-template-columns: minmax(0, 1fr) auto;
+    row-gap: 12px;
+    padding: 12px 0;
+  }
+
+  .header h1,
+  .app-header h1,
+  .box-background > header h1 {
+    grid-column: 1 / -1;
+    grid-row: 2;
+    text-align: left;
+    font-size: 1.25rem;
+  }
+
+  .user-container {
+    grid-column: 2;
+    grid-row: 1;
+  }
+
+  .user-menu {
+    width: 220px;
+  }
+}
+

@@ -1,62 +1,100 @@
 <!DOCTYPE html>
-<html lang="pt-br">
+<html lang="pt-BR">
 
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="icon" href="img/Subtract.png" type="image/png">
-  <link rel="stylesheet" href="./css/style.css">
-  <link rel="stylesheet" href="./css/theme.css">
+  <link rel="icon" href="./assets/img/logo-furia.png" type="image/png">
+  <title>FURIA - Login Seguro</title>
+
+  <!-- Google Fonts: Poppins -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-  <title>Furia - Login</title>
+
+  <!-- Estilos Padronizados -->
+  <link rel="stylesheet" href="./assets/css/base.css">
+  <link rel="stylesheet" href="./assets/css/components.css">
+  <link rel="stylesheet" href="./assets/css/pages/auth.css">
 </head>
 
 <body>
-  <div id="page" class="flex">
-    <div class="login-layout">
-      <header class="login-brand">
-        <img class="brand-mark login-logo" src="./img/Subtract.png" alt="Logo FURIA">
+  <div class="auth-page">
+    <div class="auth-layout">
+      <!-- Marca FURIA -->
+      <header class="auth-brand">
+        <img class="brand-mark" src="./assets/img/logo-furia.png" alt="Logo FURIA">
         <span>FURIA <span class="brand-divider">/</span> CENTRAL INTERNA</span>
       </header>
-      <main>
-        <div class="box">
-          <p class="login-eyebrow">ACESSO SEGURO</p>
-          <h2>Bem-vindo de volta</h2>
-          <p class="login-description">Entre para acessar os serviços internos da FURIA.</p>
 
-          <div class="role-selector">
-            <button type="button" class="role-btn active" data-role="funcionario" aria-pressed="true">Funcionário</button>
-            <button type="button" class="role-btn" data-role="admin" aria-pressed="false">Admin</button>
+      <main class="auth-card">
+        <p class="auth-eyebrow">ACESSO SEGURO</p>
+        <h2>Bem-vindo de volta</h2>
+
+        <!-- Formulário de Login com Email e Senha -->
+        <form id="loginForm" novalidate>
+          <div class="form-group">
+            <label for="email">E-mail corporativo / pessoal</label>
+            <input 
+              type="email" 
+              name="email" 
+              id="email" 
+              placeholder="exemplo@furia.gg" 
+              autocomplete="email" 
+              required
+            >
           </div>
 
-          <form id="loginForm">
-            <input type="hidden" id="userRole" name="userRole" value="funcionario">
-
-            <div class="input-login">
-              <label for="name">Nome completo</label>
-              <input type="text" name="name" id="name" placeholder="Como podemos chamar você?" autocomplete="name" required>
+          <div class="form-group">
+            <label for="password">Senha de acesso</label>
+            <div class="input-password-wrapper">
+              <input 
+                type="password" 
+                name="password" 
+                id="password" 
+                placeholder="Digite sua senha" 
+                autocomplete="current-password" 
+                required
+              >
+              <button type="button" class="toggle-password-btn" data-target="password" aria-label="Mostrar ou ocultar senha">👁️</button>
             </div>
+          </div>
 
-            <div class="input-login">
-              <div class="label-login">
-                <label for="rm">RM / identificação</label>
-                <a href="#" id="esqueciRm">Esqueci meu RM!</a>
-              </div>
-              <input type="password" name="rm" id="rm" placeholder="Digite seu RM" autocomplete="current-password" required>
-            </div>
+          <div class="auth-sub-actions">
+            <label class="remember-me">
+              <input type="checkbox" id="rememberMe">
+              <span>Lembrar de mim</span>
+            </label>
+            <a href="#" id="esqueciSenha" class="forgot-link">Esqueci minha senha</a>
+          </div>
 
-            <button type="submit">Entrar</button>
-          </form>
-          <p id="loginMessage" class="login-message" role="alert" aria-live="assertive"></p>
-          <p class="login-footnote">Ao continuar, você acessa o ambiente interno de atendimento.</p>
+          <button type="submit" class="btn auth-submit-btn">Entrar na Conta</button>
+        </form>
+
+        <!-- Mensagens de Alerta (Sucesso ou Erro) -->
+        <div id="loginMessage" class="alert alert-error" role="alert" aria-live="assertive"></div>
+
+        <div class="auth-divider">
+          <span>OU</span>
         </div>
+
+        <!-- Botão de Cadastro Novo Usuário -->
+        <a href="./cadastro.html" class="btn-auth-switch" id="btnIrCadastro">
+          <span>Não tem uma conta?</span>
+          <strong class="text-accent">Cadastre-se aqui →</strong>
+        </a>
+
+        <p class="auth-footnote">Ambiente restrito e monitorado para colaboradores e equipe FURIA.</p>
       </main>
     </div>
   </div>
 
-  <script src="javascript/script.js"></script>
+  <!-- Scripts do Sistema -->
+  <script src="./assets/js/config.js"></script>
+  <script src="./assets/js/storage.js"></script>
+  <script src="./assets/js/auth.js"></script>
+  <script src="./assets/js/ui.js"></script>
+  <script src="./assets/js/pages/login.js"></script>
 </body>
 
 </html>

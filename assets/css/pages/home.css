@@ -1,0 +1,179 @@
+/* ==========================================================================
+   FURIA HELPDESK - HOME / INICIAL PAGE
+   ========================================================================== */
+
+.home-intro {
+  position: relative;
+  min-height: 240px;
+  margin: 10px 0 32px;
+  padding: 36px 40px;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 32px;
+  border: 1px solid var(--panel-border);
+  border-radius: 24px;
+  background:
+    radial-gradient(ellipse at 85% 50%, rgba(212, 255, 63, 0.12), transparent 45%),
+    linear-gradient(130deg, rgba(38, 40, 46, 0.98), rgba(22, 23, 27, 0.94));
+  box-shadow: var(--shadow-md);
+}
+
+.home-intro > div:first-child {
+  position: relative;
+  z-index: 1;
+  max-width: 620px;
+}
+
+.home-eyebrow {
+  margin: 0 0 10px;
+  color: var(--accent);
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+}
+
+.home-intro h2 {
+  margin: 0;
+  font-size: clamp(2rem, 4.5vw, 3rem);
+  font-weight: 700;
+  letter-spacing: -0.04em;
+  line-height: 1.1;
+  color: var(--text-primary);
+}
+
+.home-intro h2 span {
+  color: var(--accent);
+}
+
+.home-intro p.home-lead {
+  max-width: 540px;
+  margin: 14px 0 0;
+  color: var(--text-muted);
+  font-size: 0.92rem;
+  line-height: 1.6;
+}
+
+.home-mark {
+  width: 140px;
+  height: 140px;
+  flex: 0 0 auto;
+  display: grid;
+  place-items: center;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.04);
+}
+
+.home-mark img {
+  width: 90px;
+  height: 90px;
+  object-fit: contain;
+  opacity: 0.85;
+}
+
+/* Service Cards */
+.cards-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 24px;
+}
+
+.service-card {
+  display: flex;
+  flex-direction: column;
+  min-height: 280px;
+  padding: 30px;
+  border: 1px solid var(--panel-border);
+  border-radius: 20px;
+  background: var(--panel-background);
+  box-shadow: var(--shadow-sm);
+  text-decoration: none;
+  color: var(--text-primary);
+  transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1),
+              border-color 0.25s ease,
+              box-shadow 0.25s ease;
+}
+
+.service-card:hover {
+  transform: translateY(-6px);
+  border-color: var(--panel-border-hover);
+  box-shadow: var(--shadow-lg), 0 0 24px rgba(212, 255, 63, 0.1);
+}
+
+.service-number {
+  color: var(--text-muted);
+  font-size: 0.68rem;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+}
+
+.service-icon {
+  width: 58px;
+  height: 58px;
+  margin: 14px 0 10px;
+  object-fit: contain;
+  filter: drop-shadow(0 6px 14px rgba(212, 255, 63, 0.2));
+}
+
+.service-title {
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin-bottom: 8px;
+}
+
+.service-description {
+  color: var(--text-muted);
+  font-size: 0.86rem;
+  line-height: 1.6;
+}
+
+.service-action {
+  margin-top: auto;
+  padding-top: 18px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  color: var(--accent);
+  font-size: 0.84rem;
+  font-weight: 700;
+}
+
+/* Footer da Home */
+.home-footer {
+  margin: 36px 0 8px;
+  padding-top: 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+  border-top: 1px solid var(--panel-border);
+  color: var(--text-muted);
+  font-size: 0.78rem;
+}
+
+.home-footer a {
+  color: var(--text-secondary);
+  font-weight: 600;
+}
+
+.home-footer a:hover {
+  color: var(--accent);
+}
+
+@media (max-width: 680px) {
+  .home-intro {
+    padding: 26px 20px;
+  }
+  .home-mark {
+    display: none;
+  }
+  .home-footer {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}
+

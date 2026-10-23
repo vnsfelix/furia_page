@@ -1,0 +1,103 @@
+/* ==========================================================================
+   FURIA HELPDESK - MINHA CONTA / PERFIL
+   ========================================================================== */
+
+.perfil-card {
+  width: min(100%, 720px);
+  margin: 0 auto;
+  padding: 36px 32px;
+  border: 1px solid var(--panel-border);
+  border-radius: var(--radius-panel);
+  background: var(--panel-background);
+  box-shadow: var(--shadow-lg);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+}
+
+.perfil-topo {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  padding-bottom: 24px;
+  border-bottom: 1px solid var(--panel-border);
+  margin-bottom: 28px;
+}
+
+.avatar-large {
+  width: 72px;
+  height: 72px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, rgba(212, 255, 63, 0.25), rgba(212, 255, 63, 0.05));
+  border: 2px solid var(--accent);
+  color: var(--accent);
+  display: grid;
+  place-items: center;
+  font-size: 1.8rem;
+  font-weight: 800;
+  flex-shrink: 0;
+}
+
+.perfil-identificacao {
+  flex: 1;
+}
+
+.perfil-identificacao h2 {
+  font-size: 1.4rem;
+  font-weight: 700;
+  margin: 0 0 4px;
+}
+
+.perfil-identificacao p {
+  color: var(--text-muted);
+  font-size: 0.88rem;
+  margin: 0 0 8px;
+}
+
+.perfil-badge {
+  display: inline-block;
+  padding: 3px 10px;
+  border-radius: var(--radius-full);
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  background: rgba(212, 255, 63, 0.15);
+  color: var(--accent);
+  border: 1px solid rgba(212, 255, 63, 0.3);
+}
+
+.perfil-section-title {
+  font-size: 1.1rem;
+  font-weight: 600;
+  margin-bottom: 6px;
+}
+
+.perfil-section-desc {
+  color: var(--text-muted);
+  font-size: 0.84rem;
+  margin-bottom: 20px;
+}
+
+.perfil-actions {
+  display: flex;
+  gap: 12px;
+  margin-top: 24px;
+  justify-content: flex-end;
+}
+
+@media (max-width: 580px) {
+  .perfil-card {
+    padding: 24px 18px;
+  }
+  .perfil-topo {
+    flex-direction: column;
+    text-align: center;
+    gap: 14px;
+  }
+  .perfil-actions {
+    flex-direction: column;
+  }
+  .perfil-actions .btn {
+    width: 100%;
+  }
+}
+

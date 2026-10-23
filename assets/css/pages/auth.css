@@ -1,0 +1,190 @@
+/* ==========================================================================
+   FURIA HELPDESK - AUTH PAGES (LOGIN & CADASTRO)
+   ========================================================================== */
+
+.auth-page {
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 32px 16px;
+  background: var(--page-background);
+}
+
+.auth-layout {
+  width: min(100%, 480px);
+  margin: 0 auto;
+}
+
+.auth-brand {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  margin-bottom: 24px;
+  color: #c6c7ce;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+
+.auth-brand .brand-mark {
+  width: 58px;
+  height: 58px;
+  filter: drop-shadow(0 0 16px rgba(212, 255, 63, 0.25));
+}
+
+.brand-divider {
+  color: var(--accent);
+}
+
+.auth-card {
+  border: 1px solid var(--panel-border);
+  border-radius: var(--radius-panel);
+  background: var(--panel-background);
+  box-shadow: var(--shadow-lg);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  padding: 36px 32px;
+  text-align: left;
+}
+
+.auth-eyebrow {
+  margin: 0 0 8px;
+  color: var(--accent);
+  font-size: 0.7rem;
+  font-weight: 800;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+}
+
+.auth-card h2 {
+  margin: 0 0 8px;
+  font-size: clamp(1.6rem, 5vw, 2.1rem);
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  color: var(--text-primary);
+}
+
+.auth-description {
+  margin: 0 0 24px;
+  color: var(--text-muted);
+  font-size: 0.88rem;
+  line-height: 1.5;
+}
+
+/* Auth Actions Links */
+.auth-sub-actions {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: -6px;
+  margin-bottom: 20px;
+  font-size: 0.82rem;
+}
+
+.remember-me {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--text-muted);
+  cursor: pointer;
+  user-select: none;
+}
+
+.remember-me input[type="checkbox"] {
+  accent-color: var(--accent);
+  width: 16px;
+  height: 16px;
+  cursor: pointer;
+}
+
+.forgot-link {
+  color: var(--accent);
+  font-weight: 500;
+  font-size: 0.82rem;
+}
+
+.forgot-link:hover {
+  text-decoration: underline;
+}
+
+/* Submit Button in Auth */
+.auth-submit-btn {
+  width: 100%;
+  min-height: 48px;
+  font-size: 0.98rem;
+  margin-top: 8px;
+}
+
+/* Divisor e Alternador entre Login e Cadastro */
+.auth-divider {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin: 24px 0;
+  color: var(--text-muted);
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+}
+
+.auth-divider::before,
+.auth-divider::after {
+  content: "";
+  flex: 1;
+  height: 1px;
+  background: var(--panel-border);
+}
+
+.btn-auth-switch {
+  width: 100%;
+  min-height: 46px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 10px 20px;
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  border-radius: var(--radius-full);
+  background: rgba(255, 255, 255, 0.05);
+  color: var(--text-primary);
+  font-size: 0.9rem;
+  font-weight: 600;
+  text-decoration: none;
+  transition: all 0.2s ease;
+}
+
+.btn-auth-switch:hover {
+  border-color: var(--accent);
+  background: var(--accent-glow);
+  color: var(--accent);
+  transform: translateY(-2px);
+}
+
+.auth-footnote {
+  margin: 22px 0 0;
+  color: var(--text-muted);
+  font-size: 0.72rem;
+  text-align: center;
+  line-height: 1.5;
+}
+
+/* Campo duplo (grid de 2 colunas para campos compactos) */
+.form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+}
+
+@media (max-width: 500px) {
+  .auth-card {
+    padding: 26px 20px;
+  }
+  .form-row {
+    grid-template-columns: 1fr;
+    gap: 0;
+  }
+}
+

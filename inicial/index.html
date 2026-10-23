@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" href="../assets/img/logo-furia.png" type="image/png">
+  <title>Central de Atendimento - FURIA</title>
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <!-- Estilos Padronizados -->
+  <link rel="stylesheet" href="../assets/css/base.css">
+  <link rel="stylesheet" href="../assets/css/components.css">
+  <link rel="stylesheet" href="../assets/css/pages/home.css">
+</head>
+
+<body>
+  <div class="container">
+    <!-- Header Global -->
+    <header class="app-header">
+      <a class="brand-link" href="../inicial/index.html" aria-label="FURIA - Início">
+        <img class="brand-mark" src="../assets/img/logo-furia.png" alt="FURIA Logo">
+        <span>FURIA</span>
+      </a>
+
+      <h1>Central de Atendimento</h1>
+
+      <!-- Menu do Usuário -->
+      <div class="user-container">
+        <button class="user-icon" id="iconeUsuario" type="button" aria-label="Abrir menu do perfil" aria-expanded="false">
+          <img src="../assets/img/avatar.png" alt="Avatar do usuário">
+        </button>
+
+        <nav class="user-menu" id="menuUsuario" aria-label="Menu da conta">
+          <ul>
+            <li><a href="../inicial/index.html">🏠 Início</a></li>
+            <li><a href="../chamados/index.html">📋 Meus Chamados</a></li>
+            <li><a href="../conta/index.html">👤 Minha Conta</a></li>
+          </ul>
+          <hr>
+          <div class="logout">
+            <a href="../index.html">Sair da conta &rarr;</a>
+          </div>
+        </nav>
+      </div>
+    </header>
+
+    <!-- Apresentação e Boas-Vindas -->
+    <section class="home-intro">
+      <div>
+        <p class="home-eyebrow">SUPORTE INTERNO • FURIA ESPORTS</p>
+        <h2>Olá, <span id="userName">Colaborador</span>!<br><span>Como podemos ajudar hoje?</span></h2>
+        <p class="home-lead">Selecione o tipo de atendimento abaixo para direcionar sua solicitação para a equipe técnica responsável.</p>
+      </div>
+      <div class="home-mark" aria-hidden="true">
+        <img src="../assets/img/logo-furia.png" alt="">
+      </div>
+    </section>
+
+    <!-- Grade de Serviços Disponíveis -->
+    <main class="cards-grid">
+      <!-- Card 1: Relatar Problema -->
+      <a href="../problemas/index.html" class="service-card">
+        <span class="service-number">01 / SUPORTE DIGITAL</span>
+        <img class="service-icon" src="../assets/img/icon-3.png" alt="Ícone Problema">
+        <span class="service-title">Relatar um Problema</span>
+        <span class="service-description">Abra um ticket sobre erros em sistemas, softwares, falha de equipamentos ou acessos.</span>
+        <span class="service-action">Abrir solicitação <span aria-hidden="true">→</span></span>
+      </a>
+
+      <!-- Card 2: Atendimento Presencial -->
+      <a href="../presencial/index.html" class="service-card">
+        <span class="service-number">02 / ATENDIMENTO LOCAL</span>
+        <img class="service-icon" src="../assets/img/icon-2.png" alt="Ícone Presencial">
+        <span class="service-title">Solicitar Atendimento Presencial</span>
+        <span class="service-description">Solicite a presença de um técnico para reparo de infraestrutura, cabeamento, rede ou elétrica na FURIA.</span>
+        <span class="service-action">Solicitar visita técnica <span aria-hidden="true">→</span></span>
+      </a>
+    </main>
+
+    <!-- Rodapé -->
+    <footer class="home-footer">
+      <span>FURIA Esports · Central de Suporte e Atendimento Interno</span>
+      <a href="../chamados/index.html">Acompanhar o andamento dos meus chamados <span aria-hidden="true">↗</span></a>
+    </footer>
+  </div>
+
+  <!-- Scripts -->
+  <script src="../assets/js/config.js"></script>
+  <script src="../assets/js/storage.js"></script>
+  <script src="../assets/js/auth.js"></script>
+  <script src="../assets/js/ui.js"></script>
+  <script src="../assets/js/pages/home.js"></script>
+</body>
+
+</html>
+

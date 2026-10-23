@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" href="../assets/img/logo-furia.png" type="image/png">
+  <title>Ocorreu um Erro - FURIA</title>
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <!-- Estilos Padronizados -->
+  <link rel="stylesheet" href="../assets/css/base.css">
+  <link rel="stylesheet" href="../assets/css/components.css">
+
+  <style>
+    .error-card {
+      width: min(100%, 600px);
+      margin: 40px auto;
+      padding: 48px 32px;
+      text-align: center;
+      border: 1px solid var(--danger-border);
+      border-radius: var(--radius-panel);
+      background: var(--panel-background);
+      box-shadow: var(--shadow-lg);
+      backdrop-filter: blur(16px);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .error-icon {
+      font-size: 3.5rem;
+      margin-bottom: -6px;
+    }
+
+    .error-code {
+      font-size: 0.8rem;
+      font-weight: 800;
+      letter-spacing: 0.15em;
+      color: var(--danger);
+      text-transform: uppercase;
+    }
+
+    .error-card h2 {
+      font-size: clamp(1.5rem, 4vw, 2rem);
+      font-weight: 700;
+      color: var(--text-primary);
+      margin: 0;
+    }
+
+    .error-card p {
+      color: var(--text-muted);
+      font-size: 0.92rem;
+      max-width: 440px;
+      line-height: 1.6;
+      margin: 0;
+    }
+
+    .error-actions {
+      display: flex;
+      gap: 14px;
+      margin-top: 14px;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="container">
+    <!-- Header Global -->
+    <header class="app-header">
+      <a class="brand-link" href="../inicial/index.html" aria-label="FURIA - Início">
+        <img class="brand-mark" src="../assets/img/logo-furia.png" alt="FURIA Logo">
+        <span>FURIA</span>
+      </a>
+
+      <h1>Aviso do Sistema</h1>
+
+      <!-- Menu do Usuário -->
+      <div class="user-container">
+        <button class="user-icon" id="iconeUsuario" type="button" aria-label="Abrir menu do perfil" aria-expanded="false">
+          <img src="../assets/img/avatar.png" alt="Avatar do usuário">
+        </button>
+
+        <nav class="user-menu" id="menuUsuario" aria-label="Menu da conta">
+          <ul>
+            <li><a href="../inicial/index.html">🏠 Início</a></li>
+            <li><a href="../chamados/index.html">📋 Meus Chamados</a></li>
+            <li><a href="../conta/index.html">👤 Minha Conta</a></li>
+          </ul>
+          <hr>
+          <div class="logout">
+            <a href="../index.html">Sair da conta &rarr;</a>
+          </div>
+        </nav>
+      </div>
+    </header>
+
+    <!-- Card de Erro -->
+    <main class="error-card">
+      <div class="error-icon">⚠️</div>
+      <div class="error-code">Atenção / Falha na Ação</div>
+      <h2>Algo não saiu como esperado</h2>
+      <p id="errorDescription">Ocorreu uma instabilidade ou falha temporária ao processar esta ação. Verifique os dados e tente novamente.</p>
+
+      <div class="error-actions">
+        <a href="javascript:history.back()" class="btn">Tentar Novamente</a>
+        <a href="../inicial/index.html" class="btn btn-secondary">Voltar ao Início</a>
+      </div>
+    </main>
+  </div>
+
+  <!-- Scripts -->
+  <script src="../assets/js/config.js"></script>
+  <script src="../assets/js/storage.js"></script>
+  <script src="../assets/js/auth.js"></script>
+  <script src="../assets/js/ui.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const params = new URLSearchParams(window.location.search);
+      const msg = params.get('msg');
+      if (msg) {
+        document.getElementById('errorDescription').textContent = msg;
+      }
+    });
+  </script>
+</body>
+
+</html>
+

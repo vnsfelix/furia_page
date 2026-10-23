@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" href="./assets/img/logo-furia.png" type="image/png">
+  <title>FURIA - Cadastro de Usuário</title>
+
+  <!-- Google Fonts: Poppins -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <!-- Estilos Padronizados -->
+  <link rel="stylesheet" href="./assets/css/base.css">
+  <link rel="stylesheet" href="./assets/css/components.css">
+  <link rel="stylesheet" href="./assets/css/pages/auth.css">
+</head>
+
+<body>
+  <div class="auth-page">
+    <div class="auth-layout">
+      <!-- Marca FURIA -->
+      <header class="auth-brand">
+        <img class="brand-mark" src="./assets/img/logo-furia.png" alt="Logo FURIA">
+        <span>FURIA <span class="brand-divider">/</span> CENTRAL INTERNA</span>
+      </header>
+
+      <main class="auth-card">
+        <p class="auth-eyebrow">NOVO CADASTRO</p>
+        <h2>Criar sua conta</h2>
+        <p class="auth-description">Cadastre-se com seu e-mail para ter acesso aos chamados e serviços internos da FURIA.</p>
+
+        <!-- Formulário de Cadastro -->
+        <form id="cadastroForm" novalidate>
+          <div class="form-group">
+            <label for="name">Nome completo</label>
+            <input 
+              type="text" 
+              name="name" 
+              id="name" 
+              placeholder="Ex.: Gabriel Toledo" 
+              autocomplete="name" 
+              required
+            >
+          </div>
+
+          <div class="form-group">
+            <label for="email">E-mail corporativo / pessoal</label>
+            <input 
+              type="email" 
+              name="email" 
+              id="email" 
+              placeholder="seu-email@furia.gg" 
+              autocomplete="email" 
+              required
+            >
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label for="password">Senha</label>
+              <div class="input-password-wrapper">
+                <input 
+                  type="password" 
+                  name="password" 
+                  id="password" 
+                  placeholder="Mínimo 3 caracteres" 
+                  autocomplete="new-password" 
+                  required
+                >
+                <button type="button" class="toggle-password-btn" data-target="password" aria-label="Mostrar ou ocultar senha">👁️</button>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="confirmPassword">Confirmar senha</label>
+              <div class="input-password-wrapper">
+                <input 
+                  type="password" 
+                  name="confirmPassword" 
+                  id="confirmPassword" 
+                  placeholder="Repita sua senha" 
+                  autocomplete="new-password" 
+                  required
+                >
+                <button type="button" class="toggle-password-btn" data-target="confirmPassword" aria-label="Mostrar ou ocultar confirmação">👁️</button>
+              </div>
+            </div>
+          </div>
+
+          <button type="submit" class="btn auth-submit-btn">Criar Conta</button>
+        </form>
+
+        <!-- Mensagens de Alerta -->
+        <div id="cadastroMessage" class="alert alert-error" role="alert" aria-live="assertive"></div>
+
+        <div class="auth-divider">
+          <span>OU</span>
+        </div>
+
+        <!-- Botão Voltar para o Login -->
+        <a href="./index.html" class="btn-auth-switch" id="btnIrLogin">
+          <span>Já possui uma conta?</span>
+          <strong class="text-accent">Fazer login →</strong>
+        </a>
+
+        <p class="auth-footnote">Ao cadastrar-se, você concorda com as diretrizes e políticas de uso interno da FURIA Esports.</p>
+      </main>
+    </div>
+  </div>
+
+  <!-- Scripts do Sistema -->
+  <script src="./assets/js/config.js"></script>
+  <script src="./assets/js/storage.js"></script>
+  <script src="./assets/js/auth.js"></script>
+  <script src="./assets/js/ui.js"></script>
+  <script src="./assets/js/pages/cadastro.js"></script>
+</body>
+
+</html>
+

@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" href="../assets/img/logo-furia.png" type="image/png">
+  <title>Chamado Presencial - FURIA</title>
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <!-- Estilos Padronizados -->
+  <link rel="stylesheet" href="../assets/css/base.css">
+  <link rel="stylesheet" href="../assets/css/components.css">
+  <link rel="stylesheet" href="../assets/css/pages/forms.css">
+</head>
+
+<body>
+  <div class="container">
+    <!-- Header Global -->
+    <header class="app-header">
+      <a class="brand-link" href="../inicial/index.html" aria-label="FURIA - Início">
+        <img class="brand-mark" src="../assets/img/logo-furia.png" alt="FURIA Logo">
+        <span>FURIA</span>
+      </a>
+
+      <h1>Atendimento Presencial</h1>
+
+      <!-- Menu do Usuário -->
+      <div class="user-container">
+        <button class="user-icon" id="iconeUsuario" type="button" aria-label="Abrir menu do perfil" aria-expanded="false">
+          <img src="../assets/img/avatar.png" alt="Avatar do usuário">
+        </button>
+
+        <nav class="user-menu" id="menuUsuario" aria-label="Menu da conta">
+          <ul>
+            <li><a href="../inicial/index.html">🏠 Início</a></li>
+            <li><a href="../chamados/index.html">📋 Meus Chamados</a></li>
+            <li><a href="../conta/index.html">👤 Minha Conta</a></li>
+          </ul>
+          <hr>
+          <div class="logout">
+            <a href="../index.html">Sair da conta &rarr;</a>
+          </div>
+        </nav>
+      </div>
+    </header>
+
+    <!-- Botão de Voltar -->
+    <div class="nav-bar">
+      <a href="../inicial/index.html" class="btn-voltar">&larr; Voltar para a Tela Inicial</a>
+    </div>
+
+    <!-- Formulário de Atendimento Presencial -->
+    <main class="form-wrapper">
+      <div class="ticket-form-card">
+        <div class="form-header-intro">
+          <p class="eyebrow">SUPORTE PRESENCIAL</p>
+          <h2>Solicitar Visita Técnica no Local</h2>
+          <p>Informe o setor ou arena da FURIA e o serviço necessário para que nossa equipe técnica vá até o local.</p>
+        </div>
+
+        <form id="form-presencial" class="ticket-form" data-tipo-chamado="presencial" novalidate>
+          <div class="form-row">
+            <div class="form-group">
+              <label for="local">Local da ocorrência</label>
+              <select id="local" name="local" required>
+                <option value="" disabled selected>Selecione o local...</option>
+                <option value="recepcao">Recepção</option>
+                <option value="estudio">Estúdio / Arena FURIA</option>
+                <option value="escritorio-adm">Escritório Administrativo</option>
+                <option value="sala-reunioes">Sala de Reuniões</option>
+                <option value="refeitorio">Refeitório / Convivência</option>
+                <option value="deposito">Depósito / Almoxarifado</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label for="tipo-servico">Tipo de serviço</label>
+              <select id="tipo-servico" name="tipo-servico" required>
+                <option value="" disabled selected>Selecione o tipo...</option>
+                <option value="hardware">Suporte de Informática / Hardware</option>
+                <option value="redes">Rede / Cabeamento / Wi-Fi</option>
+                <option value="eletrica">Manutenção Elétrica</option>
+                <option value="limpeza">Limpeza / Organização Técnica</option>
+                <option value="estrutura">Infraestrutura / Reparo Geral</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="urgencia">Nível de urgência</label>
+            <select id="urgencia" name="urgencia" required>
+              <option value="baixa">Baixa (Pode aguardar agendamento)</option>
+              <option value="media" selected>Média (Atrapalha atividades da equipe)</option>
+              <option value="alta">Alta (Impede partidas, transmissão ou operação)</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label for="descricao">Descrição detalhada da necessidade</label>
+            <textarea id="descricao" name="descricao" rows="5" placeholder="Descreva o que precisa ser consertado, trocado ou instalado no ambiente..." required></textarea>
+          </div>
+
+          <button type="submit" class="btn">Solicitar Presença do Técnico</button>
+        </form>
+
+        <!-- Mensagem de Alerta -->
+        <div id="formMessage" class="alert alert-error" role="alert" aria-live="assertive"></div>
+      </div>
+    </main>
+  </div>
+
+  <!-- Scripts -->
+  <script src="../assets/js/config.js"></script>
+  <script src="../assets/js/storage.js"></script>
+  <script src="../assets/js/auth.js"></script>
+  <script src="../assets/js/ui.js"></script>
+  <script src="../assets/js/pages/formulario.js"></script>
+</body>
+
+</html>
+

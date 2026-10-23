@@ -1,112 +1,121 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="icon" href="../img/Subtract.png" type="image/png">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" href="../assets/img/logo-furia.png" type="image/png">
+  <title>Minha Conta - FURIA</title>
 
-    <title>Minha Conta | FURIA</title>
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 
-    <link rel="stylesheet" href="style.css">
-    <link rel="stylesheet" href="../css/theme.css">
-    <script src="../javascript/script.js" defer></script>
-    <script src="script.js" defer></script>
+  <!-- Estilos Padronizados -->
+  <link rel="stylesheet" href="../assets/css/base.css">
+  <link rel="stylesheet" href="../assets/css/components.css">
+  <link rel="stylesheet" href="../assets/css/pages/conta.css">
 </head>
 
 <body>
-    <div class="container">
+  <div class="container">
+    <!-- Header Global -->
+    <header class="app-header">
+      <a class="brand-link" href="../inicial/index.html" aria-label="FURIA - Início">
+        <img class="brand-mark" src="../assets/img/logo-furia.png" alt="FURIA Logo">
+        <span>FURIA</span>
+      </a>
 
-        <header class="header">
-            <a href="../inicial/inicial.html" class="logo brand-link" aria-label="FURIA - início">
-                <img class="brand-mark" src="../img/Subtract.png" alt="">
-                <span>FURIA</span>
-            </a>
+      <h1>Minha Conta</h1>
 
-            <h1>Minha Conta</h1>
+      <!-- Menu do Usuário -->
+      <div class="user-container">
+        <button class="user-icon" id="iconeUsuario" type="button" aria-label="Abrir menu do perfil" aria-expanded="false">
+          <img src="../assets/img/avatar.png" alt="Avatar do usuário">
+        </button>
 
-            <div class="user-container">
-                <button class="user-icon" id="iconeUsuario" type="button" aria-label="Abrir menu do perfil">
-                    <img src="../inicial/do-utilizador (2) 1.png" alt="">
-                </button>
-                <nav class="user-menu" id="menuUsuario" aria-label="Navegação da conta">
-                    <ul>
-                        <li><a href="../inicial/inicial.html">Início</a></li>
-                        <li><a href="../conta/index.html">Conta</a></li>
-                        <li><a href="../chamados/chamados.html">Chamados</a></li>
-                    </ul>
-                    <hr>
-                    <div class="logout"><a href="../index.html">Sair</a></div>
-                </nav>
-            </div>
-        </header>
-        <nav class="nav-bar" aria-label="Navegação">
-            <a href="../inicial/inicial.html" class="btn-voltar">← Voltar para o início</a>
+        <nav class="user-menu" id="menuUsuario" aria-label="Menu da conta">
+          <ul>
+            <li><a href="../inicial/index.html">🏠 Início</a></li>
+            <li><a href="../chamados/index.html">📋 Meus Chamados</a></li>
+            <li><a href="../conta/index.html">👤 Minha Conta</a></li>
+          </ul>
+          <hr>
+          <div class="logout">
+            <a href="../index.html">Sair da conta &rarr;</a>
+          </div>
         </nav>
+      </div>
+    </header>
 
-        <main class="perfil-container">
-
-            <section class="perfil-topo">
-                <div class="avatar" id="avatar">U</div>
-
-                <div class="perfil-identificacao">
-                    <h2 id="nomeExibido">Nome do usuário</h2>
-                    <p id="rmExibido">RM não informado</p>
-                    <span class="status">Minha conta</span>
-                </div>
-
-                <button id="editarBtn" class="btn btn-secundario"
-                        type="button">
-                    Editar perfil
-                </button>
-            </section>
-
-            <form id="perfilForm">
-
-                <section class="secao">
-                    <h3>Dados do usuário</h3>
-                    <p class="descricao">
-                        Consulte e atualize seu nome e RM.
-                    </p>
-
-                    <div class="form-grid">
-
-                        <div class="campo">
-                            <label for="nome">Nome completo</label>
-                            <input id="nome" name="nome"
-                                   type="text"
-                                   placeholder="Seu nome completo"
-                                   autocomplete="name"
-                                   required disabled>
-                        </div>
-
-                        <div class="campo">
-                            <label for="rm">RM / Identificação</label>
-                            <input id="rm" name="rm"
-                                   type="text"
-                                   placeholder="Seu RM"
-                                   autocomplete="off"
-                                   required disabled>
-                        </div>
-
-                    </div>
-                </section>
-
-                <div class="acoes" id="acoes" hidden>
-                    <button type="button" id="cancelarBtn"
-                            class="btn btn-cancelar">
-                        Cancelar
-                    </button>
-
-                    <button type="submit" class="btn btn-principal">
-                        Salvar alterações
-                    </button>
-                </div>
-
-                <p id="mensagem" class="mensagem"
-                   role="status" aria-live="polite"></p>
-
-            </form>
-        </main>
+    <!-- Botão de Voltar -->
+    <div class="nav-bar">
+      <a href="../inicial/index.html" class="btn-voltar">&larr; Voltar para a Tela Inicial</a>
     </div>
+
+    <!-- Conteúdo do Perfil -->
+    <main class="perfil-card">
+      <section class="perfil-topo">
+        <div class="avatar-large" id="avatar">U</div>
+
+        <div class="perfil-identificacao">
+          <h2 id="nomeExibido">Carregando...</h2>
+          <p id="emailExibido">email@furia.gg</p>
+          <span class="perfil-badge" id="cargoExibido">Funcionário</span>
+        </div>
+
+        <button id="editarBtn" class="btn btn-secondary" type="button">
+          ✏️ Editar perfil
+        </button>
+      </section>
+
+      <form id="perfilForm" novalidate>
+        <h3 class="perfil-section-title">Dados Pessoais & Cadastrais</h3>
+        <p class="perfil-section-desc">Mantenha seus dados atualizados para contato da equipe técnica.</p>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label for="nome">Nome completo</label>
+            <input id="nome" name="nome" type="text" placeholder="Seu nome completo" autocomplete="name" required disabled>
+          </div>
+
+          <div class="form-group">
+            <label for="email">E-mail corporativo / pessoal</label>
+            <input id="email" name="email" type="email" placeholder="seu-email@furia.gg" autocomplete="email" required disabled>
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label for="department">Departamento / Setor</label>
+            <input id="department" name="department" type="text" placeholder="Ex.: TI, Marketing, Arena" disabled>
+          </div>
+
+          <div class="form-group">
+            <label for="role">Perfil de Acesso</label>
+            <input id="role" name="role" type="text" disabled>
+          </div>
+        </div>
+
+        <!-- Ações de Edição -->
+        <div class="perfil-actions" id="acoes" hidden>
+          <button type="button" id="cancelarBtn" class="btn btn-secondary">Cancelar</button>
+          <button type="submit" class="btn">Salvar Alterações</button>
+        </div>
+
+        <!-- Alerta de Feedback -->
+        <div id="mensagem" class="alert" role="status" aria-live="polite"></div>
+      </form>
+    </main>
+  </div>
+
+  <!-- Scripts -->
+  <script src="../assets/js/config.js"></script>
+  <script src="../assets/js/storage.js"></script>
+  <script src="../assets/js/auth.js"></script>
+  <script src="../assets/js/ui.js"></script>
+  <script src="../assets/js/pages/conta.js"></script>
 </body>
+
 </html>

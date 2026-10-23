@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" href="../assets/img/logo-furia.png" type="image/png">
+  <title>Solicitação Enviada - FURIA</title>
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <!-- Estilos Padronizados -->
+  <link rel="stylesheet" href="../assets/css/base.css">
+  <link rel="stylesheet" href="../assets/css/components.css">
+
+  <style>
+    .success-card {
+      width: min(100%, 640px);
+      margin: 40px auto;
+      padding: 48px 32px;
+      text-align: center;
+      border: 1px solid var(--panel-border);
+      border-radius: var(--radius-panel);
+      background: var(--panel-background);
+      box-shadow: var(--shadow-lg);
+      backdrop-filter: blur(16px);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 18px;
+    }
+
+    .success-icon {
+      width: 80px;
+      height: 80px;
+      object-fit: contain;
+      filter: drop-shadow(0 0 16px rgba(16, 185, 129, 0.4));
+    }
+
+    .success-card h2 {
+      font-size: clamp(1.6rem, 4vw, 2.2rem);
+      font-weight: 700;
+      color: var(--text-primary);
+      margin: 0;
+    }
+
+    .ticket-id-tag {
+      display: inline-block;
+      padding: 6px 16px;
+      border-radius: var(--radius-full);
+      background: rgba(212, 255, 63, 0.15);
+      color: var(--accent);
+      border: 1px solid rgba(212, 255, 63, 0.3);
+      font-size: 0.95rem;
+      font-weight: 800;
+      letter-spacing: 1px;
+    }
+
+    .success-card p {
+      color: var(--text-muted);
+      font-size: 0.94rem;
+      max-width: 480px;
+      line-height: 1.6;
+      margin: 0;
+    }
+
+    .success-actions {
+      display: flex;
+      gap: 14px;
+      margin-top: 14px;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="container">
+    <!-- Header Global -->
+    <header class="app-header">
+      <a class="brand-link" href="../inicial/index.html" aria-label="FURIA - Início">
+        <img class="brand-mark" src="../assets/img/logo-furia.png" alt="FURIA Logo">
+        <span>FURIA</span>
+      </a>
+
+      <h1>Confirmação de Envio</h1>
+
+      <!-- Menu do Usuário -->
+      <div class="user-container">
+        <button class="user-icon" id="iconeUsuario" type="button" aria-label="Abrir menu do perfil" aria-expanded="false">
+          <img src="../assets/img/avatar.png" alt="Avatar do usuário">
+        </button>
+
+        <nav class="user-menu" id="menuUsuario" aria-label="Menu da conta">
+          <ul>
+            <li><a href="../inicial/index.html">🏠 Início</a></li>
+            <li><a href="../chamados/index.html">📋 Meus Chamados</a></li>
+            <li><a href="../conta/index.html">👤 Minha Conta</a></li>
+          </ul>
+          <hr>
+          <div class="logout">
+            <a href="../index.html">Sair da conta &rarr;</a>
+          </div>
+        </nav>
+      </div>
+    </header>
+
+    <!-- Card de Sucesso -->
+    <main class="success-card">
+      <img class="success-icon" src="../assets/img/verificado.png" alt="Ícone de sucesso">
+      <h2>Solicitação Enviada!</h2>
+      <div id="ticketBadge" class="ticket-id-tag">#CHAMADO REGISTRADO</div>
+      <p>Seus dados foram recebidos pela equipe técnica da FURIA. Você pode acompanhar as atualizações de status diretamente no painel de chamados.</p>
+
+      <div class="success-actions">
+        <a href="../chamados/index.html" class="btn">Acompanhar Meus Chamados</a>
+        <a href="../inicial/index.html" class="btn btn-secondary">Voltar ao Início</a>
+      </div>
+    </main>
+  </div>
+
+  <!-- Scripts -->
+  <script src="../assets/js/config.js"></script>
+  <script src="../assets/js/storage.js"></script>
+  <script src="../assets/js/auth.js"></script>
+  <script src="../assets/js/ui.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      if (!window.FuriaAuth.requireAuth()) return;
+      const params = new URLSearchParams(window.location.search);
+      const ticketId = params.get('id');
+      const badge = document.getElementById('ticketBadge');
+      if (ticketId && badge) {
+        badge.textContent = `#${ticketId}`;
+      }
+    });
+  </script>
+</body>
+
+</html>
+

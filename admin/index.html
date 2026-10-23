@@ -1,119 +1,215 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="icon" href="../img/Subtract.png" type="image/png">
+  <link rel="icon" href="../assets/img/logo-furia.png" type="image/png">
   <title>Painel Administrativo - FURIA</title>
-  <link rel="stylesheet" href="../css/theme.css">
-  <link rel="stylesheet" href="style.css">
+
+  <!-- Google Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-  <script src="../javascript/script.js" defer></script>
-  <script src="script.js" defer></script>
+
+  <!-- Estilos Padronizados -->
+  <link rel="stylesheet" href="../assets/css/base.css">
+  <link rel="stylesheet" href="../assets/css/components.css">
+  <link rel="stylesheet" href="../assets/css/pages/admin.css">
+
+  <style>
+    .admin-tag {
+      margin-left: 9px;
+      padding: 3px 8px;
+      border: 1px solid rgba(212, 255, 63, 0.4);
+      border-radius: 6px;
+      color: var(--accent);
+      font-size: 0.62rem;
+      font-weight: 800;
+      letter-spacing: 1px;
+      vertical-align: middle;
+    }
+
+    .admin-quick-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 10px 16px;
+      border: 1px solid var(--panel-border);
+      border-radius: var(--radius-control);
+      color: var(--text-secondary);
+      font-size: 0.84rem;
+      font-weight: 600;
+      text-decoration: none;
+      transition: all 0.2s ease;
+    }
+
+    .admin-quick-link:hover {
+      border-color: var(--accent);
+      color: var(--accent);
+    }
+  </style>
 </head>
+
 <body>
-  <div class="container admin-container">
-    <header class="header">
-      <a class="logo brand-link" href="index.html" aria-label="FURIA Admin - início">
-        <img class="brand-mark" src="../img/Subtract.png" alt="">
-        <span>FURIA</span><span class="admin-tag">ADMIN</span>
+  <div class="container">
+    <!-- Header Global Admin -->
+    <header class="app-header">
+      <a class="brand-link" href="index.html" aria-label="FURIA Admin - Início">
+        <img class="brand-mark" src="../assets/img/logo-furia.png" alt="FURIA Logo">
+        <span>FURIA</span>
+        <span class="admin-tag">ADMIN</span>
       </a>
-      <h1>Painel administrativo</h1>
+
+      <h1>Painel Administrativo</h1>
+
+      <!-- Menu do Usuário -->
       <div class="user-container">
         <button class="user-icon" id="iconeUsuario" type="button" aria-label="Abrir menu do perfil" aria-expanded="false">
-          <img src="../inicial/do-utilizador (2) 1.png" alt="">
+          <img src="../assets/img/avatar.png" alt="Avatar do usuário">
         </button>
-        <nav class="user-menu" id="menuUsuario" aria-label="Navegação da conta">
+
+        <nav class="user-menu" id="menuUsuario" aria-label="Menu da conta">
           <ul>
-            <li><a href="index.html">Painel administrativo</a></li>
-            <li><a href="../inicial/inicial.html">Área do funcionário</a></li>
-            <li><a href="../conta/index.html">Minha conta</a></li>
-            <li><a href="../chamados/chamados.html">Meus chamados</a></li>
+            <li><a href="index.html">👑 Painel Admin</a></li>
+            <li><a href="../inicial/index.html">🏠 Área do Funcionário</a></li>
+            <li><a href="../chamados/index.html">📋 Meus Chamados</a></li>
+            <li><a href="../conta/index.html">👤 Minha Conta</a></li>
           </ul>
           <hr>
-          <div class="logout"><a href="../index.html">Sair</a></div>
+          <div class="logout">
+            <a href="../index.html">Sair da conta &rarr;</a>
+          </div>
         </nav>
       </div>
     </header>
 
-    <main class="admin-main">
+    <main>
+      <!-- Boas-Vindas e Ação Rápida -->
       <section class="admin-welcome">
         <div>
-          <p class="eyebrow">CENTRAL DE CONTROLE</p>
+          <p class="eyebrow text-accent">CENTRAL DE CONTROLE OPERACIONAL</p>
           <h2>Olá, <span id="adminName">Administrador</span></h2>
-          <p>Acompanhe as solicitações e gerencie os acessos da equipe.</p>
+          <p class="text-muted">Acompanhe todos os chamados abertos e controle os acessos dos membros da equipe.</p>
         </div>
-        <a class="admin-quick-link" href="../inicial/inicial.html">Abrir área do funcionário <span aria-hidden="true">↗</span></a>
+        <a class="admin-quick-link" href="../inicial/index.html">Área do Funcionário <span aria-hidden="true">↗</span></a>
       </section>
 
+      <!-- Indicadores / Métricas do Sistema -->
       <section class="admin-stats" aria-label="Resumo">
         <article class="stat-card">
-          <span class="stat-icon" aria-hidden="true">▤</span>
-          <div><p>Solicitações</p><strong id="totalRequests">0</strong></div>
+          <span class="stat-icon" aria-hidden="true">📊</span>
+          <div>
+            <p>Total de Chamados</p>
+            <strong id="totalRequests">0</strong>
+          </div>
         </article>
+
         <article class="stat-card">
-          <span class="stat-icon pending" aria-hidden="true">◷</span>
-          <div><p>Em andamento</p><strong id="openRequests">0</strong></div>
+          <span class="stat-icon pending" aria-hidden="true">⏳</span>
+          <div>
+            <p>Em Aberto / Andamento</p>
+            <strong id="openRequests">0</strong>
+          </div>
         </article>
+
         <article class="stat-card">
-          <span class="stat-icon team" aria-hidden="true">♙</span>
-          <div><p>Usuários cadastrados</p><strong id="totalUsers">0</strong></div>
+          <span class="stat-icon team" aria-hidden="true">👥</span>
+          <div>
+            <p>Membros Cadastrados</p>
+            <strong id="totalUsers">0</strong>
+          </div>
         </article>
       </section>
 
-      <section class="admin-panel requests-panel">
+      <!-- Painel de Gerenciamento de Chamados -->
+      <section class="admin-panel">
         <div class="section-heading">
           <div>
-            <p class="eyebrow">OPERAÇÃO</p>
-            <h2>Solicitações recentes</h2>
+            <p class="eyebrow text-accent">GESTÃO DE TICKETS</p>
+            <h2>Solicitações Recentes</h2>
           </div>
-          <label class="search-field">
-            <span class="sr-only">Buscar solicitações</span>
-            <input id="requestSearch" type="search" placeholder="Buscar solicitação...">
-          </label>
+
+          <div class="search-field">
+            <input id="requestSearch" type="search" placeholder="🔍 Buscar por título, autor, id...">
+          </div>
         </div>
-        <p id="adminMessage" class="admin-message" role="status" aria-live="polite"></p>
+
+        <div id="adminMessage" class="alert alert-success" role="status" aria-live="polite"></div>
+
         <div class="table-scroll">
           <table>
             <thead>
               <tr>
                 <th>Solicitação</th>
+                <th>Solicitante</th>
                 <th>Detalhes</th>
                 <th>Data</th>
                 <th>Status</th>
+                <th>Ações</th>
               </tr>
             </thead>
-            <tbody id="requestsList"></tbody>
+            <tbody id="requestsList">
+              <!-- Renderizado dinamicamente via JS -->
+            </tbody>
           </table>
         </div>
       </section>
 
-      <section class="admin-panel users-panel">
+      <!-- Painel de Gestão de Usuários da Equipe -->
+      <section class="admin-panel">
         <div class="section-heading">
           <div>
-            <p class="eyebrow">ACESSOS</p>
-            <h2>Usuários da equipe</h2>
+            <p class="eyebrow text-accent">CONTROLE DE ACESSOS</p>
+            <h2>Usuários da Equipe FURIA</h2>
           </div>
         </div>
-        <form id="userForm" class="user-form">
-          <label>Nome completo<input name="name" type="text" placeholder="Ex.: Ana Silva" required></label>
-          <label>RM / Identificação<input name="rm" type="text" placeholder="Ex.: 12345" required></label>
-          <label>Perfil
-            <select name="role" required>
+
+        <!-- Formulário para cadastrar novo usuário -->
+        <form id="userForm" class="user-form" novalidate>
+          <div>
+            <label for="newUserName">Nome completo</label>
+            <input id="newUserName" name="name" type="text" placeholder="Ex.: Ana Silva" required>
+          </div>
+
+          <div>
+            <label for="newUserEmail">E-mail</label>
+            <input id="newUserEmail" name="email" type="email" placeholder="ana.silva@furia.gg" required>
+          </div>
+
+          <div>
+            <label for="newUserDept">Setor</label>
+            <input id="newUserDept" name="department" type="text" placeholder="TI / Arena" required>
+          </div>
+
+          <div>
+            <label for="newUserRole">Perfil</label>
+            <select id="newUserRole" name="role" required>
               <option value="funcionario">Funcionário</option>
+              <option value="tecnico">Técnico de Suporte</option>
               <option value="admin">Administrador</option>
             </select>
-          </label>
-          <button class="btn" type="submit">Adicionar usuário</button>
+          </div>
+
+          <button class="btn" type="submit">+ Adicionar</button>
         </form>
-        <p id="userMessage" class="admin-message" role="status" aria-live="polite"></p>
-        <div class="user-list-wrap">
-          <ul id="usersList" class="users-list" aria-label="Usuários cadastrados"></ul>
-        </div>
+
+        <div id="userMessage" class="alert alert-success" role="status" aria-live="polite"></div>
+
+        <!-- Lista de Usuários -->
+        <ul id="usersList" class="users-list" aria-label="Usuários cadastrados">
+          <!-- Renderizado dinamicamente via JS -->
+        </ul>
       </section>
     </main>
   </div>
+
+  <!-- Scripts -->
+  <script src="../assets/js/config.js"></script>
+  <script src="../assets/js/storage.js"></script>
+  <script src="../assets/js/auth.js"></script>
+  <script src="../assets/js/ui.js"></script>
+  <script src="../assets/js/pages/admin.js"></script>
 </body>
+
 </html>

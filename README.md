@@ -1,6 +1,6 @@
 # FURIA Helpdesk & Central de Atendimento
 
-Sistema interno corporativo da FURIA Esports para suporte técnico, chamados presenciais na arena e gestão de acessos.
+Sistema interno corporativo da FURIA para suporte técnico, chamados presenciais e gestão de acessos.
 
 ---
 
@@ -10,11 +10,10 @@ Sistema interno corporativo da FURIA Esports para suporte técnico, chamados pre
 Abra o arquivo [`index.html`](file:///c:/Users/Felix/Documents/PROJETOS/furia_page/index.html) no navegador ou com a extensão **Live Server** do VS Code. O sistema já vem com armazenamento local ativo e contas demonstrativas prontas!
 
 ### Opção 2: Rodar com o Servidor Node.js
-```bash
 cd backend
 npm install
 npm start
-```
+ 
 Acesse: [http://localhost:3000](http://localhost:3000)
 
 ---
@@ -27,4 +26,4 @@ Acesse: [http://localhost:3000](http://localhost:3000)
 
 ## Documentação Detalhada
 Para ver a explicação detalhada de cada pasta, das correções de segurança, da arquitetura e de **como implementar o seu banco de dados (DB)**, consulte:
-👉 [DOCUMENTACAO.md](file:///c:/Users/Felix/Documents/PROJETOS/furia_page/DOCUMENTACAO.md)
+ [DOCUMENTACAO.md](file:///c:/Users/Felix/Documents/PROJETOS/furia_page/DOCUMENTACAO.md)

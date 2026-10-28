@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="pt-BR">
 
@@ -15,60 +16,7 @@
   <!-- Estilos Padronizados -->
   <link rel="stylesheet" href="../assets/css/base.css">
   <link rel="stylesheet" href="../assets/css/components.css">
-
-  <style>
-    .error-card {
-      width: min(100%, 600px);
-      margin: 40px auto;
-      padding: 48px 32px;
-      text-align: center;
-      border: 1px solid var(--danger-border);
-      border-radius: var(--radius-panel);
-      background: var(--panel-background);
-      box-shadow: var(--shadow-lg);
-      backdrop-filter: blur(16px);
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 16px;
-    }
-
-    .error-icon {
-      font-size: 3.5rem;
-      margin-bottom: -6px;
-    }
-
-    .error-code {
-      font-size: 0.8rem;
-      font-weight: 800;
-      letter-spacing: 0.15em;
-      color: var(--danger);
-      text-transform: uppercase;
-    }
-
-    .error-card h2 {
-      font-size: clamp(1.5rem, 4vw, 2rem);
-      font-weight: 700;
-      color: var(--text-primary);
-      margin: 0;
-    }
-
-    .error-card p {
-      color: var(--text-muted);
-      font-size: 0.92rem;
-      max-width: 440px;
-      line-height: 1.6;
-      margin: 0;
-    }
-
-    .error-actions {
-      display: flex;
-      gap: 14px;
-      margin-top: 14px;
-      flex-wrap: wrap;
-      justify-content: center;
-    }
-  </style>
+  <link rel="stylesheet" href="../assets/css/pages/errado.css">
 </head>
 
 <body>
@@ -117,19 +65,8 @@
   </div>
 
   <!-- Scripts -->
-  <script src="../assets/js/config.js"></script>
-  <script src="../assets/js/storage.js"></script>
-  <script src="../assets/js/auth.js"></script>
-  <script src="../assets/js/ui.js"></script>
-  <script>
-    document.addEventListener('DOMContentLoaded', () => {
-      const params = new URLSearchParams(window.location.search);
-      const msg = params.get('msg');
-      if (msg) {
-        document.getElementById('errorDescription').textContent = msg;
-      }
-    });
-  </script>
+  <script src="../assets/js/app.js"></script>
+  <script src="../assets/js/pages/errado.js"></script>
 </body>
 
 </html>

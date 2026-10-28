@@ -1,5 +1,6 @@
 /* ==========================================================================
-   FURIA HELPDESK - AUTH PAGES (LOGIN & CADASTRO)
+   FURIA HELPDESK - PÁGINA DE LOGIN
+   Arquivo: assets/css/pages/login.css
    ========================================================================== */
 
 .auth-page {
@@ -67,14 +68,6 @@
   color: var(--text-primary);
 }
 
-.auth-description {
-  margin: 0 0 24px;
-  color: var(--text-muted);
-  font-size: 0.88rem;
-  line-height: 1.5;
-}
-
-/* Auth Actions Links */
 .auth-sub-actions {
   display: flex;
   justify-content: space-between;
@@ -110,7 +103,6 @@
   text-decoration: underline;
 }
 
-/* Submit Button in Auth */
 .auth-submit-btn {
   width: 100%;
   min-height: 48px;
@@ -118,7 +110,6 @@
   margin-top: 8px;
 }
 
-/* Divisor e Alternador entre Login e Cadastro */
 .auth-divider {
   display: flex;
   align-items: center;
@@ -171,20 +162,9 @@
   line-height: 1.5;
 }
 
-/* Campo duplo (grid de 2 colunas para campos compactos) */
-.form-row {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 14px;
-}
-
 @media (max-width: 500px) {
   .auth-card {
     padding: 26px 20px;
-  }
-  .form-row {
-    grid-template-columns: 1fr;
-    gap: 0;
   }
 }
 

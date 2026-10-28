@@ -1,0 +1,58 @@
+/* ==========================================================================
+   FURIA HELPDESK - PÁGINA DE ERRO / AVISO DO SISTEMA
+   Arquivo: assets/css/pages/errado.css
+   ========================================================================== */
+
+.error-card {
+  width: min(100%, 600px);
+  margin: 40px auto;
+  padding: 48px 32px;
+  text-align: center;
+  border: 1px solid var(--danger-border);
+  border-radius: var(--radius-panel);
+  background: var(--panel-background);
+  box-shadow: var(--shadow-lg);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+}
+
+.error-icon {
+  font-size: 3.5rem;
+  margin-bottom: -6px;
+}
+
+.error-code {
+  font-size: 0.8rem;
+  font-weight: 800;
+  letter-spacing: 0.15em;
+  color: var(--danger);
+  text-transform: uppercase;
+}
+
+.error-card h2 {
+  font-size: clamp(1.5rem, 4vw, 2rem);
+  font-weight: 700;
+  color: var(--text-primary);
+  margin: 0;
+}
+
+.error-card p {
+  color: var(--text-muted);
+  font-size: 0.92rem;
+  max-width: 440px;
+  line-height: 1.6;
+  margin: 0;
+}
+
+.error-actions {
+  display: flex;
+  gap: 14px;
+  margin-top: 14px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+

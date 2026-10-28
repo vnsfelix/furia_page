@@ -409,14 +409,23 @@ textarea {
   border: none;
   color: var(--text-muted);
   cursor: pointer;
-  padding: 4px;
-  font-size: 1.1rem;
-  line-height: 1;
-  transition: color 0.2s ease;
+  padding: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 6px;
+  transition: color 0.2s ease, transform 0.15s ease;
 }
 
 .toggle-password-btn:hover {
-  color: var(--text-primary);
+  color: var(--accent);
+  transform: scale(1.08);
+}
+
+.toggle-password-btn .eye-icon {
+  width: 20px;
+  height: 20px;
+  display: block;
 }
 
 /* ==========================================================================

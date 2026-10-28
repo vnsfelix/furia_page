@@ -24,15 +24,21 @@ document.addEventListener('DOMContentLoaded', () => {
 
   let originalData = {};
 
-  function loadUserData() {
+  async function loadUserData() {
     const user = window.FuriaAuth.getCurrentUser();
     if (!user) return;
 
-    // Busca dados completos do usuário no banco
-    const fullUser = window.FuriaDB.getUserById(user.id) || user;
+    // Busca dados completos do usuário no banco SQLite
+    let fullUser = user;
+    try {
+      const fetched = await window.FuriaDB.getUserById(user.id);
+      if (fetched) fullUser = fetched;
+    } catch {
+      // usa dados da sessão
+    }
 
     originalData = {
-      name: fullUser.name || '',
+      name: fullUser.name || fullUser.nome || '',
       email: fullUser.email || '',
       department: fullUser.department || 'Geral',
       role: fullUser.role || 'funcionario'
@@ -78,7 +84,7 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   if (form) {
-    form.addEventListener('submit', (e) => {
+    form.addEventListener('submit', async (e) => {
       e.preventDefault();
 
       const newName = nomeInput ? nomeInput.value.trim() : '';
@@ -90,14 +96,14 @@ document.addEventListener('DOMContentLoaded', () => {
       }
 
       try {
-        window.FuriaAuth.updateProfile({
+        await window.FuriaAuth.updateProfile({
           name: newName,
           department: newDepartment
         });
 
-        loadUserData();
+        await loadUserData();
         setEditMode(false);
-        window.FuriaUI.setMessage(messageEl, 'Alterações salvas com sucesso.', false);
+        window.FuriaUI.setMessage(messageEl, 'Alterações salvas com sucesso no banco de dados.', false);
 
         // Atualiza cabeçalho do menu
         window.FuriaUI.initUserMenu();

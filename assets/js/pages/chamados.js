@@ -12,30 +12,31 @@ document.addEventListener('DOMContentLoaded', () => {
 
   let currentFilter = 'todos';
 
-  function renderTickets() {
+  async function renderTickets() {
     if (!listContainer) return;
 
-    // Busca chamados do usuário logado (se for admin, permite ver todos se desejar)
-    const filterOptions = currentUser.role === 'admin' ? {} : { userId: currentUser.id };
-    let tickets = window.FuriaDB.getTickets(filterOptions);
+    try {
+      // Busca chamados do usuário logado diretamente do banco SQLite
+      const filterOptions = currentUser.role === 'admin' ? {} : { userId: currentUser.id };
+      let tickets = await window.FuriaDB.getTickets(filterOptions);
 
-    // Aplica filtro de status se não for "todos"
-    if (currentFilter !== 'todos') {
-      tickets = tickets.filter(t => t.status.toLowerCase() === currentFilter.toLowerCase());
-    }
+      // Aplica filtro de status se não for "todos"
+      if (currentFilter !== 'todos') {
+        tickets = tickets.filter(t => (t.status || '').toLowerCase() === currentFilter.toLowerCase());
+      }
 
-    listContainer.replaceChildren();
+      listContainer.replaceChildren();
 
-    if (!tickets.length) {
-      const emptyDiv = document.createElement('div');
-      emptyDiv.className = 'chamados-empty';
-      emptyDiv.innerHTML = `
-        <p>Nenhuma solicitação encontrada ${currentFilter !== 'todos' ? 'com status "' + currentFilter + '"' : 'no seu histórico'}.</p>
-        <a href="../inicial/index.html" class="btn btn-secondary">Abrir Nova Solicitação</a>
-      `;
-      listContainer.append(emptyDiv);
-      return;
-    }
+      if (!tickets.length) {
+        const emptyDiv = document.createElement('div');
+        emptyDiv.className = 'chamados-empty';
+        emptyDiv.innerHTML = `
+          <p>Nenhuma solicitação encontrada ${currentFilter !== 'todos' ? 'com status "' + currentFilter + '"' : 'no seu histórico'}.</p>
+          <a href="../inicial/index.html" class="btn btn-secondary">Abrir Nova Solicitação</a>
+        `;
+        listContainer.append(emptyDiv);
+        return;
+      }
 
     tickets.forEach((ticket) => {
       const card = document.createElement('article');
@@ -97,6 +98,13 @@ document.addEventListener('DOMContentLoaded', () => {
       card.append(header, title, desc, footer);
       listContainer.append(card);
     });
+    } catch (error) {
+      listContainer.replaceChildren();
+      const errDiv = document.createElement('div');
+      errDiv.className = 'chamados-empty';
+      errDiv.innerHTML = `<p style="color: #ff5555;">Erro ao carregar chamados do banco: ${window.FuriaUI.escapeHTML(error.message)}</p>`;
+      listContainer.append(errDiv);
+    }
   }
 
   // Filtros de status

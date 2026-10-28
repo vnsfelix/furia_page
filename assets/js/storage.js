@@ -1,215 +1,162 @@
 /**
- * FURIA Helpdesk - Camada de Dados e Armazenamento Híbrido
- * Suporta modo API REST (quando o servidor backend está online)
- * e modo LocalStorage (quando rodando estático ou offline).
+ * FURIA Helpdesk - Camada de Integração com o Banco de Dados SQLite (Backend API)
+ *
+ * Todos os dados (usuários, senhas criptografadas, chamados) são gravados
+ * EXCLUSIVAMENTE no banco SQLite (backend/database.sqlite).
+ * Nenhum dado sensível de tabela de usuários ou histórico de chamados fica
+ * no LocalStorage do navegador, protegendo contra inspeção via Console/DevTools.
  */
 
 (function () {
-  const { STORAGE_KEYS, API_BASE_URL, ROLES, TICKET_STATUS } = window.FURIA_CONFIG;
+  const { STORAGE_KEYS, API_BASE_URL } = window.FURIA_CONFIG;
 
-  // Apenas o Administrador de teste
-  const INITIAL_USERS = [
-    {
-      id: 'usr_admin',
-      name: 'Administrador FURIA',
-      email: 'admin@furia.gg',
-      password: 'admin',
-      role: ROLES.ADMIN,
-      department: 'Tecnologia & Operações',
-      createdAt: new Date().toISOString()
-    }
-  ];
-
-  // Chamados iniciam 100% limpos para seu novo banco
-  const INITIAL_TICKETS = [];
-
-  // Inicializa o banco local garantindo que apenas o admin exista inicialmente
-  function initLocalStorageDB() {
-    let users = [];
-    try {
-      const data = localStorage.getItem(STORAGE_KEYS.USERS);
-      users = data ? JSON.parse(data) : [];
-      if (!Array.isArray(users)) users = [];
-    } catch {
-      users = [];
-    }
-
-    // Remove usuários de teste antigos para manter apenas o Admin
-    users = users.filter((u) => u.email && u.email.toLowerCase() !== 'usuario@furia.gg');
-
-    // Garante que o Administrador de teste sempre exista
-    INITIAL_USERS.forEach((initUser) => {
-      const index = users.findIndex((u) => u.email && u.email.toLowerCase() === initUser.email.toLowerCase());
-      if (index === -1) {
-        users.push(initUser);
-      } else {
-        users[index].password = initUser.password;
-        users[index].role = initUser.role;
-      }
-    });
-
-    localStorage.setItem(STORAGE_KEYS.USERS, JSON.stringify(users));
-
-    // Remove chamados antigos de teste deixando a lista limpa
-    try {
-      let tickets = JSON.parse(localStorage.getItem(STORAGE_KEYS.TICKETS) || '[]');
-      tickets = tickets.filter((t) => t.id !== 'TK-1001' && t.id !== 'TK-1002');
-      localStorage.setItem(STORAGE_KEYS.TICKETS, JSON.stringify(tickets));
-    } catch {
-      localStorage.setItem(STORAGE_KEYS.TICKETS, '[]');
-    }
+  // Limpeza imediata de qualquer resíduo legado do LocalStorage
+  try {
+    localStorage.removeItem('furia_users');
+    localStorage.removeItem('furia_users_db');
+    localStorage.removeItem('furia_tickets');
+    localStorage.removeItem('furia_tickets_db');
+  } catch (e) {
+    // ignora em caso de bloqueio de storage
   }
 
-  initLocalStorageDB();
+  // Helper central para requisições à API
+  async function apiRequest(endpoint, options = {}) {
+    const url = `${API_BASE_URL}${endpoint}`;
+    const headers = {
+      'Content-Type': 'application/json',
+      ...(options.headers || {})
+    };
 
-  // Função global para você zerar tudo a qualquer momento pelo Console do navegador
-  window.resetarBancoFURIA = function () {
-    localStorage.clear();
-    sessionStorage.clear();
-    initLocalStorageDB();
-    console.log('Todos os dados foram resetados! Apenas o Admin permanece ativo.');
-    window.location.reload();
-  };
-
-  // Helper para verificar se a API Express está online
-  let isApiOnline = null;
-  async function checkApiOnline() {
-    if (isApiOnline !== null) return isApiOnline;
-    try {
-      const res = await fetch(`${API_BASE_URL}/health`, { method: 'GET', signal: AbortSignal.timeout(1200) });
-      isApiOnline = res.ok;
-    } catch {
-      isApiOnline = false;
+    const token = localStorage.getItem(STORAGE_KEYS.AUTH_TOKEN) || sessionStorage.getItem(STORAGE_KEYS.AUTH_TOKEN);
+    if (token) {
+      headers['Authorization'] = `Bearer ${token}`;
+      headers['x-user-id'] = token;
     }
-    return isApiOnline;
+
+    let response;
+    try {
+      response = await fetch(url, {
+        ...options,
+        headers
+      });
+    } catch (networkError) {
+      throw new Error(
+        'Não foi possível conectar ao servidor backend (http://localhost:3000). ' +
+        'Inicie o servidor com "npm start" na pasta backend para salvar no SQLite.'
+      );
+    }
+
+    let data = null;
+    try {
+      data = await response.json();
+    } catch {
+      data = null;
+    }
+
+    if (!response.ok) {
+      const errorMsg = (data && (data.error || data.message)) || `Erro na comunicação com o servidor (${response.status})`;
+      throw new Error(errorMsg);
+    }
+
+    return data;
   }
 
   const FuriaDB = {
-    // --- USUÁRIOS ---
-    getUsers() {
+    // Acesso direto à API para chamadas especiais (como login e registro)
+    rawRequest: apiRequest,
+
+    // --- USUÁRIOS (Tabela users no SQLite) ---
+    async getUsers() {
+      const users = await apiRequest('/users', { method: 'GET' });
+      return Array.isArray(users) ? users : [];
+    },
+
+    async getUserById(id) {
+      if (!id) return null;
       try {
-        const data = localStorage.getItem(STORAGE_KEYS.USERS);
-        return data ? JSON.parse(data) : [];
+        return await apiRequest(`/users/${encodeURIComponent(id)}`, { method: 'GET' });
       } catch {
-        return [];
+        return null;
       }
     },
 
-    getUserByEmail(email) {
-      if (!email) return null;
-      const cleanEmail = email.trim().toLowerCase();
-      const users = this.getUsers();
-      return users.find(u => u.email.toLowerCase() === cleanEmail) || null;
+    async createUser(userData) {
+      const res = await apiRequest('/users', {
+        method: 'POST',
+        body: JSON.stringify(userData)
+      });
+      return res.user || res;
     },
 
-    getUserById(id) {
-      const users = this.getUsers();
-      return users.find(u => u.id === id) || null;
+    async updateUser(id, updates) {
+      const res = await apiRequest(`/users/${encodeURIComponent(id)}`, {
+        method: 'PUT',
+        body: JSON.stringify(updates)
+      });
+      return res.user || res;
     },
 
-    createUser(userData) {
-      const users = this.getUsers();
-      const cleanEmail = userData.email.trim().toLowerCase();
-
-      if (users.some(u => u.email.toLowerCase() === cleanEmail)) {
-        throw new Error('Este e-mail já está cadastrado no sistema.');
-      }
-
-      const newUser = {
-        id: `usr_${Date.now()}_${Math.random().toString(36).substring(2, 6)}`,
-        name: userData.name.trim(),
-        email: cleanEmail,
-        password: userData.password,
-        role: userData.role || ROLES.FUNCIONARIO,
-        department: userData.department || 'Geral',
-        createdAt: new Date().toISOString()
-      };
-
-      users.push(newUser);
-      localStorage.setItem(STORAGE_KEYS.USERS, JSON.stringify(users));
-      return newUser;
-    },
-
-    updateUser(id, updates) {
-      const users = this.getUsers();
-      const index = users.findIndex(u => u.id === id);
-      if (index === -1) throw new Error('Usuário não encontrado.');
-
-      users[index] = { ...users[index], ...updates };
-      localStorage.setItem(STORAGE_KEYS.USERS, JSON.stringify(users));
-      return users[index];
-    },
-
-    deleteUser(id) {
-      let users = this.getUsers();
-      users = users.filter(u => u.id !== id);
-      localStorage.setItem(STORAGE_KEYS.USERS, JSON.stringify(users));
+    async deleteUser(id) {
+      await apiRequest(`/users/${encodeURIComponent(id)}`, {
+        method: 'DELETE'
+      });
       return true;
     },
 
-    // --- TICKETS / CHAMADOS ---
-    getTickets(filter = {}) {
+    // --- TICKETS / CHAMADOS (Tabela tickets no SQLite) ---
+    async getTickets(filter = {}) {
+      let endpoint = '/tickets';
+      if (filter.userId) {
+        endpoint = `/tickets/user/${encodeURIComponent(filter.userId)}`;
+      } else if (filter.status) {
+        endpoint = `/tickets?status=${encodeURIComponent(filter.status)}`;
+      }
+
+      const tickets = await apiRequest(endpoint, { method: 'GET' });
+      return Array.isArray(tickets) ? tickets : [];
+    },
+
+    async getTicketById(id) {
+      if (!id) return null;
       try {
-        let tickets = JSON.parse(localStorage.getItem(STORAGE_KEYS.TICKETS) || '[]');
-        if (filter.userId) {
-          tickets = tickets.filter(t => t.userId === filter.userId);
-        }
-        if (filter.status) {
-          tickets = tickets.filter(t => t.status === filter.status);
-        }
-        return tickets;
+        return await apiRequest(`/tickets/${encodeURIComponent(id)}`, { method: 'GET' });
       } catch {
-        return [];
+        return null;
       }
     },
 
-    getTicketById(id) {
-      const tickets = this.getTickets();
-      return tickets.find(t => t.id === id) || null;
+    async createTicket(ticketData) {
+      const res = await apiRequest('/tickets', {
+        method: 'POST',
+        body: JSON.stringify(ticketData)
+      });
+      return res.ticket || res;
     },
 
-    createTicket(ticketData) {
-      const tickets = this.getTickets();
-      const newTicket = {
-        id: `TK-${Math.floor(1000 + Math.random() * 9000)}`,
-        userId: ticketData.userId,
-        userName: ticketData.userName,
-        userEmail: ticketData.userEmail,
-        tipo: ticketData.tipo || 'problemas',
-        titulo: ticketData.titulo || 'Solicitação de suporte',
-        categoria: ticketData.categoria || 'Geral',
-        local: ticketData.local || '',
-        tiposervico: ticketData.tiposervico || '',
-        descricao: ticketData.descricao || '',
-        urgencia: ticketData.urgencia || 'media',
-        anexo: ticketData.anexo || null,
-        status: TICKET_STATUS.RECEBIDO,
-        data: new Date().toISOString()
-      };
-
-      tickets.unshift(newTicket);
-      localStorage.setItem(STORAGE_KEYS.TICKETS, JSON.stringify(tickets));
-      return newTicket;
+    async updateTicketStatus(ticketId, newStatus) {
+      const res = await apiRequest(`/tickets/${encodeURIComponent(ticketId)}/status`, {
+        method: 'PUT',
+        body: JSON.stringify({ status: newStatus })
+      });
+      return res.ticket || res;
     },
 
-    updateTicketStatus(ticketId, newStatus) {
-      const tickets = this.getTickets();
-      const ticket = tickets.find(t => t.id === ticketId);
-      if (!ticket) throw new Error('Chamado não encontrado.');
-
-      ticket.status = newStatus;
-      localStorage.setItem(STORAGE_KEYS.TICKETS, JSON.stringify(tickets));
-      return ticket;
-    },
-
-    deleteTicket(ticketId) {
-      let tickets = this.getTickets();
-      tickets = tickets.filter(t => t.id !== ticketId);
-      localStorage.setItem(STORAGE_KEYS.TICKETS, JSON.stringify(tickets));
+    async deleteTicket(ticketId) {
+      await apiRequest(`/tickets/${encodeURIComponent(ticketId)}`, {
+        method: 'DELETE'
+      });
       return true;
     }
+  };
+
+  // Função para limpar dados locais de sessão pelo console
+  window.resetarBancoFURIA = function () {
+    localStorage.clear();
+    sessionStorage.clear();
+    console.log('Sessão limpa! Os usuários e chamados permanecem seguros no banco SQLite (backend/database.sqlite).');
+    window.location.reload();
   };
 
   window.FuriaDB = FuriaDB;
 })();
-

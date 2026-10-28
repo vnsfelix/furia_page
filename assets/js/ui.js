@@ -106,21 +106,29 @@
       }
     },
 
+    // Ícones SVG nítidos e padronizados
+    eyeOpenIcon: '<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="eye-icon"><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"/><circle cx="12" cy="12" r="3"/></svg>',
+    eyeClosedIcon: '<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="eye-icon"><path d="M9.88 9.88a3 3 0 1 0 4.24 4.24"/><path d="M10.73 5.08A10.43 10.43 0 0 1 12 5c7 0 10 7 10 7a13.16 13.16 0 0 1-1.67 2.68"/><path d="M6.61 6.61A13.526 13.526 0 0 0 2 12s3 7 10 7a9.74 9.74 0 0 0 5.39-1.61"/><line x1="2" y1="2" x2="22" y2="22"/></svg>',
+
     // Inicializa botões de alternar visualização de senha
     initPasswordToggles() {
       document.querySelectorAll('.toggle-password-btn').forEach((btn) => {
-        btn.addEventListener('click', () => {
-          const targetId = btn.dataset.target;
-          const input = document.getElementById(targetId);
-          if (!input) return;
+        const targetId = btn.dataset.target;
+        const input = document.getElementById(targetId);
+        if (!input) return;
 
+        // Estado inicial
+        btn.innerHTML = input.type === 'password' ? this.eyeOpenIcon : this.eyeClosedIcon;
+        btn.setAttribute('aria-label', input.type === 'password' ? 'Mostrar senha' : 'Ocultar senha');
+
+        btn.addEventListener('click', () => {
           if (input.type === 'password') {
             input.type = 'text';
-            btn.textContent = '🙈';
+            btn.innerHTML = this.eyeClosedIcon;
             btn.setAttribute('aria-label', 'Ocultar senha');
           } else {
             input.type = 'password';
-            btn.textContent = '👁️';
+            btn.innerHTML = this.eyeOpenIcon;
             btn.setAttribute('aria-label', 'Mostrar senha');
           }
         });

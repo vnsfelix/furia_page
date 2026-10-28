@@ -1,4 +1,4 @@
-# Sessão: Minha Conta (`/conta`)
+    # Sessão: Minha Conta (`/conta`)
 
 Esta pasta cuida do perfil do usuário logado no portal da FURIA.
 

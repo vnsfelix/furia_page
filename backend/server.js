@@ -56,6 +56,6 @@ app.use(errorHandler);
 
 // Inicialização do servidor
 app.listen(config.port, () => {
-  console.log(`> Servidor da FURIA rodando em http://localhost:${config.port}`);
+  console.log(`> Servidor da FURIA rodando em http://localhost:3000`);
   console.log(`> Acesso de teste: admin@furia.gg (senha: admin)`);
 });

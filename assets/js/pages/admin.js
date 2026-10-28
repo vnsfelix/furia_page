@@ -1,5 +1,5 @@
 /**
- * FURIA Helpdesk - Script do Painel Administrativo
+ * FURIA Helpdesk - Script do Painel Administrativo (Conectado ao SQLite)
  */
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -26,12 +26,18 @@ document.addEventListener('DOMContentLoaded', () => {
   let allRequests = [];
   let allUsers = [];
 
-  function loadData() {
-    allRequests = window.FuriaDB.getTickets();
-    allUsers = window.FuriaDB.getUsers();
-    updateStats();
-    renderRequests();
-    renderUsers();
+  async function loadData() {
+    try {
+      allRequests = await window.FuriaDB.getTickets();
+      allUsers = await window.FuriaDB.getUsers();
+      updateStats();
+      renderRequests();
+      renderUsers();
+    } catch (err) {
+      if (adminMessageEl) {
+        window.FuriaUI.setMessage(adminMessageEl, err.message, true);
+      }
+    }
   }
 
   function updateStats() {
@@ -48,7 +54,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const term = (requestSearchInput ? requestSearchInput.value : '').trim().toLowerCase();
 
     const filtered = allRequests.filter(r => {
-      const text = `${r.id} ${r.titulo} ${r.descricao} ${r.userName} ${r.categoria} ${r.local}`.toLowerCase();
+      const text = `${r.id} ${r.titulo} ${r.descricao} ${r.userName || r.user_name} ${r.categoria} ${r.local}`.toLowerCase();
       return text.includes(term);
     });
 
@@ -74,8 +80,8 @@ document.addEventListener('DOMContentLoaded', () => {
       // Coluna Solicitante
       const tdUser = document.createElement('td');
       tdUser.innerHTML = `
-        <div>${window.FuriaUI.escapeHTML(req.userName || 'Usuário')}</div>
-        <span class="table-subtitle">${window.FuriaUI.escapeHTML(req.userEmail || '')}</span>
+        <div>${window.FuriaUI.escapeHTML(req.userName || req.user_name || 'Usuário')}</div>
+        <span class="table-subtitle">${window.FuriaUI.escapeHTML(req.userEmail || req.user_email || '')}</span>
       `;
 
       // Coluna Detalhes
@@ -84,9 +90,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
       // Coluna Data
       const tdDate = document.createElement('td');
-      tdDate.textContent = window.FuriaUI.formatDate(req.data);
+      tdDate.textContent = window.FuriaUI.formatDate(req.data || req.created_at);
 
-      // Coluna Status (com select interativo)
+      // Coluna Status (com select interativo conectado ao SQLite)
       const tdStatus = document.createElement('td');
       const select = document.createElement('select');
       select.className = 'status-select';
@@ -97,12 +103,12 @@ document.addEventListener('DOMContentLoaded', () => {
       `;
       select.value = req.status || 'Recebido';
 
-      select.addEventListener('change', () => {
+      select.addEventListener('change', async () => {
         try {
-          window.FuriaDB.updateTicketStatus(req.id, select.value);
+          await window.FuriaDB.updateTicketStatus(req.id, select.value);
           req.status = select.value;
           updateStats();
-          window.FuriaUI.setMessage(adminMessageEl, `Status do chamado #${req.id} atualizado para "${select.value}".`, false);
+          window.FuriaUI.setMessage(adminMessageEl, `Status do chamado #${req.id} atualizado para "${select.value}" no SQLite.`, false);
           setTimeout(() => window.FuriaUI.setMessage(adminMessageEl, '', false), 4000);
         } catch (error) {
           window.FuriaUI.setMessage(adminMessageEl, error.message, true);
@@ -111,21 +117,23 @@ document.addEventListener('DOMContentLoaded', () => {
 
       tdStatus.append(select);
 
-      // Coluna Ações (Excluir chamado)
+      // Coluna Ações (Excluir chamado do SQLite)
       const tdActions = document.createElement('td');
       const deleteBtn = document.createElement('button');
       deleteBtn.className = 'btn-delete-ticket';
       deleteBtn.innerHTML = '🗑️ Excluir';
       deleteBtn.title = 'Excluir este chamado permanentemente';
 
-      deleteBtn.addEventListener('click', () => {
+      deleteBtn.addEventListener('click', async () => {
         if (confirm(`Tem certeza que deseja excluir o chamado #${req.id}?`)) {
-          window.FuriaDB.deleteTicket(req.id);
-          allRequests = window.FuriaDB.getTickets();
-          updateStats();
-          renderRequests();
-          window.FuriaUI.setMessage(adminMessageEl, `Chamado #${req.id} excluído com sucesso.`, false);
-          setTimeout(() => window.FuriaUI.setMessage(adminMessageEl, '', false), 4000);
+          try {
+            await window.FuriaDB.deleteTicket(req.id);
+            await loadData();
+            window.FuriaUI.setMessage(adminMessageEl, `Chamado #${req.id} excluído com sucesso do banco de dados.`, false);
+            setTimeout(() => window.FuriaUI.setMessage(adminMessageEl, '', false), 4000);
+          } catch (error) {
+            window.FuriaUI.setMessage(adminMessageEl, error.message, true);
+          }
         }
       });
 
@@ -155,7 +163,7 @@ document.addEventListener('DOMContentLoaded', () => {
       const infoDiv = document.createElement('div');
       infoDiv.className = 'user-item-info';
       infoDiv.innerHTML = `
-        <strong>${window.FuriaUI.escapeHTML(user.name)}</strong>
+        <strong>${window.FuriaUI.escapeHTML(user.name || user.nome)}</strong>
         <span>${window.FuriaUI.escapeHTML(user.email)}</span>
       `;
 
@@ -185,29 +193,35 @@ document.addEventListener('DOMContentLoaded', () => {
       const roleSelect = roleField.querySelector('select');
       roleSelect.value = user.role || 'funcionario';
 
-      // Botão Salvar Alterações de Perfil e Setor
+      // Botão Salvar Alterações de Perfil e Setor no SQLite
       const saveBtn = document.createElement('button');
       saveBtn.className = 'btn-save-user';
       saveBtn.textContent = 'Salvar';
       saveBtn.title = 'Salvar setor e perfil deste usuário';
-      saveBtn.addEventListener('click', () => {
+      saveBtn.addEventListener('click', async () => {
         const newDept = deptInput.value.trim() || 'Geral';
         const newRole = roleSelect.value;
         try {
-          window.FuriaDB.updateUser(user.id, { department: newDept, role: newRole });
+          saveBtn.disabled = true;
+          saveBtn.textContent = 'Salvando...';
+
+          await window.FuriaDB.updateUser(user.id, { department: newDept, role: newRole });
           user.department = newDept;
           user.role = newRole;
 
           // Se o admin editou seu próprio perfil ou setor, atualiza a sessão ativa
           if (user.id === adminUser.id) {
-            window.FuriaAuth.updateProfile({ department: newDept, role: newRole });
+            await window.FuriaAuth.updateProfile({ department: newDept, role: newRole });
           }
 
-          allUsers = window.FuriaDB.getUsers();
-          window.FuriaUI.setMessage(userMessageEl, `Dados de ${user.name} atualizados com sucesso!`, false);
+          await loadData();
+          window.FuriaUI.setMessage(userMessageEl, `Dados de ${user.name || user.nome} atualizados no SQLite com sucesso!`, false);
           setTimeout(() => window.FuriaUI.setMessage(userMessageEl, '', false), 4000);
         } catch (err) {
           window.FuriaUI.setMessage(userMessageEl, err.message, true);
+        } finally {
+          saveBtn.disabled = false;
+          saveBtn.textContent = 'Salvar';
         }
       });
 
@@ -220,14 +234,18 @@ document.addEventListener('DOMContentLoaded', () => {
         removeBtn.textContent = 'Remover';
         removeBtn.title = 'Remover usuário do sistema';
 
-        removeBtn.addEventListener('click', () => {
-          if (confirm(`Tem certeza que deseja remover o usuário ${user.name}?`)) {
-            window.FuriaDB.deleteUser(user.id);
-            allUsers = window.FuriaDB.getUsers();
-            updateStats();
-            renderUsers();
-            window.FuriaUI.setMessage(userMessageEl, `Usuário ${user.name} removido com sucesso.`, false);
-            setTimeout(() => window.FuriaUI.setMessage(userMessageEl, '', false), 4000);
+        removeBtn.addEventListener('click', async () => {
+          if (confirm(`Tem certeza que deseja remover o usuário ${user.name || user.nome}?`)) {
+            try {
+              removeBtn.disabled = true;
+              await window.FuriaDB.deleteUser(user.id);
+              await loadData();
+              window.FuriaUI.setMessage(userMessageEl, `Usuário ${user.name || user.nome} removido do banco SQLite.`, false);
+              setTimeout(() => window.FuriaUI.setMessage(userMessageEl, '', false), 4000);
+            } catch (err) {
+              window.FuriaUI.setMessage(userMessageEl, err.message, true);
+              removeBtn.disabled = false;
+            }
           }
         });
 
@@ -239,9 +257,9 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  // Formulário para Adicionar Usuário pela equipe admin
+  // Formulário para Adicionar Usuário pela equipe admin diretamente no SQLite
   if (userForm) {
-    userForm.addEventListener('submit', (e) => {
+    userForm.addEventListener('submit', async (e) => {
       e.preventDefault();
 
       const name = userForm.elements['name']?.value.trim();
@@ -249,6 +267,7 @@ document.addEventListener('DOMContentLoaded', () => {
       const department = userForm.elements['department']?.value.trim() || 'Geral';
       const role = userForm.elements['role']?.value || 'funcionario';
       const password = userForm.elements['password']?.value || '123';
+      const submitBtn = userForm.querySelector('button[type="submit"]');
 
       if (!name || !email) {
         window.FuriaUI.setMessage(userMessageEl, 'Preencha o nome e o e-mail.', true);
@@ -256,7 +275,9 @@ document.addEventListener('DOMContentLoaded', () => {
       }
 
       try {
-        window.FuriaDB.createUser({
+        if (submitBtn) submitBtn.disabled = true;
+
+        await window.FuriaDB.createUser({
           name,
           email,
           department,
@@ -265,12 +286,12 @@ document.addEventListener('DOMContentLoaded', () => {
         });
 
         userForm.reset();
-        allUsers = window.FuriaDB.getUsers();
-        updateStats();
-        renderUsers();
-        window.FuriaUI.setMessage(userMessageEl, `Usuário "${name}" cadastrado com sucesso!`, false);
+        await loadData();
+        window.FuriaUI.setMessage(userMessageEl, `Usuário "${name}" gravado com sucesso no SQLite!`, false);
       } catch (error) {
         window.FuriaUI.setMessage(userMessageEl, error.message, true);
+      } finally {
+        if (submitBtn) submitBtn.disabled = false;
       }
     });
   }
@@ -281,4 +302,3 @@ document.addEventListener('DOMContentLoaded', () => {
 
   loadData();
 });
-

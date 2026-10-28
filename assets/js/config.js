@@ -2,19 +2,21 @@
  * FURIA Helpdesk - Configurações Globais
  */
 const FURIA_CONFIG = {
-  // URL base do backend Express (se estiver em execução)
-  API_BASE_URL: window.FURIA_API_URL || 'http://localhost:3000/api',
+  // Determina a URL base da API REST (se acessado por localhost:3000 ou via Live Server)
+  API_BASE_URL: window.FURIA_API_URL || (
+    window.location.port === '3000'
+      ? '/api'
+      : 'http://localhost:3000/api'
+  ),
 
-  // Chaves de armazenamento no LocalStorage / SessionStorage
+  // Chaves de armazenamento de sessão no navegador
+  // (Apenas a sessão ativa do usuário fica guardada, nada de listas de usuários ou chamados no LocalStorage)
   STORAGE_KEYS: {
     CURRENT_USER: 'furia_current_user',
-    AUTH_TOKEN: 'furia_auth_token',
-    USERS: 'furia_users_db',
-    TICKETS: 'furia_tickets_db',
-    SETTINGS: 'furia_settings'
+    AUTH_TOKEN: 'furia_auth_token'
   },
 
-  // Papeis de usuários suportados
+  // Papéis de usuários suportados
   ROLES: {
     ADMIN: 'admin',
     FUNCIONARIO: 'funcionario',
@@ -30,4 +32,3 @@ const FURIA_CONFIG = {
 };
 
 window.FURIA_CONFIG = FURIA_CONFIG;
-

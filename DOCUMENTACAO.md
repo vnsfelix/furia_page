@@ -16,7 +16,7 @@ Cada pasta possui seu próprio arquivo `README.md` explicando detalhadamente seu
 6. [**Painel Administrativo (`/admin`)**](admin/README.md): Gestão de todos os chamados da equipe, busca em tempo real, alteração de status e cadastro/remoção de membros.
 7. [**Confirmação de Envio (`/enviados`)**](enviados/README.md): Tela de sucesso com o código do chamado gerado.
 8. [**Página de Erro (`/errado`)**](errado/README.md): Tratamento amigável de falhas com opção de tentar novamente.
-9. [**Backend & Banco de Dados (`/backend`)**](backend/README.md): Explicação da pasta `src/`, rotas da API e guia passo a passo para conectar o seu banco de dados (PostgreSQL, MySQL, SQLite ou Prisma).
+9. [**Backend & Banco de Dados (`/backend`)**](backend/README.md): Servidor Node.js, banco SQLite3 (`database.sqlite`), esquema SQL das tabelas e guia para o SQLite3 Editor.
 
 ---
 

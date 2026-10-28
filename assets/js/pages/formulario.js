@@ -66,8 +66,8 @@ document.addEventListener('DOMContentLoaded', () => {
         ticketPayload.titulo = `Chamado Presencial - ${local.toUpperCase()} (${servico})`;
       }
 
-      // Salva no banco de dados / LocalStorage
-      const created = window.FuriaDB.createTicket(ticketPayload);
+      // Salva no banco de dados SQLite
+      const created = await window.FuriaDB.createTicket(ticketPayload);
 
       // Redireciona para a página de sucesso
       const root = window.FuriaAuth.getRootPath();

@@ -21,7 +21,7 @@ Se qualquer colaborador comum ou usuário não logado tentar entrar nesta págin
 - **Tabela dinâmica**: Mostra título do chamado, nome e e-mail do autor, descrição, data e status.
 - **Busca em tempo real**: O campo de pesquisa filtra os chamados instantaneamente conforme você digita (pelo nome do autor, título, setor ou código).
 - **Alteração de status**: Um seletor em cada linha permite mudar o status entre *Recebido*, *Em andamento* e *Concluído*. Ao mudar, as métricas e o histórico do usuário são atualizados na hora.
-- **Exclusão de chamados**: Botão `🗑️ Excluir` em cada chamado para apagar solicitações com confirmação e atualização imediata dos contadores.
+- **Exclusão de chamados**: Botão `Excluir` em cada chamado para apagar solicitações com confirmação e atualização imediata dos contadores.
 
 ### 3. Gestão de Equipe (Usuários)
 - **Lista de membros**: Mostra o nome e e-mail de cada usuário cadastrado.

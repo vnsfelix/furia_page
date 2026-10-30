@@ -110,6 +110,19 @@ app.get('/api/tickets/user/:userId', async (req, res) => {
   }
 });
 
+// GET /api/tickets/:id -> Buscar uma Ordem de Serviço específica pelo ID
+app.get('/api/tickets/:id', async (req, res) => {
+  try {
+    const ticket = await Database.findTicketById(req.params.id);
+    if (!ticket) {
+      return res.status(404).json({ error: 'Ordem de serviço não encontrada.' });
+    }
+    return res.json(ticket);
+  } catch (err) {
+    return res.status(500).json({ error: err.message });
+  }
+});
+
 // POST /api/tickets -> Criar novo chamado
 app.post('/api/tickets', async (req, res) => {
   try {
@@ -123,17 +136,39 @@ app.post('/api/tickets', async (req, res) => {
   }
 });
 
-// PUT /api/tickets/:id/status -> Atualizar status
+// PUT /api/tickets/:id -> Atualizar dados completos da Ordem de Serviço
+app.put('/api/tickets/:id', async (req, res) => {
+  try {
+    const updated = await Database.updateTicket(req.params.id, req.body);
+    return res.json({
+      message: 'Ordem de serviço atualizada no SQLite!',
+      ticket: updated
+    });
+  } catch (err) {
+    const status = err.message.includes('não encontrado') ? 404 : 400;
+    return res.status(status).json({ error: err.message });
+  }
+});
+
+// PUT /api/tickets/:id/status -> Atualizar status da Ordem de Serviço
 app.put('/api/tickets/:id/status', async (req, res) => {
   try {
     const { status } = req.body;
+    const statusValidos = ['Recebido', 'Em andamento', 'Concluído'];
+    if (!status || !statusValidos.includes(status)) {
+      return res.status(400).json({
+        error: 'Status inválido. Use apenas: Recebido, Em andamento ou Concluído.'
+      });
+    }
+
     const updated = await Database.updateTicketStatus(req.params.id, status);
     return res.json({
       message: 'Status atualizado no SQLite!',
       ticket: updated
     });
   } catch (err) {
-    return res.status(400).json({ error: err.message });
+    const statusCode = err.message.includes('não encontrado') ? 404 : 400;
+    return res.status(statusCode).json({ error: err.message });
   }
 });
 
@@ -143,7 +178,8 @@ app.delete('/api/tickets/:id', async (req, res) => {
     await Database.deleteTicket(req.params.id);
     return res.json({ message: 'Chamado excluído permanentemente do SQLite.' });
   } catch (err) {
-    return res.status(400).json({ error: err.message });
+    const statusCode = err.message.includes('não encontrado') ? 404 : 400;
+    return res.status(statusCode).json({ error: err.message });
   }
 });
 
@@ -151,11 +187,37 @@ app.delete('/api/tickets/:id', async (req, res) => {
 // ROTAS DE GESTÃO DE USUÁRIOS (/api/users)
 // ==============================================================================
 
-// GET /api/users -> Listar usuários
+// GET /api/users -> Listar usuários (com suporte opcional a filtro por perfil ?role=tecnico)
 app.get('/api/users', async (req, res) => {
   try {
-    const users = await Database.findUsers();
+    let users = await Database.findUsers();
+    if (req.query.role) {
+      const roleFilter = String(req.query.role).toLowerCase();
+      users = users.filter(u => (u.role || '').toLowerCase() === roleFilter);
+    }
     return res.json(users);
+  } catch (err) {
+    return res.status(500).json({ error: err.message });
+  }
+});
+
+// GET /api/tecnicos -> Listar apenas técnicos de suporte (CRUD de Técnicos)
+app.get('/api/tecnicos', async (req, res) => {
+  try {
+    const users = await Database.findUsers();
+    const tecnicos = users.filter(u => u.role === 'tecnico');
+    return res.json(tecnicos);
+  } catch (err) {
+    return res.status(500).json({ error: err.message });
+  }
+});
+
+// GET /api/clientes -> Listar apenas clientes/funcionários solicitantes (CRUD de Clientes)
+app.get('/api/clientes', async (req, res) => {
+  try {
+    const users = await Database.findUsers();
+    const clientes = users.filter(u => u.role === 'funcionario');
+    return res.json(clientes);
   } catch (err) {
     return res.status(500).json({ error: err.message });
   }
@@ -204,7 +266,8 @@ app.delete('/api/users/:id', async (req, res) => {
     await Database.deleteUser(req.params.id);
     return res.json({ message: 'Usuário removido do SQLite.' });
   } catch (err) {
-    return res.status(400).json({ error: err.message });
+    const statusCode = err.message.includes('não encontrado') ? 404 : 400;
+    return res.status(statusCode).json({ error: err.message });
   }
 });
 

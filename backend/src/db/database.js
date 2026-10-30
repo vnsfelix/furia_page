@@ -250,6 +250,27 @@ export const Database = {
     return this.findTicketById(id);
   },
 
+  async updateTicket(id, updates) {
+    const current = await this.findTicketById(id);
+    if (!current) throw new Error('Chamado não encontrado.');
+
+    const titulo = updates.titulo || current.titulo;
+    const descricao = updates.descricao || current.descricao;
+    const urgencia = updates.urgencia || current.urgencia;
+    const status = updates.status || current.status;
+    const categoria = updates.categoria || current.categoria;
+    const local = updates.local || current.local;
+    const tiposervico = updates.tiposervico || current.tiposervico;
+
+    db.prepare(`
+      UPDATE tickets
+      SET titulo = ?, descricao = ?, urgencia = ?, status = ?, categoria = ?, local = ?, tiposervico = ?
+      WHERE id = ?
+    `).run(titulo, descricao, urgencia, status, categoria, local, tiposervico, id);
+
+    return this.findTicketById(id);
+  },
+
   async deleteTicket(id) {
     const res = db.prepare('DELETE FROM tickets WHERE id = ?').run(id);
     if (res.changes === 0) throw new Error('Chamado não encontrado.');

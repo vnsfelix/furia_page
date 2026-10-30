@@ -47,16 +47,28 @@
   flex-shrink: 0;
 }
 
+.stat-icon img {
+  width: 40px;
+}
+
 .stat-icon.pending {
   background: rgba(245, 158, 11, 0.12);
   color: #fbbf24;
   border-color: rgba(245, 158, 11, 0.25);
 }
 
+.stat-icon.pending img {
+  width: 40px;
+}
+
 .stat-icon.team {
   background: rgba(59, 130, 246, 0.12);
   color: #60a5fa;
   border-color: rgba(59, 130, 246, 0.25);
+}
+
+.stat-icon.team img {
+  width: 40px;
 }
 
 .stat-card p {

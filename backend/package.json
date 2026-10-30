@@ -1,0 +1,26 @@
+{
+  "name": "furia-helpdesk-backend",
+  "version": "2.0.0",
+  "description": "API REST e servidor para a Central de Atendimento FURIA Esports",
+  "type": "module",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node --watch server.js"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^4.19.2"
+  },
+  "keywords": [
+    "furia",
+    "helpdesk",
+    "tickets",
+    "auth"
+  ],
+  "author": "FURIA Tech",
+  "license": "ISC"
+}

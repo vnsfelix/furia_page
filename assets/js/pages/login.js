@@ -68,7 +68,7 @@ document.addEventListener('DOMContentLoaded', () => {
   if (esqueciSenhaLink) {
     esqueciSenhaLink.addEventListener('click', (e) => {
       e.preventDefault();
-      alert('Para redefinir sua senha, solicite ao suporte de TI da FURIA ou use a conta de teste:\n\n• Admin: admin@furia.gg (senha: admin)');
+      alert('Para redefinir sua senha, solicite ao suporte de TI da FURIA');
     });
   }
 

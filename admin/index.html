@@ -137,12 +137,12 @@
         <form id="userForm" class="user-form" novalidate>
           <div>
             <label for="newUserName">Nome completo</label>
-            <input id="newUserName" name="name" type="text" placeholder="Ex.: Ana Silva" required>
+            <input id="newUserName" name="name" type="text" placeholder="Ex.: User Furia" required>
           </div>
 
           <div>
             <label for="newUserEmail">E-mail</label>
-            <input id="newUserEmail" name="email" type="email" placeholder="ana.silva@furia.gg" required>
+            <input id="newUserEmail" name="email" type="email" placeholder="user.furia@furia.gg" required>
           </div>
 
           <div>
@@ -158,6 +158,8 @@
               <option value="admin">Administrador</option>
             </select>
           </div>
+
+          <input type="hidden" name="password" value="123">
 
           <button class="btn" type="submit">+ Adicionar</button>
         </form>

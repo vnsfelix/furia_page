@@ -13,7 +13,8 @@ const PORT = process.env.PORT || 3000;
 
 // Configuração de CORS e JSON parser
 app.use(cors());
-app.use(express.json());
+app.use(express.json({ limit: '25mb' }));
+app.use(express.urlencoded({ extended: true, limit: '25mb' }));
 
 // Servir arquivos do site (HTML, CSS, JS, Imagens) diretamente pelo backend
 app.use(express.static(rootDir));
@@ -276,10 +277,17 @@ app.get('*', (req, res) => {
   res.sendFile(path.join(rootDir, 'index.html'));
 });
 
-// Inicia o servidor
-app.listen(PORT, () => {
-  console.log(`> Servidor da FURIA rodando em http://localhost:${PORT}`);
-  console.log(`> Banco de dados SQLite ativo: backend/database.sqlite`);
-  console.log(`> Administrador padrão: admin@furia.gg (senha: admin)`);
-});
+// Exporta o aplicativo Express para uso em serverless (Vercel) e testes
+export default app;
+
+// Inicia o servidor local se não estiver no Vercel
+const isDirectExecution = process.argv[1] && (fileURLToPath(import.meta.url) === path.resolve(process.argv[1]) || process.argv[1].endsWith('server.js'));
+if (!process.env.VERCEL && isDirectExecution) {
+  app.listen(PORT, () => {
+    console.log(`> Servidor da FURIA rodando em http://localhost:${PORT}`);
+    console.log(`> Banco de dados SQLite ativo: backend/database.sqlite`);
+    console.log(`> Administrador padrão: admin@furia.gg (senha: admin)`);
+    console.log(`> Técnico padrão: tecnico@furia.gg (senha: admin)`);
+  });
+}
 

@@ -101,10 +101,15 @@
             <label>Anexo opcional (Imagem ou Captura de tela)</label>
             <label class="file-upload-box" for="arquivos">
               <input type="file" id="arquivos" name="anexo" accept="image/*,.pdf">
-              <span class="file-upload-icon"><img src="/assets/img/icon_pasta.png" alt=""></span>
+              <span class="file-upload-icon"><img src="../assets/img/icon_pasta.png" alt=""></span>
               <span class="file-upload-text" id="fileLabel">Clique ou arraste um arquivo para anexar</span>
               <span class="file-upload-hint">Formatos suportados: PNG, JPG, PDF (máx. 10MB)</span>
             </label>
+            <div id="imagePreviewBox" style="display: none; margin-top: 12px; align-items: center; gap: 12px; background: rgba(0,0,0,0.3); padding: 10px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.1);">
+              <img id="imagePreviewThumb" src="" alt="Prévia do anexo" style="width: 50px; height: 50px; object-fit: cover; border-radius: 6px; border: 1px solid var(--accent);">
+              <div style="flex: 1; font-size: 0.82rem; color: var(--text-secondary); word-break: break-all;" id="imagePreviewName"></div>
+              <button type="button" id="btnRemoveAttachment" style="background: none; border: 1px solid var(--danger-border); color: var(--danger); padding: 4px 8px; border-radius: 4px; font-size: 0.75rem; cursor: pointer;">Remover</button>
+            </div>
           </div>
 
           <button type="submit" class="btn">Enviar Solicitação</button>

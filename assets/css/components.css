@@ -550,3 +550,182 @@ textarea {
   }
 }
 
+
+
+/* ==========================================================================
+   MODAL DE VISUALIZAÇÃO DE IMAGENS E ANEXOS
+   ========================================================================== */
+
+.image-modal-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.85);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  z-index: 99999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.2s ease, visibility 0.2s ease;
+}
+
+.image-modal-backdrop.active {
+  opacity: 1;
+  visibility: visible;
+}
+
+.image-modal-backdrop.closing {
+  opacity: 0;
+}
+
+.image-modal-content {
+  width: min(860px, 100%);
+  max-height: 92vh;
+  background: var(--panel-background);
+  border: 1px solid var(--panel-border);
+  border-radius: var(--radius-panel);
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.7);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  transform: scale(0.95);
+  transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.image-modal-backdrop.active .image-modal-content {
+  transform: scale(1);
+}
+
+.image-modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 18px 24px;
+  border-bottom: 1px solid var(--panel-border);
+  background: rgba(14, 15, 18, 0.7);
+}
+
+.image-modal-title {
+  margin: 0;
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.image-modal-subtitle {
+  margin: 3px 0 0;
+  font-size: 0.8rem;
+  color: var(--text-muted);
+}
+
+.image-modal-close {
+  background: none;
+  border: none;
+  color: var(--text-muted);
+  font-size: 1.8rem;
+  line-height: 1;
+  cursor: pointer;
+  padding: 4px 8px;
+  border-radius: var(--radius-sm);
+  transition: color 0.15s, background 0.15s;
+}
+
+.image-modal-close:hover {
+  color: #ffffff;
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.image-modal-body {
+  padding: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(10, 11, 14, 0.95);
+  overflow: auto;
+  max-height: calc(92vh - 150px);
+}
+
+.image-modal-img {
+  max-width: 100%;
+  max-height: 65vh;
+  object-fit: contain;
+  border-radius: var(--radius-sm);
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.5);
+}
+
+.image-modal-footer {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 12px;
+  padding: 16px 24px;
+  border-top: 1px solid var(--panel-border);
+  background: rgba(14, 15, 18, 0.7);
+  flex-wrap: wrap;
+}
+
+.btn-sm {
+  padding: 8px 14px;
+  font-size: 0.82rem;
+  border-radius: var(--radius-sm);
+}
+
+/* ==========================================================================
+   COMPONENTES DE ANEXO (TABELAS E CARDS)
+   ========================================================================== */
+
+.ticket-attachment-box {
+  margin-top: 8px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.btn-attachment-preview {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: rgba(212, 255, 63, 0.08);
+  border: 1px solid rgba(212, 255, 63, 0.3);
+  color: var(--accent);
+  padding: 5px 11px;
+  border-radius: var(--radius-control);
+  font-size: 0.76rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-family: inherit;
+}
+
+.btn-attachment-preview:hover {
+  background: rgba(212, 255, 63, 0.2);
+  border-color: var(--accent);
+  color: #ffffff;
+  transform: translateY(-1px);
+}
+
+.attachment-thumbnail-trigger {
+  width: 36px;
+  height: 36px;
+  border-radius: 6px;
+  object-fit: cover;
+  border: 1px solid rgba(212, 255, 63, 0.4);
+  cursor: pointer;
+  transition: transform 0.2s, border-color 0.2s;
+  flex-shrink: 0;
+}
+
+.attachment-thumbnail-trigger:hover {
+  transform: scale(1.1);
+  border-color: var(--accent);
+}
+
+.tecnico-tag {
+  background: rgba(212, 255, 63, 0.15) !important;
+  color: var(--accent) !important;
+  border: 1px solid rgba(212, 255, 63, 0.3) !important;
+}

@@ -18,6 +18,7 @@ Abaixo está a lista completa de páginas e onde ficam seus arquivos:
 | Cadastro      | `cadastro.html`         | `assets/js/pages/cadastro.js`     |
 | Inicial       | `inicial/index.html`    | `assets/js/pages/inicial.js`      |
 | Painel Admin  | `admin/index.html`      | `assets/js/pages/admin.js`        |
+| Painel Técnico| `tecnico/index.html`    | `assets/js/pages/tecnico.js`      |
 | Meus Chamados | `chamados/index.html`   | `assets/js/pages/chamados.js`     |
 | Minha Conta   | `conta/index.html`      | `assets/js/pages/conta.js`        |
 | Presencial    | `presencial/index.html` | `assets/js/pages/presencial.js`   |
@@ -59,6 +60,7 @@ O terminal exibirá:
 > Servidor da FURIA rodando em http://localhost:3000
 > Banco de dados SQLite ativo: backend/database.sqlite
 > Administrador padrão: admin@furia.gg (senha: admin)
+> Técnico de suporte padrão: tecnico@furia.gg (senha: admin)
 ```
 
 Abra no navegador:

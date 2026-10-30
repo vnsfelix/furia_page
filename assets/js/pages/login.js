@@ -13,10 +13,16 @@ document.addEventListener('DOMContentLoaded', () => {
   // Ativa o olho para mostrar/esconder senha
   Furia.setupPasswordToggle();
 
+  function getRedirectUrl(role) {
+    if (role === 'admin') return './admin/index.html';
+    if (role === 'tecnico') return './tecnico/index.html';
+    return './inicial/index.html';
+  }
+
   // Se já estiver logado, redireciona imediatamente
   const user = Furia.getUser();
   if (user) {
-    window.location.replace(user.role === 'admin' ? './admin/index.html' : './inicial/index.html');
+    window.location.replace(getRedirectUrl(user.role));
     return;
   }
 
@@ -56,7 +62,7 @@ document.addEventListener('DOMContentLoaded', () => {
       Furia.setUser(res.user, remember);
 
       // Redireciona de acordo com o nível de acesso
-      window.location.href = res.user.role === 'admin' ? './admin/index.html' : './inicial/index.html';
+      window.location.href = getRedirectUrl(res.user.role);
     } catch (err) {
       mostrarMensagem(err.message || 'E-mail ou senha incorretos.');
       submitBtn.disabled = false;

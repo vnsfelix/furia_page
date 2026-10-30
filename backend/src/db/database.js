@@ -8,12 +8,28 @@
 
 import { DatabaseSync } from 'node:sqlite';
 import crypto from 'node:crypto';
+import fs from 'node:fs';
+import os from 'node:os';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
-const DB_PATH = path.resolve(__dirname, '../../database.sqlite');
+let DB_PATH = path.resolve(__dirname, '../../database.sqlite');
+
+// No ambiente Vercel (serverless), a pasta da aplicação é read-only.
+// Copiamos o database.sqlite para /tmp para permitir gravação de chamados e status.
+if (process.env.VERCEL) {
+  const tmpDbPath = path.join(os.tmpdir(), 'furia_database.sqlite');
+  try {
+    if (!fs.existsSync(tmpDbPath) && fs.existsSync(DB_PATH)) {
+      fs.copyFileSync(DB_PATH, tmpDbPath);
+    }
+    DB_PATH = tmpDbPath;
+  } catch (err) {
+    console.warn('Aviso Vercel SQLite:', err.message);
+  }
+}
 
 // Inicialização da conexão SQLite
 export const db = new DatabaseSync(DB_PATH);
@@ -45,7 +61,7 @@ CREATE TABLE IF NOT EXISTS tickets (
   tiposervico VARCHAR(50),
   descricao TEXT NOT NULL,
   urgencia VARCHAR(20) DEFAULT 'media',
-  anexo VARCHAR(255),
+  anexo TEXT,
   status VARCHAR(30) DEFAULT 'Recebido',
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
@@ -80,6 +96,25 @@ export function comparePassword(inputPassword, storedValue) {
       'Tecnologia & Operações'
     );
     console.log('> Administrador padrão criado: admin@furia.gg (senha: admin)');
+  }
+})();
+
+// Cria o Técnico de teste padrão caso a tabela users esteja sem ele
+(function seedTecnico() {
+  const check = db.prepare('SELECT id FROM users WHERE email = ?').get('tecnico@furia.gg');
+  if (!check) {
+    db.prepare(`
+      INSERT INTO users (id, nome, email, senha, role, department)
+      VALUES (?, ?, ?, ?, ?, ?)
+    `).run(
+      'usr_tecnico',
+      'Técnico Suporte FURIA',
+      'tecnico@furia.gg',
+      hashPassword('admin'),
+      'tecnico',
+      'Suporte Técnico & TI'
+    );
+    console.log('> Técnico padrão criado: tecnico@furia.gg (senha: admin)');
   }
 })();
 
@@ -230,7 +265,7 @@ export const Database = {
     const tiposervico = data.tiposervico || '';
     const descricao = data.descricao || '';
     const urgencia = data.urgencia || 'media';
-    const anexo = data.anexo || null;
+    const anexo = data.anexo ? (typeof data.anexo === 'object' ? JSON.stringify(data.anexo) : String(data.anexo)) : null;
     const status = 'Recebido';
 
     db.prepare(`
@@ -277,4 +312,3 @@ export const Database = {
     return true;
   }
 };
-

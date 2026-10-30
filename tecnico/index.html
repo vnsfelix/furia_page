@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" href="../assets/img/logo-furia.png" type="image/png">
+  <title>Painel do Técnico - FURIA</title>
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <!-- Estilos Padronizados -->
+  <link rel="stylesheet" href="../assets/css/base.css">
+  <link rel="stylesheet" href="../assets/css/components.css">
+  <link rel="stylesheet" href="../assets/css/pages/tecnico.css">
+</head>
+
+<body>
+  <div class="container">
+    <!-- Header Global Técnico -->
+    <header class="app-header">
+      <a class="brand-link" href="index.html" aria-label="FURIA Técnico - Início">
+        <img class="brand-mark" src="../assets/img/logo-furia.png" alt="FURIA Logo">
+        <span>FURIA</span>
+        <span class="admin-tag tecnico-tag">TÉCNICO</span>
+      </a>
+
+      <h1>Painel do Técnico</h1>
+
+      <!-- Menu do Usuário -->
+      <div class="user-container">
+        <button class="user-icon" id="iconeUsuario" type="button" aria-label="Abrir menu do perfil" aria-expanded="false">
+          <img src="../assets/img/avatar.png" alt="Avatar do usuário">
+        </button>
+
+        <nav class="user-menu" id="menuUsuario" aria-label="Menu da conta">
+          <ul>
+            <li><a href="index.html">🛠️ Painel Técnico</a></li>
+            <li><a href="../inicial/index.html">Área do Funcionário</a></li>
+            <li><a href="../chamados/index.html">Meus Chamados</a></li>
+            <li><a href="../conta/index.html">Minha Conta</a></li>
+          </ul>
+          <hr>
+          <div class="logout">
+            <a href="../index.html">Sair da conta &rarr;</a>
+          </div>
+        </nav>
+      </div>
+    </header>
+
+    <main>
+      <!-- Boas-Vindas e Ação Rápida -->
+      <section class="tecnico-welcome">
+        <div>
+          <p class="eyebrow text-accent">SUPORTE OPERACIONAL FURIA</p>
+          <h2>Olá, <span id="tecnicoName">Técnico</span></h2>
+          <p class="text-muted">Acompanhe todos os chamados abertos pelos usuários, visualize as imagens dos problemas e altere os status de atendimento em tempo real.</p>
+        </div>
+        <a class="tecnico-quick-link" href="../inicial/index.html">Área do Funcionário <span aria-hidden="true">↗</span></a>
+      </section>
+
+      <!-- Indicadores / Métricas do Atendimento -->
+      <section class="tecnico-stats" aria-label="Resumo">
+        <article class="stat-card">
+          <span class="stat-icon" aria-hidden="true">
+            <img src="../assets/img/bate-papo-por-video 1.png" alt="">
+          </span>
+          <div>
+            <p>Total de Chamados</p>
+            <strong id="totalRequests">0</strong>
+          </div>
+        </article>
+
+        <article class="stat-card">
+          <span class="stat-icon pending" aria-hidden="true">
+            <img src="../assets/img/rotativo 1.png" alt="">
+          </span>
+          <div>
+            <p>Em Aberto / Andamento</p>
+            <strong id="openRequests">0</strong>
+          </div>
+        </article>
+
+        <article class="stat-card">
+          <span class="stat-icon completed" aria-hidden="true">
+            <img src="../assets/img/verificado.png" alt="">
+          </span>
+          <div>
+            <p>Concluídos</p>
+            <strong id="completedRequests">0</strong>
+          </div>
+        </article>
+      </section>
+
+      <!-- Painel de Gerenciamento de Chamados -->
+      <section class="tecnico-panel">
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow text-accent">FILA DE SUPORTE</p>
+            <h2>Solicitações Recentes</h2>
+          </div>
+
+          <div class="search-field">
+            <input id="requestSearch" type="search" placeholder="Buscar por título, autor, id, local...">
+          </div>
+        </div>
+
+        <!-- Filtros Rápidos de Status -->
+        <div class="filter-bar">
+          <button type="button" class="filter-chip active" data-filter="todos">Todos</button>
+          <button type="button" class="filter-chip" data-filter="Recebido">Recebidos</button>
+          <button type="button" class="filter-chip" data-filter="Em andamento">Em Andamento</button>
+          <button type="button" class="filter-chip" data-filter="Concluído">Concluídos</button>
+        </div>
+
+        <div id="tecnicoMessage" class="alert alert-success" role="status" aria-live="polite"></div>
+
+        <div class="table-scroll">
+          <table>
+            <thead>
+              <tr>
+                <th>Solicitação</th>
+                <th>Solicitante</th>
+                <th>Detalhes & Anexo</th>
+                <th>Data</th>
+                <th>Status</th>
+                <th>Ações</th>
+              </tr>
+            </thead>
+            <tbody id="requestsList">
+              <!-- Renderizado dinamicamente via JS -->
+            </tbody>
+          </table>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <!-- Scripts -->
+  <script src="../assets/js/app.js"></script>
+  <script src="../assets/js/pages/tecnico.js"></script>
+</body>
+
+</html>
+

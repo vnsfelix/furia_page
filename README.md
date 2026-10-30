@@ -6,18 +6,17 @@ Central interna de atendimento e suporte técnico da **FURIA**.
 
 ## 🚀 Como Iniciar
 
-1. Abra o terminal na pasta do backend:
+1. Abra o terminal na pasta raiz ou na pasta backend:
    ```bash
-   cd backend
    npm start
    ```
 
 2. Acesse no navegador:
    👉 **http://localhost:3000**
 
-3. Acesso de teste do Administrador:
-   - **E-mail**: `admin@furia.gg`
-   - **Senha**: `admin`
+3. Acessos de teste:
+   - **Administrador**: `admin@furia.gg` (Senha: `admin`)
+   - **Técnico de Suporte**: `tecnico@furia.gg` (Senha: `admin`)
 
 ---
 
@@ -32,5 +31,4 @@ Abra-o no VS Code com a extensão **SQLite Viewer** para consultar e editar as t
 
 ## 📖 Documentação Completa
 
-Para a explicação detalhada de cada página, consulte [`DOCUMENTACAO.md`](DOCUMENTACAO.md) e os arquivos `README.md` dentro de cada pasta (`admin/`, `chamados/`, `conta/`, `inicial/`, `presencial/`, `problemas/`, `enviados/`, `errado/`, `backend/`).
-
+Para a explicação detalhada de cada página, consulte [`DOCUMENTACAO.md`](DOCUMENTACAO.md) e os arquivos `README.md` dentro de cada pasta (`admin/`, `tecnico/`, `chamados/`, `conta/`, `inicial/`, `presencial/`, `problemas/`, `enviados/`, `errado/`, `backend/`).

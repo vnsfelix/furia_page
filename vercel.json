@@ -1,0 +1,8 @@
+{
+  "version": 2,
+  "trailingSlash": true,
+  "rewrites": [
+    { "source": "/api/(.*)", "destination": "/api/index.js" }
+  ]
+}
+

@@ -1,0 +1,39 @@
+{
+  "version": 2,
+  "builds": [
+    {
+      "src": "backend/server.js",
+      "use": "@vercel/node"
+    },
+    {
+      "src": "assets/**",
+      "use": "@vercel/static"
+    },
+    {
+      "src": "*.html",
+      "use": "@vercel/static"
+    },
+    {
+      "src": "*/*.html",
+      "use": "@vercel/static"
+    }
+  ],
+  "routes": [
+    {
+      "src": "/assets/(.*)",
+      "dest": "/assets/$1"
+    },
+    {
+      "src": "/(cadastro.html|index.html)",
+      "dest": "/$1"
+    },
+    {
+      "src": "/(chamados|conta|enviados|errado|inicial|presencial|problemas|tecnico)/(.*)",
+      "dest": "/$1/$2"
+    },
+    {
+      "src": "/api/(.*)",
+      "dest": "backend/server.js"
+    }
+  ]
+}

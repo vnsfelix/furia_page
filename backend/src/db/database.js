@@ -91,11 +91,11 @@ export function comparePassword(inputPassword, storedValue) {
       'usr_admin',
       'Administrador FURIA',
       'admin@furia.gg',
-      hashPassword('admin'),
+      hashPassword('VAG2026@'),
       'admin',
       'Tecnologia & Operações'
     );
-    console.log('> Administrador padrão criado: admin@furia.gg (senha: admin)');
+    console.log('> Administrador padrão criado: admin@furia.gg (senha: VAG2026@)');
   }
 })();
 
@@ -110,11 +110,11 @@ export function comparePassword(inputPassword, storedValue) {
       'usr_tecnico',
       'Técnico Suporte FURIA',
       'tecnico@furia.gg',
-      hashPassword('admin'),
+      hashPassword('TecFuria2026@'),
       'tecnico',
       'Suporte Técnico & TI'
     );
-    console.log('> Técnico padrão criado: tecnico@furia.gg (senha: admin)');
+    console.log('> Técnico padrão criado: tecnico@furia.gg (senha: TecFuria2026@)');
   }
 })();
 

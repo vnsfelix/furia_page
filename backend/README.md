@@ -6,8 +6,7 @@ Esta pasta contém o servidor Node.js (Express) e o banco de dados relacional **
 
 ## 🗄️ Banco de Dados SQLite3 (`backend/database.sqlite`)
 
-O banco de dados já está configurado e ativo no arquivo:
-👉 `backend/database.sqlite`
+O banco de dados já está configurado e ativo no arquivo: `backend/database.sqlite`
 
 ### Como abrir no SQLite3 Editor / SQLite Viewer (VS Code)
 1. Instale a extensão **SQLite Viewer** ou **SQLite3 Editor** no VS Code (se ainda não tiver).
@@ -64,6 +63,8 @@ O banco já vem inicializado com o Administrador padrão de testes:
 - **Perfil**: `admin`
 - **Departamento**: `Tecnologia & Operações`
 
+***
+
 > 💡 **Dica sobre edição manual de senhas no SQLite Editor**:
 > O sistema foi programado de forma humanizada. Se você cadastrar pelo site, a senha é protegida em hash SHA-256. Mas se você abrir o SQLite Editor e digitar uma senha em texto puro diretamente na coluna `senha` (ex: `123456`), o login funcionará normalmente!
 
@@ -104,5 +105,5 @@ npm start
 O terminal exibirá:
 ```text
 > Servidor da FURIA rodando em http://localhost:3000
-> Acesso de teste: admin@furia.gg (senha: admin)
+> Acesso de teste: admin@furia.gg (senha: VAG2026@)
 ```

@@ -59,8 +59,8 @@ O terminal exibirá:
 ```text
 > Servidor da FURIA rodando em http://localhost:3000
 > Banco de dados SQLite ativo: backend/database.sqlite
-> Administrador padrão: admin@furia.gg (senha: admin)
-> Técnico de suporte padrão: tecnico@furia.gg (senha: admin)
+> Administrador padrão: admin@furia.gg (senha: VAG2026@)
+> Técnico de suporte padrão: tecnico@furia.gg (senha: TecFuria2026@)
 ```
 
 Abra no navegador:

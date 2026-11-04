@@ -127,24 +127,37 @@ const Furia = {
     const menuList = menu.querySelector('ul');
     if (menuList && user) {
       const root = this.getRootPath();
+      const isAdmin = user.role === 'admin';
+      const isTecnico = user.role === 'tecnico' || isAdmin;
 
-      // Painel Admin para administradores
-      if (user.role === 'admin' && !menuList.querySelector('a[href*="admin"]')) {
-        const liAdmin = document.createElement('li');
-        liAdmin.innerHTML = `<a href="${root}admin/index.html">👑 Painel Admin</a>`;
-        menuList.prepend(liAdmin);
+      // Monta os links do menu de forma consistente e sem duplicidades
+      const items = [];
+
+      if (isAdmin) {
+        items.push(`<li><a href="${root}admin/index.html">👑 Painel Admin</a></li>`);
+      }
+      if (isTecnico) {
+        items.push(`<li><a href="${root}tecnico/index.html">🛠️ Painel Técnico</a></li>`);
       }
 
-      // Painel Técnico para técnicos e admins
-      if ((user.role === 'tecnico' || user.role === 'admin') && !menuList.querySelector('a[href*="tecnico"]')) {
-        const liTecnico = document.createElement('li');
-        liTecnico.innerHTML = `<a href="${root}tecnico/index.html">🛠️ Painel Técnico</a>`;
-        const adminLi = menuList.querySelector('a[href*="admin"]')?.closest('li');
-        if (adminLi && adminLi.nextSibling) {
-          menuList.insertBefore(liTecnico, adminLi.nextSibling);
-        } else {
-          menuList.prepend(liTecnico);
-        }
+      const inicioLabel = (isAdmin || isTecnico) ? 'Área do Funcionário' : 'Início';
+      items.push(`<li><a href="${root}inicial/index.html">${inicioLabel}</a></li>`);
+      items.push(`<li><a href="${root}chamados/index.html">Meus Chamados</a></li>`);
+      items.push(`<li><a href="${root}conta/index.html">Minha Conta</a></li>`);
+
+      menuList.innerHTML = items.join('');
+
+      // Cabeçalho do usuário no menu suspenso
+      if (!menu.querySelector('.user-menu-header')) {
+        const header = document.createElement('div');
+        header.className = 'user-menu-header';
+        const roleLabel = isAdmin ? 'Administrador' : (user.role === 'tecnico' ? 'Técnico' : 'Funcionário');
+        header.innerHTML = `
+          <span class="user-menu-name">${this.escape(user.nome || user.name || 'Usuário')}</span>
+          <span class="user-menu-email">${this.escape(user.email || '')}</span>
+          <span class="user-menu-role">${this.escape(roleLabel)}</span>
+        `;
+        menu.insertBefore(header, menuList);
       }
     }
 
@@ -251,6 +264,14 @@ const Furia = {
   },
 
   showImageModal(imageUrl, title = 'Imagem do Chamado', author = '') {
+    if (!imageUrl || typeof imageUrl !== 'string') return;
+    const cleanUrl = imageUrl.trim();
+    const isSafe = cleanUrl.startsWith('data:image/') || /^https?:\/\//i.test(cleanUrl) || cleanUrl.startsWith('../') || cleanUrl.startsWith('./') || cleanUrl.startsWith('/');
+    if (!isSafe) {
+      console.warn('URL bloqueada por segurança:', cleanUrl);
+      return;
+    }
+    const safeUrl = this.escape(cleanUrl);
     const existing = document.getElementById('furiaImageModal');
     if (existing) existing.remove();
 

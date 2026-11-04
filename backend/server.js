@@ -286,8 +286,8 @@ if (!process.env.VERCEL && isDirectExecution) {
   app.listen(PORT, () => {
     console.log(`> Servidor da FURIA rodando em http://localhost:${PORT}`);
     console.log(`> Banco de dados SQLite ativo: backend/database.sqlite`);
-    console.log(`> Administrador padrão: admin@furia.gg (senha: admin)`);
-    console.log(`> Técnico padrão: tecnico@furia.gg (senha: admin)`);
+    console.log(`> Administrador padrão: admin@furia.gg (senha: VAG2026@)`);
+    console.log(`> Técnico padrão: tecnico@furia.gg (senha: TecFuria2026@)`);
   });
 }
 

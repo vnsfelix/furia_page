@@ -28,7 +28,7 @@
       "dest": "/$1"
     },
     {
-      "src": "/(chamados|conta|enviados|errado|inicial|presencial|problemas|tecnico)/(.*)",
+      "src": "/(admin|chamados|conta|enviados|errado|inicial|presencial|problemas|tecnico)/(.*)",
       "dest": "/$1/$2"
     },
     {

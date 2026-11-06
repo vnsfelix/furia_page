@@ -1,4 +1,4 @@
-# FURIA Helpdesk
+# FURIA
 
 Sistema de suporte e chamados internos da FURIA.
 

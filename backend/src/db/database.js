@@ -1,12 +1,14 @@
 /**
  * ==============================================================================
- * FURIA Helpdesk - Banco de Dados SQLite3 Nativo (Node.js 24 node:sqlite)
+ * FURIA Helpdesk - Banco de Dados Híbrido (Supabase Cloud + SQLite3 Local)
  * ==============================================================================
- * O arquivo database.sqlite guarda TODOS os dados do sistema.
- * Suporta visualização e edição direta com o SQLite3 Editor / SQLite Viewer no VS Code.
+ * 1. Nuvem (Supabase): Quando SUPABASE_URL e SUPABASE_KEY estiverem configurados,
+ *    os dados ficam persistidos 24h na nuvem (ideal para Vercel e produção).
+ * 2. Local (SQLite3): Caso as chaves do Supabase não estejam preenchidas, o sistema
+ *    utiliza automaticamente o SQLite local em backend/database.sqlite.
  */
 
-import { DatabaseSync } from 'node:sqlite';
+import { createClient } from '@supabase/supabase-js';
 import crypto from 'node:crypto';
 import fs from 'node:fs';
 import os from 'node:os';
@@ -15,75 +17,90 @@ import { fileURLToPath } from 'node:url';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
-let DB_PATH = path.resolve(__dirname, '../../database.sqlite');
+const rootDir = path.resolve(__dirname, '../../..');
 
-// No ambiente Vercel (serverless), a pasta da aplicação é read-only.
-// Copiamos o database.sqlite para /tmp para permitir gravação de chamados e status.
-if (process.env.VERCEL) {
-  const tmpDbPath = path.join(os.tmpdir(), 'furia_database.sqlite');
+// Carrega variáveis do arquivo .env da raiz, se existir
+const envPath = path.resolve(rootDir, '.env');
+if (fs.existsSync(envPath)) {
   try {
-    if (!fs.existsSync(tmpDbPath) && fs.existsSync(DB_PATH)) {
-      fs.copyFileSync(DB_PATH, tmpDbPath);
+    const envFile = fs.readFileSync(envPath, 'utf8');
+    for (const line of envFile.split('\n')) {
+      const trimmed = line.trim();
+      if (trimmed && !trimmed.startsWith('#') && trimmed.includes('=')) {
+        const [k, ...v] = trimmed.split('=');
+        const key = k.trim();
+        if (!process.env[key]) {
+          process.env[key] = v.join('=').trim().replace(/^['"]|['"]$/g, '');
+        }
+      }
     }
-    DB_PATH = tmpDbPath;
-  } catch (err) {
-    console.warn('Aviso Vercel SQLite:', err.message);
+  } catch {}
+}
+
+const SUPABASE_URL = process.env.SUPABASE_URL;
+const SUPABASE_KEY = process.env.SUPABASE_KEY || process.env.SUPABASE_ANON_KEY || process.env.SUPABASE_SERVICE_ROLE_KEY;
+
+export const isUsingSupabase = Boolean(SUPABASE_URL && SUPABASE_KEY);
+
+let supabase = null;
+let db = null;
+
+if (isUsingSupabase) {
+  supabase = createClient(SUPABASE_URL, SUPABASE_KEY);
+  console.log(`> Conectado ao banco de dados Supabase na nuvem: ${SUPABASE_URL}`);
+} else {
+  // Inicialização do SQLite local como fallback
+  const { DatabaseSync } = await import('node:sqlite');
+  let DB_PATH = path.resolve(__dirname, '../../database.sqlite');
+
+  if (process.env.VERCEL) {
+    const tmpDbPath = path.join(os.tmpdir(), 'furia_database.sqlite');
+    try {
+      if (!fs.existsSync(tmpDbPath) && fs.existsSync(DB_PATH)) {
+        fs.copyFileSync(DB_PATH, tmpDbPath);
+      }
+      DB_PATH = tmpDbPath;
+    } catch (err) {
+      console.warn('Aviso Vercel SQLite:', err.message);
+    }
   }
-}
 
-// Inicialização da conexão SQLite
-export const db = new DatabaseSync(DB_PATH);
+  db = new DatabaseSync(DB_PATH);
+  db.exec('PRAGMA foreign_keys = ON;');
 
-// Habilita foreign keys
-db.exec('PRAGMA foreign_keys = ON;');
+  db.exec(`
+    CREATE TABLE IF NOT EXISTS users (
+      id VARCHAR(50) PRIMARY KEY,
+      nome VARCHAR(100) NOT NULL,
+      email VARCHAR(100) UNIQUE NOT NULL,
+      senha VARCHAR(255) NOT NULL,
+      role VARCHAR(20) NOT NULL DEFAULT 'funcionario',
+      department VARCHAR(50) DEFAULT 'Geral',
+      created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    );
 
-// Criação das tabelas com o esquema oficial do projeto
-db.exec(`
-CREATE TABLE IF NOT EXISTS users (
-  id VARCHAR(50) PRIMARY KEY,
-  nome VARCHAR(100) NOT NULL,
-  email VARCHAR(100) UNIQUE NOT NULL,
-  senha VARCHAR(255) NOT NULL,
-  role VARCHAR(20) NOT NULL DEFAULT 'funcionario',
-  department VARCHAR(50) DEFAULT 'Geral',
-  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-);
+    CREATE TABLE IF NOT EXISTS tickets (
+      id VARCHAR(50) PRIMARY KEY,
+      user_id VARCHAR(50) NOT NULL,
+      user_name VARCHAR(100) NOT NULL,
+      user_email VARCHAR(100) NOT NULL,
+      tipo VARCHAR(30) NOT NULL,
+      titulo VARCHAR(150) NOT NULL,
+      categoria VARCHAR(50),
+      local VARCHAR(50),
+      tiposervico VARCHAR(50),
+      descricao TEXT NOT NULL,
+      urgencia VARCHAR(20) DEFAULT 'media',
+      anexo TEXT,
+      status VARCHAR(30) DEFAULT 'Recebido',
+      created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+      FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
+    );
+  `);
 
-CREATE TABLE IF NOT EXISTS tickets (
-  id VARCHAR(50) PRIMARY KEY,
-  user_id VARCHAR(50) NOT NULL,
-  user_name VARCHAR(100) NOT NULL,
-  user_email VARCHAR(100) NOT NULL,
-  tipo VARCHAR(30) NOT NULL,
-  titulo VARCHAR(150) NOT NULL,
-  categoria VARCHAR(50),
-  local VARCHAR(50),
-  tiposervico VARCHAR(50),
-  descricao TEXT NOT NULL,
-  urgencia VARCHAR(20) DEFAULT 'media',
-  anexo TEXT,
-  status VARCHAR(30) DEFAULT 'Recebido',
-  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-  FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
-);
-`);
-
-// Função para hash seguro de senha em SHA-256
-export function hashPassword(password) {
-  return crypto.createHash('sha256').update(String(password).trim()).digest('hex');
-}
-
-// Compara a senha digitada com a gravada (suporta tanto hash SHA-256 quanto texto puro caso editado manualmente no SQLite Editor)
-export function comparePassword(inputPassword, storedValue) {
-  const cleanInput = String(inputPassword).trim();
-  const cleanStored = String(storedValue).trim();
-  return hashPassword(cleanInput) === cleanStored || cleanInput === cleanStored;
-}
-
-// Cria o Administrador de teste padrão caso a tabela users esteja sem ele
-(function seedAdmin() {
-  const check = db.prepare('SELECT id FROM users WHERE email = ?').get('admin@furia.gg');
-  if (!check) {
+  // Seed Admin no SQLite
+  const checkAdmin = db.prepare('SELECT id FROM users WHERE email = ?').get('admin@furia.gg');
+  if (!checkAdmin) {
     db.prepare(`
       INSERT INTO users (id, nome, email, senha, role, department)
       VALUES (?, ?, ?, ?, ?, ?)
@@ -97,12 +114,10 @@ export function comparePassword(inputPassword, storedValue) {
     );
     console.log('> Administrador padrão criado: admin@furia.gg (senha: VAG2026@)');
   }
-})();
 
-// Cria o Técnico de teste padrão caso a tabela users esteja sem ele
-(function seedTecnico() {
-  const check = db.prepare('SELECT id FROM users WHERE email = ?').get('tecnico@furia.gg');
-  if (!check) {
+  // Seed Técnico no SQLite
+  const checkTecnico = db.prepare('SELECT id FROM users WHERE email = ?').get('tecnico@furia.gg');
+  if (!checkTecnico) {
     db.prepare(`
       INSERT INTO users (id, nome, email, senha, role, department)
       VALUES (?, ?, ?, ?, ?, ?)
@@ -116,9 +131,31 @@ export function comparePassword(inputPassword, storedValue) {
     );
     console.log('> Técnico padrão criado: tecnico@furia.gg (senha: TecFuria2026@)');
   }
-})();
+}
 
-// Formatador seguro de usuário (remove a senha antes de enviar para o cliente)
+export { db };
+
+// Hash seguro SHA-256
+export function hashPassword(password) {
+  return crypto.createHash('sha256').update(String(password).trim()).digest('hex');
+}
+
+// Comparação com tempo constante
+export function comparePassword(inputPassword, storedValue) {
+  const cleanInput = String(inputPassword).trim();
+  const cleanStored = String(storedValue).trim();
+  const inputHash = hashPassword(cleanInput);
+
+  if (cleanStored.length === 64 && /^[0-9a-f]+$/i.test(cleanStored)) {
+    try {
+      return crypto.timingSafeEqual(Buffer.from(inputHash, 'hex'), Buffer.from(cleanStored, 'hex'));
+    } catch {
+      return false;
+    }
+  }
+  return cleanInput === cleanStored;
+}
+
 function formatUser(row) {
   if (!row) return null;
   return {
@@ -133,7 +170,6 @@ function formatUser(row) {
   };
 }
 
-// Formatador de chamados
 function formatTicket(row) {
   if (!row) return null;
   return {
@@ -159,19 +195,40 @@ function formatTicket(row) {
 }
 
 export const Database = {
-  // --- OPERAÇÕES DE USUÁRIOS ---
+  // --- USUÁRIOS ---
   async findUsers() {
+    if (isUsingSupabase) {
+      const { data, error } = await supabase.from('users').select('*').order('created_at', { ascending: false });
+      if (error) throw new Error(error.message);
+      return (data || []).map(formatUser);
+    }
     const rows = db.prepare('SELECT id, nome, email, role, department, created_at FROM users ORDER BY created_at DESC').all();
     return rows.map(formatUser);
   },
 
   async findUserById(id) {
+    if (isUsingSupabase) {
+      const { data, error } = await supabase.from('users').select('*').eq('id', id).maybeSingle();
+      if (error) throw new Error(error.message);
+      return formatUser(data);
+    }
     const row = db.prepare('SELECT id, nome, email, role, department, created_at FROM users WHERE id = ?').get(id);
     return formatUser(row);
   },
 
   async findUserByEmail(email) {
-    const row = db.prepare('SELECT * FROM users WHERE LOWER(email) = LOWER(?)').get(email.trim());
+    const clean = String(email).trim().toLowerCase();
+    if (isUsingSupabase) {
+      const { data, error } = await supabase.from('users').select('*').ilike('email', clean).maybeSingle();
+      if (error) throw new Error(error.message);
+      if (!data) return null;
+      return {
+        ...formatUser(data),
+        senha: data.senha,
+        password: data.senha
+      };
+    }
+    const row = db.prepare('SELECT * FROM users WHERE LOWER(email) = LOWER(?)').get(clean);
     if (!row) return null;
     return {
       ...formatUser(row),
@@ -185,6 +242,25 @@ export const Database = {
     const finalName = String(name || nome || '').trim();
     const finalPass = hashPassword(password || senha || '123');
     const id = `usr_${Date.now()}_${Math.random().toString(36).substring(2, 6)}`;
+
+    if (isUsingSupabase) {
+      const { data, error } = await supabase.from('users').insert({
+        id,
+        nome: finalName,
+        email: cleanEmail,
+        senha: finalPass,
+        role,
+        department
+      }).select().single();
+
+      if (error) {
+        if (error.code === '23505' || String(error.message).includes('unique')) {
+          throw new Error('Este e-mail já está cadastrado no sistema.');
+        }
+        throw new Error(error.message);
+      }
+      return formatUser(data);
+    }
 
     try {
       db.prepare(`
@@ -209,6 +285,16 @@ export const Database = {
     const newDept = department || current.department;
     const newRole = role || current.role;
 
+    if (isUsingSupabase) {
+      const { data, error } = await supabase.from('users').update({
+        nome: newName,
+        department: newDept,
+        role: newRole
+      }).eq('id', id).select().single();
+      if (error) throw new Error(error.message);
+      return formatUser(data);
+    }
+
     db.prepare(`
       UPDATE users SET nome = ?, department = ?, role = ? WHERE id = ?
     `).run(newName, newDept, newRole, id);
@@ -217,13 +303,32 @@ export const Database = {
   },
 
   async deleteUser(id) {
+    if (isUsingSupabase) {
+      const { error } = await supabase.from('users').delete().eq('id', id);
+      if (error) throw new Error(error.message);
+      return true;
+    }
     const res = db.prepare('DELETE FROM users WHERE id = ?').run(id);
     if (res.changes === 0) throw new Error('Usuário não encontrado.');
     return true;
   },
 
-  // --- OPERAÇÕES DE TICKETS / CHAMADOS ---
+  // --- TICKETS / CHAMADOS ---
   async findTickets(filter = {}) {
+    if (isUsingSupabase) {
+      let query = supabase.from('tickets').select('*');
+      if (filter.userId) {
+        query = query.eq('user_id', filter.userId);
+      }
+      if (filter.status) {
+        query = query.ilike('status', filter.status);
+      }
+      query = query.order('created_at', { ascending: false });
+      const { data, error } = await query;
+      if (error) throw new Error(error.message);
+      return (data || []).map(formatTicket);
+    }
+
     let sql = 'SELECT * FROM tickets';
     const params = [];
     const clauses = [];
@@ -249,6 +354,11 @@ export const Database = {
   },
 
   async findTicketById(id) {
+    if (isUsingSupabase) {
+      const { data, error } = await supabase.from('tickets').select('*').eq('id', id).maybeSingle();
+      if (error) throw new Error(error.message);
+      return formatTicket(data);
+    }
     const row = db.prepare('SELECT * FROM tickets WHERE id = ?').get(id);
     return formatTicket(row);
   },
@@ -268,6 +378,26 @@ export const Database = {
     const anexo = data.anexo ? (typeof data.anexo === 'object' ? JSON.stringify(data.anexo) : String(data.anexo)) : null;
     const status = 'Recebido';
 
+    if (isUsingSupabase) {
+      const { data: created, error } = await supabase.from('tickets').insert({
+        id,
+        user_id: userId,
+        user_name: userName,
+        user_email: userEmail,
+        tipo,
+        titulo,
+        categoria,
+        local,
+        tiposervico,
+        descricao,
+        urgencia,
+        anexo,
+        status
+      }).select().single();
+      if (error) throw new Error(error.message);
+      return formatTicket(created);
+    }
+
     db.prepare(`
       INSERT INTO tickets (
         id, user_id, user_name, user_email, tipo, titulo,
@@ -280,12 +410,36 @@ export const Database = {
   },
 
   async updateTicketStatus(id, status) {
+    if (isUsingSupabase) {
+      const { data, error } = await supabase.from('tickets').update({ status }).eq('id', id).select().single();
+      if (error) throw new Error(error.message);
+      if (!data) throw new Error('Chamado não encontrado.');
+      return formatTicket(data);
+    }
     const res = db.prepare('UPDATE tickets SET status = ? WHERE id = ?').run(status, id);
     if (res.changes === 0) throw new Error('Chamado não encontrado.');
     return this.findTicketById(id);
   },
 
   async updateTicket(id, updates) {
+    if (isUsingSupabase) {
+      const current = await this.findTicketById(id);
+      if (!current) throw new Error('Chamado não encontrado.');
+
+      const patch = {};
+      if (updates.titulo) patch.titulo = updates.titulo;
+      if (updates.descricao) patch.descricao = updates.descricao;
+      if (updates.urgencia) patch.urgencia = updates.urgencia;
+      if (updates.status) patch.status = updates.status;
+      if (updates.categoria) patch.categoria = updates.categoria;
+      if (updates.local) patch.local = updates.local;
+      if (updates.tiposervico) patch.tiposervico = updates.tiposervico;
+
+      const { data, error } = await supabase.from('tickets').update(patch).eq('id', id).select().single();
+      if (error) throw new Error(error.message);
+      return formatTicket(data);
+    }
+
     const current = await this.findTicketById(id);
     if (!current) throw new Error('Chamado não encontrado.');
 
@@ -307,6 +461,11 @@ export const Database = {
   },
 
   async deleteTicket(id) {
+    if (isUsingSupabase) {
+      const { error } = await supabase.from('tickets').delete().eq('id', id);
+      if (error) throw new Error(error.message);
+      return true;
+    }
     const res = db.prepare('DELETE FROM tickets WHERE id = ?').run(id);
     if (res.changes === 0) throw new Error('Chamado não encontrado.');
     return true;

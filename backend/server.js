@@ -2,7 +2,7 @@ import express from 'express';
 import cors from 'cors';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { Database, comparePassword } from './src/db/database.js';
+import { Database, comparePassword, isUsingSupabase } from './src/db/database.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -23,7 +23,7 @@ app.use(express.static(rootDir));
 app.get('/api/health', (req, res) => {
   res.json({
     status: 'online',
-    banco: 'SQLite3 (backend/database.sqlite)',
+    banco: isUsingSupabase ? 'Supabase PostgreSQL (Cloud)' : 'SQLite3 (backend/database.sqlite)',
     timestamp: new Date().toISOString()
   });
 });
@@ -285,7 +285,7 @@ const isDirectExecution = process.argv[1] && (fileURLToPath(import.meta.url) ===
 if (!process.env.VERCEL && isDirectExecution) {
   app.listen(PORT, () => {
     console.log(`> Servidor da FURIA rodando em http://localhost:${PORT}`);
-    console.log(`> Banco de dados SQLite ativo: backend/database.sqlite`);
+    console.log(`> Banco ativo: ${isUsingSupabase ? 'Supabase PostgreSQL (Cloud)' : 'SQLite3 (backend/database.sqlite)'}`);
     console.log(`> Administrador padrão: admin@furia.gg (senha: VAG2026@)`);
     console.log(`> Técnico padrão: tecnico@furia.gg (senha: TecFuria2026@)`);
   });

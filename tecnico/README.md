@@ -1,37 +1,20 @@
-# Sessão: Painel do Técnico (`/tecnico`)
+# Painel do Técnico
 
-Esta é a central operacional voltada aos técnicos de suporte e infraestrutura da FURIA.
+Painel operacional para técnicos de suporte (`role: 'tecnico'`) e administradores.
 
----
+## Arquivos da tela
 
-## Quem pode acessar?
-**Usuários com perfil de Técnico (`role: 'tecnico'`) e Administradores (`role: 'admin'`).**
-Se qualquer funcionário comum ou visitante não autenticado tentar acessar esta página, a proteção de rota (`Furia.requireAuth(['tecnico', 'admin'])`) bloqueia o acesso e o redireciona automaticamente para a área inicial.
+- `index.html`: estrutura visual do painel técnico.
+- `../assets/js/pages/tecnico.js`: listagem, filtros, alteração de status e abertura de anexos.
+- `../assets/css/pages/tecnico.css`: estilização visual do painel.
 
----
+## Funcionalidades
 
-## Funcionalidades principais:
+- **Métricas:** contadores de chamados totais, em andamento e concluídos.
+- **Fila de atendimento:** lista de chamados com campo de busca e filtros rápidos por status (Recebido, Em andamento, Concluído).
+- **Atualização de status:** seletor direto na linha do chamado para atualizar o andamento do suporte.
+- **Visualização de anexos:** modal para ver fotos e prints anexados em tamanho ampliado, com opção de download.
 
-### 1. Indicadores Operacionais (Cards do topo)
-- **Total de Chamados**: Contagem de todas as solicitações abertas pelos usuários no SQLite.
-- **Em Aberto / Andamento**: Quantidade de tickets que necessitam de intervenção técnica.
-- **Concluídos**: Quantidade de chamados finalizados com sucesso.
+## Proteção de acesso
 
-### 2. Gestão de Chamados e Atualização de Status
-- **Tabela dinâmica**: Exibe título da solicitação, identificador `#TK-...`, tipo (*Presencial* ou *Problema*), dados do solicitante, detalhes do relato, data e status atual.
-- **Busca em tempo real**: O campo de pesquisa filtra instantaneamente pelo título, autor, id, categoria ou local da ocorrência.
-- **Filtros rápidos por Status**: Botões de filtro (*Todos*, *Recebidos*, *Em Andamento*, *Concluídos*).
-- **Alteração de Status em tempo real**: O seletor em cada chamado permite mudar diretamente entre *Recebido*, *Em andamento* e *Concluído*, persistindo via chamada `PUT /api/tickets/:id/status`.
-
-### 3. Visualização de Imagens e Anexos dos Chamados
-- **Miniatura interativa**: Exibe a thumbnail da imagem anexada pelo solicitante.
-- **Modal de Imagem em Tela Cheia**: Ao clicar em *Ver Imagem*, uma janela modal de alta resolução é exibida.
-- **Opções no Modal**:
-  - Download direto da imagem do chamado.
-  - Abertura em nova aba do navegador em resolução original.
-  - Fechamento intuitivo via botão, clique fora ou tecla `ESC`.
-
-### 4. Controle de Permissões: Sem Gestão de Usuários
-- Diferente do Painel Administrativo, o técnico **não possui acesso para criar, editar, alterar perfis ou excluir usuários**.
-- A interface foca 100% no atendimento rápido e eficaz às demandas de suporte técnico.
-
+Acesso restrito a usuários com perfil `tecnico` ou `admin`. Usuários com outros perfis são redirecionados para a tela inicial.

@@ -1,34 +1,24 @@
-# Sessão: Atendimento Presencial (`/presencial`)
+# Atendimento Presencial
 
-Esta tela é voltada para solicitações de reparo físico, infraestrutura ou manutenção nos espaços da FURIA (arena, estúdio, escritório, etc.).
+Formulário para solicitar suporte presencial ou manutenção nos espaços físicos da FURIA.
 
----
+## Arquivos da tela
 
-## O que o usuário informa?
-1. **Local da ocorrência**:
-   - Recepção
-   - Estúdio / Arena FURIA
-   - Escritório Administrativo
-   - Sala de Reuniões
-   - Refeitório / Convivência
-   - Depósito / Almoxarifado
-2. **Tipo de serviço**:
-   - Suporte de Informática / Hardware
-   - Rede / Cabeamento / Wi-Fi
-   - Manutenção Elétrica
-   - Limpeza / Organização Técnica
-   - Infraestrutura / Reparo Geral
-3. **Nível de urgência**: Baixa, Média ou Alta.
-4. **Descrição detalhada**: O que precisa ser reparado, trocado ou instalado no ambiente.
+- `index.html`: estrutura visual do formulário de atendimento presencial.
+- `../assets/js/pages/presencial.js`: validação dos dados, envio para a API e redirecionamento.
+- `../assets/css/pages/presencial.css`: estilização visual da página.
 
----
+## Campos do chamado
 
-## O que acontece ao enviar?
-- O chamado é registrado no banco local (`FuriaDB`) com o tipo `presencial` e o autor vinculado à sessão.
-- O colaborador é levado para a página de sucesso (`../enviados/index.html`) com o código do ticket para acompanhamento.
+- **Local:** ambiente onde o técnico deve comparecer (Arena, Estúdio, Escritório, Recepção, etc.).
+- **Tipo de serviço:** categoria do serviço (Rede/Wi-Fi, Informática/Hardware, Elétrica, Infraestrutura, etc.).
+- **Urgência:** nível de prioridade (Baixa, Média ou Alta).
+- **Descrição:** detalhes do que precisa ser consertado, instalado ou ajustado.
 
----
+## Fluxo de envio
 
-## Observação sobre o nome da pasta:
-Antes a pasta estava nomeada como `Presencial` (com "P" maiúsculo). Padronizamos para `presencial` (em minúsculas) para evitar erros de arquivo não encontrado quando você publicar o site na nuvem ou em servidores Linux. Os redirecionamentos antigos continuam funcionando.
+Ao enviar a solicitação, o sistema grava o chamado via API (`POST /api/tickets`) com o tipo `presencial` e status *Recebido*, redirecionando o usuário para a tela de confirmação (`/enviados`).
 
+## Proteção de acesso
+
+Exige login ativo. Usuários deslogados são redirecionados automaticamente para a tela de login.

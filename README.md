@@ -1,34 +1,25 @@
-# Portal FURIA Helpdesk
+# FURIA Helpdesk
 
-Central interna de atendimento e suporte técnico da **FURIA**.
+Sistema de suporte e chamados internos da FURIA.
 
----
+## Como rodar
 
-## 🚀 Como Iniciar
+1. Instale as dependencias
 
-1. Abra o terminal na pasta raiz ou na pasta backend:
-   ```bash
-   npm start
-   ```
+**npm install**
 
-2. Acesse no navegador:
-   👉 **http://localhost:3000**
+2. No terminal cmd, execute:
 
-3. Acessos de teste:
-   - **Administrador**: `admin@furia.gg` (Senha: `admin`)
-   - **Técnico de Suporte**: `tecnico@furia.gg` (Senha: `admin`)
+**npm start**
 
----
+3. Abra no navegador:
+http://localhost:3000
 
-## 🗄️ Banco de Dados SQLite
+## Acessos para teste
 
-O banco relacional do sistema está no arquivo:
-👉 **`backend/database.sqlite`**
+- **Admin:** admin@furia.gg | Senha: `VAG2026@`
+- **Técnico:** tecnico@furia.gg | Senha: `TecFuria2026@`
 
-Abra-o no VS Code com a extensão **SQLite Viewer** para consultar e editar as tabelas `users` e `tickets` em tempo real.
+## Banco de dados
 
----
-
-## 📖 Documentação Completa
-
-Para a explicação detalhada de cada página, consulte [`DOCUMENTACAO.md`](DOCUMENTACAO.md) e os arquivos `README.md` dentro de cada pasta (`admin/`, `tecnico/`, `chamados/`, `conta/`, `inicial/`, `presencial/`, `problemas/`, `enviados/`, `errado/`, `backend/`).
+Os dados ficam salvos em `backend/database.sqlite`. Você pode abrir direto no VS Code usando a extensão SQLite Viewer para consultar ou editar as tabelas.

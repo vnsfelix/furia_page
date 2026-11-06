@@ -1,32 +1,20 @@
-# Sessão: Meus Chamados (`/chamados`)
+# Meus Chamados
 
-Esta tela permite que cada colaborador acompanhe todos os tickets que abriu no portal.
+Página onde o colaborador acompanha o andamento de todos os seus chamados abertos.
 
----
+## Arquivos da tela
 
-## Como funciona?
-- **Isolamento de dados**: O usuário comum só enxerga os chamados vinculados ao seu próprio e-mail e ID. Ele não vê solicitações de outros membros da equipe.
-- **Filtros por status**:
-  - **Todos**: Mostra o histórico completo.
-  - **Recebidos**: Chamados recém-abertos que ainda aguardam triagem.
-  - **Em andamento**: Chamados que já estão sendo atendidos por um técnico.
-  - **Concluídos**: Solicitações que já foram finalizadas e resolvidas.
-- **Visual dos Cards**:
-  - Código único de identificação (ex.: `#TK-1002`).
-  - Badge colorido de status (*amarelo* para recebido, *azul* para em andamento, *verde* para concluído).
-  - Título e descrição do problema.
-  - Categoria, local da ocorrência e nível de urgência.
-  - Data e hora formatadas no padrão brasileiro (`DD/MM/AAAA às HH:MM`).
+- `index.html`: estrutura visual da lista e dos botões de filtro.
+- `../assets/js/pages/chamados.js`: busca os chamados do usuário na API, aplica filtros de status e abre anexos.
+- `../assets/css/pages/chamados.css`: estilização da listagem e dos cards.
 
----
+## Funcionalidades
 
-## O que acontece se o usuário ainda não tiver chamados?
-Aparece uma mensagem amigável explicando que ainda não há chamados registrados, junto com um botão de atalho para abrir o primeiro chamado.
+- **Histórico individual:** exibe apenas os chamados abertos pelo próprio usuário logado.
+- **Filtros de status:** botões para filtrar rapidamente entre *Todos*, *Recebido*, *Em andamento* e *Concluído*.
+- **Informações do chamado:** cada card mostra o identificador (`#TK-...`), título, descrição, local, urgência, data e status atual.
+- **Anexos:** permite visualizar imagens anexadas em modal ampliado com opção de download.
 
----
+## Proteção de acesso
 
-## Quando você for conectar o Banco de Dados:
-Basta buscar os tickets através da rota:
-`GET /api/tickets/user/:userId`
-O backend retornará a lista em JSON diretamente da tabela `tickets` do seu banco de dados.
-
+Exige login ativo. Usuários deslogados são redirecionados automaticamente para a tela de login.

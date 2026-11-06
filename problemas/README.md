@@ -1,34 +1,24 @@
-# Sessão: Relatar Problemas (`/problemas`)
+# Relatar Problema
 
-Esta tela é usada quando o colaborador precisa de suporte técnico para computadores, softwares, senhas ou sistemas internos.
+Formulário para abertura de chamados técnicos de software, hardware, acessos ou falhas de sistema.
 
----
+## Arquivos da tela
 
-## O que o usuário preenche aqui?
-1. **Categoria da ocorrência**:
-   - Erro no Sistema / Software
-   - Falha em Equipamento / Hardware
-   - Problema de Acesso / Senha
-   - Falha Operacional / Processo
-   - Outro Problema
-2. **Nível de urgência**:
-   - Baixa (não impede a rotina)
-   - Média (atrapalha algumas atividades)
-   - Alta (impede completamente o trabalho ou transmissão)
-3. **Título do relato**: Resumo curto do problema (ex.: *"Erro 500 ao gerar relatório de partidas"*).
-4. **Descrição detalhada**: Campo de texto para explicar o que aconteceu e como reproduzir o erro.
-5. **Anexo (opcional)**: Campo para anexar um print ou arquivo PDF com o erro exibido. O nome do arquivo selecionado é exibido imediatamente para dar segurança ao usuário.
+- `index.html`: estrutura visual do formulário de chamado.
+- `../assets/js/pages/problemas.js`: validação dos campos, envio para a API e redirecionamento.
+- `../assets/css/pages/problemas.css`: estilização visual do formulário.
 
----
+## Campos do chamado
 
-## O que acontece ao clicar em "Enviar Solicitação"?
-1. O formulário valida se todos os campos obrigatórios foram preenchidos.
-2. O chamado é montado e vinculado automaticamente ao nome, ID e e-mail de quem está logado.
-3. O chamado é salvo no banco local (`FuriaDB`) com o status inicial **Recebido** e um código gerado (ex.: `TK-8421`).
-4. O usuário é encaminhado para a tela de confirmação (`../enviados/index.html?id=TK-8421`).
+- **Categoria:** tipo do problema (Sistema/Software, Hardware, Senha/Acesso, etc.).
+- **Urgência:** nível de criticidade (Baixa, Média ou Alta).
+- **Título e Descrição:** resumo e explicação detalhada da ocorrência.
+- **Anexo:** envio opcional de foto ou print do erro.
 
----
+## Fluxo de envio
 
-## Quando você for conectar o Banco de Dados:
-Basta enviar uma requisição `POST /api/tickets` com o JSON contendo os dados do formulário e o ID do usuário.
+Ao clicar em enviar, o sistema vincula o chamado ao usuário logado, grava o registro no banco via API (`POST /api/tickets`) com o status *Recebido* e redireciona para a tela de confirmação (`/enviados`).
 
+## Proteção de acesso
+
+Exige login ativo. Usuários deslogados são redirecionados automaticamente para a tela de login.

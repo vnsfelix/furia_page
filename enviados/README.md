@@ -1,14 +1,18 @@
-# Sessão: Confirmação de Envio (`/enviados`)
+# Confirmação de Envio
 
-Esta tela é o destino do colaborador após preencher e enviar qualquer formulário de chamado.
+Tela exibida após o envio com sucesso de um chamado técnico ou presencial.
 
----
+## Arquivos da tela
 
-## O que ela faz?
-- Exibe um ícone de verificação verde no topo.
-- Lê o parâmetro de URL `?id=TK-XXXX` e exibe o número do chamado gerado em destaque.
-- Explica de forma clara e amigável que a equipe técnica já recebeu os dados.
-- Apresenta dois botões principais:
-  1. **Acompanhar Meus Chamados**: Leva direto para a lista de tickets do usuário para ver o andamento.
-  2. **Voltar ao Início**: Leva de volta à página inicial de serviços.
+- `index.html`: estrutura visual da tela de sucesso.
+- `../assets/js/pages/enviados.js`: captura o código do chamado pela URL (`?id=TK-...`) e exibe na tela.
+- `../assets/css/pages/enviados.css`: estilização visual da confirmação.
 
+## Funcionalidades
+
+- **Identificador do chamado:** lê o parâmetro da URL e exibe o código gerado para o ticket (ex.: `#TK-1234`).
+- **Atalhos:** botões para acompanhar o status em *Meus Chamados* ou voltar para a tela inicial.
+
+## Proteção de acesso
+
+Exige login ativo. Usuários deslogados são redirecionados automaticamente para a tela de login.

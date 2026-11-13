@@ -1,0 +1,57 @@
+-- Dedicated TEST project only, after migrations 001 and 002. Never run on production.
+-- psql -v ON_ERROR_STOP=1 -f supabase/tests/integration.sql
+-- Fixtures roll back. PostgreSQL sequence increments are not rolled back.
+begin;
+do $$
+declare
+  account_id varchar(50) := 'usr_test_' || gen_random_uuid()::text;
+  bot text := 'sql_test_' || left(gen_random_uuid()::text,8);
+  protocol text;
+  link_hash text := repeat('a',64); rate_key text := repeat('b',64);
+  base jsonb; event jsonb; result text; claimed public.telegram_outbox%rowtype;
+  total integer; password_hash text := 'scrypt$' || repeat('0',32) || '$' || repeat('1',128);
+begin
+  if has_table_privilege('anon','public.users','select') or has_table_privilege('authenticated','public.users','select') then raise exception 'Public users access remains enabled'; end if;
+  if has_table_privilege('anon','public.tickets','insert') then raise exception 'Public ticket writes remain enabled'; end if;
+  if has_function_privilege('anon','public.helpdesk_process_telegram(jsonb)','execute') then raise exception 'Public RPC execution remains enabled'; end if;
+  if exists(select 1 from pg_class c join pg_namespace n on n.oid=c.relnamespace where n.nspname='public' and c.relname in ('users','tickets','sessions','telegram_links','telegram_updates') and not c.relrowsecurity) then raise exception 'Missing RLS'; end if;
+  insert into public.users(id,nome,email,senha,role) values(account_id,'SQL test',account_id||'@test.invalid',password_hash,'funcionario');
+  insert into public.sessions(token_hash,user_id,expires_at) values(repeat('c',64),account_id,now()+interval '1 hour');
+  if not public.helpdesk_change_password(account_id,password_hash,replace(password_hash,'1111','2222')) then raise exception 'Password update failed'; end if;
+  if exists(select 1 from public.sessions where user_id=account_id) then raise exception 'Password update did not revoke sessions'; end if;
+  insert into public.telegram_link_tokens(token_hash,bot_key,user_id,expires_at) values(link_hash,bot,account_id,now()+interval '10 minutes');
+  base := jsonb_build_object('bot',bot,'chatId','123456789','senderId','123456789','rateKey',rate_key,'next',jsonb_build_object('stage','idle','draft','{}'::jsonb),'reply','Test');
+  event := base || jsonb_build_object('updateId',1,'messageId',1,'expectedVersion',0,'linkHash',link_hash);
+  result := public.helpdesk_process_telegram(event);
+  if result<>'processed' then raise exception 'Link failed: %',result; end if;
+  if not exists(select 1 from public.telegram_links where bot_key=bot and user_id=account_id) then raise exception 'Link was not persisted'; end if;
+  if exists(select 1 from public.telegram_link_tokens where token_hash=link_hash) then raise exception 'Token was not consumed'; end if;
+  if public.helpdesk_process_telegram(event)<>'duplicate' then raise exception 'Replay was not deduplicated'; end if;
+  event := base || jsonb_build_object('updateId',2,'messageId',2,'expectedVersion',0);
+  if public.helpdesk_process_telegram(event)<>'retry' then raise exception 'Stale state was not rejected'; end if;
+  event := event || jsonb_build_object('expectedVersion',1,'next',jsonb_build_object('stage','confirmar','draft','{}'::jsonb));
+  perform public.helpdesk_process_telegram(event);
+  event := base || jsonb_build_object('updateId',3,'messageId',3,'expectedVersion',2,'ticket',jsonb_build_object('tipo','problemas','titulo','Test ticket','categoria','sistema','descricao','Test description','urgencia','media'));
+  perform public.helpdesk_process_telegram(event);
+  select id into protocol from public.tickets where user_id=account_id and origem='telegram';
+  if protocol is null or protocol !~ '^TK-[0-9]+$' then raise exception 'Protocol generation failed'; end if;
+  if public.helpdesk_process_telegram(event)<>'duplicate' then raise exception 'Ticket replay was not deduplicated'; end if;
+  select count(*) into total from public.tickets where id=protocol and user_id=account_id and origem='telegram' and status='Recebido';
+  if total<>1 then raise exception 'Ticket/author/transaction invalid'; end if;
+  delete from public.tickets where id=protocol;
+  if public.helpdesk_process_telegram(event)<>'duplicate' then raise exception 'Deleted ticket was vulnerable to replay'; end if;
+  if exists(select 1 from public.tickets where id=protocol) then raise exception 'Deleted ticket was recreated'; end if;
+  event := base || jsonb_build_object('updateId',4,'messageId',2,'expectedVersion',3);
+  if public.helpdesk_process_telegram(event)<>'ignored' then raise exception 'Out-of-order message was not ignored'; end if;
+  select * into claimed from public.helpdesk_claim_telegram_outbox(1,bot);
+  if claimed.id is null then raise exception 'Outbox lease failed'; end if;
+  perform public.helpdesk_finish_telegram_outbox(claimed.id,claimed.lease_token,false);
+  if exists(select 1 from public.telegram_outbox where id=claimed.id and delivered_at is not null) then raise exception 'Failed notification was lost'; end if;
+  perform public.helpdesk_unlink_telegram(account_id);
+  if exists(select 1 from public.telegram_links where user_id=account_id) then raise exception 'Unlink failed'; end if;
+  if not public.helpdesk_rate_limit(repeat('d',64),1,60) then raise exception 'First request blocked'; end if;
+  if public.helpdesk_rate_limit(repeat('d',64),1,60) then raise exception 'Rate limit failed'; end if;
+  raise notice 'PASS: grants, RLS, password/session transaction, linking, deduplication, author, deletion replay, stale state, outbox, unlink and rate limit';
+end;
+$$;
+rollback;

@@ -24,11 +24,15 @@ Arquivos compartilhados por todas as telas:
 - `assets/js/app.js`: utilitários comuns (sessão, controle do menu e chamadas da API).
 - `assets/css/base.css` e `assets/css/components.css`: temas, variáveis e componentes visuais.
 
-## Banco de dados
+## Banco de dados e backend atual
 
-O banco é o arquivo `backend/database.sqlite` e tem duas tabelas:
+O runtime utiliza Supabase PostgreSQL. O arquivo `backend/database.sqlite` foi preservado como fonte legada e não é utilizado como fallback. As tabelas principais continuam sendo:
 
 - **users:** dados dos usuários (nome, e-mail, senha criptografada e cargo: admin, tecnico ou funcionario).
 - **tickets:** todos os chamados abertos (título, descrição, tipo, urgência, anexo e status).
 
-Para visualizar ou editar os registros no VS Code, use a extensão SQLite Viewer.
+As migrações versionadas em `supabase/migrations` acrescentam sessões, limites de requisições, geração de protocolos e integração Telegram. Elas não foram aplicadas externamente. O backend não executa migrações no início.
+
+`backend/src/app.js` aplica autenticação e permissões; `src/db/repository.js` acessa o Supabase; `src/telegram` implementa o bot. O frontend consulta identidade e listas pela API e mantém dados públicos do usuário apenas como cache de apresentação.
+
+Consulte os [resultados de validação e pendências de ativação](docs/validacao-e-ativacao.md). O SQL antigo da raiz foi preservado por conter alterações anteriores do usuário e não deve ser usado para ativação.

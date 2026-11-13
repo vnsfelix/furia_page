@@ -11,9 +11,9 @@
  * 6. NÃO possui controle de adicionar, remover ou modificar usuários.
  */
 
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener('DOMContentLoaded', async () => {
   // Apenas técnicos de suporte e administradores podem acessar
-  if (!Furia.requireAuth(['tecnico', 'admin'])) return;
+  if (!await Furia.requireAuth(['tecnico', 'admin'])) return;
   Furia.initMenu();
 
   const user = Furia.getUser();
@@ -141,7 +141,7 @@ document.addEventListener('DOMContentLoaded', () => {
             thumb.className = 'attachment-thumbnail-trigger';
             thumb.title = 'Clique para ampliar a imagem do problema';
             thumb.addEventListener('click', () => {
-              Furia.showImageModal(anexo.url, c.titulo, c.userName || c.user_name);
+              Furia.showAttachment(anexo, c.titulo, c.userName || c.user_name);
             });
             attachBox.appendChild(thumb);
           }
@@ -149,9 +149,9 @@ document.addEventListener('DOMContentLoaded', () => {
           const btnView = document.createElement('button');
           btnView.type = 'button';
           btnView.className = 'btn-attachment-preview';
-          btnView.innerHTML = `Ver Imagem <span style="font-size: 0.72rem; opacity: 0.8">(${Furia.escape(anexo.name)})</span>`;
+          btnView.innerHTML = `${anexo.isImage ? 'Ver Imagem' : 'Baixar Anexo'} <span style="font-size: 0.72rem; opacity: 0.8">(${Furia.escape(anexo.name)})</span>`;
           btnView.addEventListener('click', () => {
-            Furia.showImageModal(anexo.url, c.titulo, c.userName || c.user_name);
+            Furia.showAttachment(anexo, c.titulo, c.userName || c.user_name);
           });
           attachBox.appendChild(btnView);
         } else {
@@ -202,10 +202,10 @@ document.addEventListener('DOMContentLoaded', () => {
         const btnVer = document.createElement('button');
         btnVer.type = 'button';
         btnVer.className = 'btn-action-view';
-        btnVer.innerHTML = 'Ver Imagem';
+        btnVer.textContent = anexo.isImage ? 'Ver Imagem' : 'Baixar Anexo';
         btnVer.title = 'Abrir imagem anexada do chamado';
         btnVer.addEventListener('click', () => {
-          Furia.showImageModal(anexo.url, c.titulo, c.userName || c.user_name);
+          Furia.showAttachment(anexo, c.titulo, c.userName || c.user_name);
         });
         tdActions.appendChild(btnVer);
       } else {
@@ -249,6 +249,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }, 4500);
   }
 
-  carregarChamados();
+  await carregarChamados();
+  Furia.watch(async () => { chamados = await Furia.api('/tickets'); atualizarMetricas(); renderizarChamados(); });
 });
 

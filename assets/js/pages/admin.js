@@ -4,15 +4,15 @@
  * ==============================================================================
  * Lógica do painel de administração:
  * 1. Protegido com exclusividade para administradores (role === 'admin').
- * 2. Carrega todos os chamados e colaboradores do SQLite via API (/api/tickets e /api/users).
+ * 2. Carrega todos os chamados e colaboradores do Supabase via API (/api/tickets e /api/users).
  * 3. Permite busca em tempo real nos chamados.
  * 4. Permite alterar status de chamados e excluir chamados.
  * 5. Permite editar o setor e perfil de usuários e cadastrar novos colaboradores.
  */
 
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener('DOMContentLoaded', async () => {
   // Exclusivo para perfil Administrador
-  if (!Furia.requireAuth('admin')) return;
+  if (!await Furia.requireAuth('admin')) return;
   Furia.initMenu();
 
   const admin = Furia.getUser();
@@ -35,7 +35,7 @@ document.addEventListener('DOMContentLoaded', () => {
   let chamados = [];
   let usuarios = [];
 
-  // Busca chamados e usuários do banco SQLite
+  // Busca chamados e usuários do banco Supabase
   async function carregarDados() {
     try {
       chamados = await Furia.api('/tickets');
@@ -135,7 +135,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (confirm(`Tem certeza que deseja excluir permanentemente o chamado #${c.id}?`)) {
           try {
             await Furia.api(`/tickets/${encodeURIComponent(c.id)}`, 'DELETE');
-            mostrarMensagem(adminMsgEl, `Chamado #${c.id} excluído com sucesso do banco SQLite.`, false);
+            mostrarMensagem(adminMsgEl, `Chamado #${c.id} excluído com sucesso.`, false);
             carregarDados();
           } catch (err) {
             mostrarMensagem(adminMsgEl, err.message, true);
@@ -257,7 +257,7 @@ document.addEventListener('DOMContentLoaded', () => {
       const email = userForm.elements['email'].value.trim();
       const department = userForm.elements['department'].value.trim() || 'Geral';
       const role = userForm.elements['role'].value || 'funcionario';
-      const password = userForm.elements['password'].value || '123';
+      const password = userForm.elements['password'].value;
       const submitBtn = userForm.querySelector('button[type="submit"]');
 
       if (!name || !email) {
@@ -299,6 +299,7 @@ document.addEventListener('DOMContentLoaded', () => {
     setTimeout(() => { el.style.display = 'none'; }, 4500);
   }
 
-  carregarDados();
+  await carregarDados();
+  Furia.watch(async () => { chamados = await Furia.api('/tickets'); atualizarMetricas(); renderizarChamados(); });
 });
 

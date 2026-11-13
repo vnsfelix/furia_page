@@ -8,9 +8,9 @@
  * 3. Exibe o primeiro nome do colaborador na mensagem de boas-vindas.
  */
 
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener('DOMContentLoaded', async () => {
   // Protege a página: só entra quem estiver logado
-  if (!Furia.requireAuth()) return;
+  if (!await Furia.requireAuth()) return;
 
   // Ativa o menu de perfil no topo
   Furia.initMenu();

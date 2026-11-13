@@ -9,7 +9,7 @@
  * 4. Salva a sessão e entra na conta (admin vai para /admin, outros para /inicial).
  */
 
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener('DOMContentLoaded', async () => {
   // Ativa o olho para mostrar/esconder senha
   Furia.setupPasswordToggle();
 
@@ -20,7 +20,7 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   // Se já estiver logado, redireciona imediatamente
-  const user = Furia.getUser();
+  const user = await Furia.restoreSession();
   if (user) {
     window.location.replace(getRedirectUrl(user.role));
     return;
@@ -56,7 +56,7 @@ document.addEventListener('DOMContentLoaded', () => {
       esconderMensagem();
 
       // Envia os dados para a API do backend
-      const res = await Furia.api('/auth/login', 'POST', { email, password });
+      const res = await Furia.api('/auth/login', 'POST', { email, password, remember });
 
       // Salva os dados do usuário autenticado na sessão
       Furia.setUser(res.user, remember);

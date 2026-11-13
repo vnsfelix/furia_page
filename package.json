@@ -6,10 +6,13 @@
   "main": "backend/server.js",
   "scripts": {
     "start": "node backend/server.js",
-    "dev": "node --watch backend/server.js"
+    "dev": "node --watch backend/server.js",
+    "test": "node --test tests/*.test.js",
+    "test:browser": "node scripts/test-browser.mjs",
+    "audit:sqlite": "node scripts/audit-sqlite.mjs"
   },
   "engines": {
-    "node": ">=18"
+    "node": "24.x"
   },
   "dependencies": {
     "@supabase/supabase-js": "^2.119.0",

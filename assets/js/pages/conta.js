@@ -4,14 +4,14 @@
  * ==============================================================================
  * Lógica da tela de perfil do colaborador:
  * 1. Verifica autenticação e inicializa menu do usuário.
- * 2. Carrega os dados atualizados do colaborador vindos do SQLite (/api/users/:id).
+ * 2. Carrega os dados atualizados do colaborador vindos do Supabase (/api/users/:id).
  * 3. Permite alternar modo de edição (nome e setor).
- * 4. Salva as alterações no banco SQLite e atualiza a sessão local.
+ * 4. Salva as alterações no banco Supabase e atualiza a sessão local.
  */
 
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener('DOMContentLoaded', async () => {
   // Protege a página
-  if (!Furia.requireAuth()) return;
+  if (!await Furia.requireAuth()) return;
   Furia.initMenu();
 
   const user = Furia.getUser();
@@ -49,7 +49,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   }
 
-  // Busca dados mais recentes do banco de dados SQLite
+  // Busca dados mais recentes do banco de dados Supabase
   async function carregarDados() {
     exibirDados(user);
     try {
@@ -99,7 +99,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     try {
-      // Atualiza o registro no banco SQLite
+      // Atualiza o registro no banco Supabase
       const res = await Furia.api(`/users/${encodeURIComponent(user.id)}`, 'PUT', {
         name: novoNome,
         department: novoDept
@@ -124,5 +124,46 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   carregarDados();
+  const passwordForm = document.getElementById('passwordForm');
+  passwordForm.addEventListener('submit', async (event) => {
+    event.preventDefault();
+    const button = passwordForm.querySelector('button[type="submit"]');
+    const status = document.getElementById('passwordStatus');
+    button.disabled = true;
+    try {
+      const result = await Furia.api('/auth/password', 'POST', {
+        currentPassword: document.getElementById('currentPassword').value,
+        newPassword: document.getElementById('newPassword').value,
+        remember: Boolean(localStorage.getItem('furia_user'))
+      });
+      passwordForm.reset(); status.textContent = result.message;
+    } catch (err) { status.textContent = err.message; }
+    finally { button.disabled = false; }
+  });
+  const linkButton = document.getElementById('telegramLink');
+  const unlinkButton = document.getElementById('telegramUnlink');
+  const telegramStatus = document.getElementById('telegramStatus');
+  const connectUrl = document.getElementById('telegramConnectUrl');
+  async function loadTelegram() {
+    try {
+      const result = await Furia.api('/telegram/link');
+      telegramStatus.textContent = result.available ? (result.linked ? 'Conta vinculada. Use /chamado no bot.' : 'Vincule sua conta para abrir chamados pelo bot.') : 'O bot ainda não está disponível.';
+      linkButton.hidden = !result.available || result.linked;
+      unlinkButton.hidden = !result.linked;
+    } catch { telegramStatus.textContent = 'Não foi possível consultar a integração agora.'; }
+  }
+  linkButton.addEventListener('click', async () => {
+    linkButton.disabled = true;
+    try { const result = await Furia.api('/telegram/link', 'POST', {}); connectUrl.href = result.url; connectUrl.hidden = false; }
+    catch (err) { telegramStatus.textContent = err.message; }
+    finally { linkButton.disabled = false; }
+  });
+  unlinkButton.addEventListener('click', async () => {
+    if (!confirm('Desvincular sua conta do Telegram?')) return;
+    try { await Furia.api('/telegram/link', 'DELETE'); connectUrl.hidden = true; await loadTelegram(); }
+    catch (err) { telegramStatus.textContent = err.message; }
+  });
+  await loadTelegram();
+  window.addEventListener('focus', loadTelegram);
 });
 

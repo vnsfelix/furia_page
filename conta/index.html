@@ -107,6 +107,24 @@
         <!-- Alerta de Feedback -->
         <div id="mensagem" class="alert" role="status" aria-live="polite"></div>
       </form>
+      <section aria-labelledby="passwordHeading">
+        <h3 class="perfil-section-title" id="passwordHeading">Segurança da conta</h3>
+        <form id="passwordForm">
+          <div class="form-row">
+            <div class="form-group"><label for="currentPassword">Senha atual</label><input id="currentPassword" type="password" autocomplete="current-password" required></div>
+            <div class="form-group"><label for="newPassword">Nova senha</label><input id="newPassword" type="password" minlength="8" maxlength="128" autocomplete="new-password" required></div>
+          </div>
+          <button type="submit" class="btn btn-secondary">Alterar senha</button>
+          <p id="passwordStatus" class="perfil-section-desc" role="status"></p>
+        </form>
+      </section>
+      <section aria-labelledby="telegramHeading">
+        <h3 class="perfil-section-title" id="telegramHeading">Chamados pelo Telegram</h3>
+        <p class="perfil-section-desc" id="telegramStatus" role="status">Verificando disponibilidade do bot...</p>
+        <button type="button" class="btn btn-secondary" id="telegramLink" hidden>Vincular Telegram</button>
+        <button type="button" class="btn btn-secondary" id="telegramUnlink" hidden>Desvincular Telegram</button>
+        <p><a id="telegramConnectUrl" target="_blank" rel="noopener noreferrer" hidden>Abrir bot e confirmar vínculo (válido por 10 minutos)</a></p>
+      </section>
     </main>
   </div>
 

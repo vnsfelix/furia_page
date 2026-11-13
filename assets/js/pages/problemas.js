@@ -5,13 +5,13 @@
  * Lógica do formulário de relato de falhas e problemas técnicos:
  * 1. Verifica autenticação e inicializa menu do usuário.
  * 2. Processa o anexo (imagem/captura de tela) para Base64 com compressão e pré-visualização.
- * 3. Envia o chamado e a imagem diretamente para o SQLite via API (/api/tickets).
+ * 3. Envia o chamado e a imagem diretamente para o Supabase via API (/api/tickets).
  * 4. Redireciona para a tela de confirmação (/enviados/index.html?id=...).
  */
 
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener('DOMContentLoaded', async () => {
   // Protege a página
-  if (!Furia.requireAuth()) return;
+  if (!await Furia.requireAuth()) return;
   Furia.initMenu();
 
   const form = document.getElementById('form-problema');
@@ -143,7 +143,7 @@ document.addEventListener('DOMContentLoaded', () => {
       submitBtn.textContent = 'Enviando chamado...';
       esconderMensagem();
 
-      // Monta os dados do chamado com anexo completo para o SQLite
+      // Monta os dados do chamado com anexo completo para o Supabase
       const ticketData = {
         userId: currentUser.id,
         userName: currentUser.name,

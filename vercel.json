@@ -24,6 +24,10 @@
       "dest": "/assets/$1"
     },
     {
+      "src": "/",
+      "dest": "/index.html"
+    },
+    {
       "src": "/(cadastro.html|index.html)",
       "dest": "/$1"
     },

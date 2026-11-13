@@ -9,9 +9,9 @@
  * 4. Permite filtrar em tempo real por status (Todos, Recebido, Em andamento, Concluído).
  */
 
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener('DOMContentLoaded', async () => {
   // Protege a página
-  if (!Furia.requireAuth()) return;
+  if (!await Furia.requireAuth()) return;
   Furia.initMenu();
 
   const user = Furia.getUser();
@@ -21,7 +21,7 @@ document.addEventListener('DOMContentLoaded', () => {
   let chamados = [];
   let filtroAtual = 'todos';
 
-  // Carrega os chamados do banco de dados SQLite
+  // Carrega os chamados do banco de dados Supabase
   async function carregarChamados() {
     listContainer.innerHTML = '<p class="chamados-empty">Carregando seus chamados do banco de dados...</p>';
 
@@ -76,6 +76,7 @@ document.addEventListener('DOMContentLoaded', () => {
           <span class="chamado-data">${Furia.formatDate(ticket.created_at || ticket.data)}</span>
         </div>
       `;
+      const attachmentSlot = document.createElement('div'); attachmentSlot.className = 'card-attachment-slot'; card.appendChild(attachmentSlot);
       const anexo = Furia.parseAttachment(ticket.anexo);
       if (anexo) {
         const slot = card.querySelector('.card-attachment-slot');
@@ -92,7 +93,7 @@ document.addEventListener('DOMContentLoaded', () => {
               thumb.className = 'attachment-thumbnail-trigger';
               thumb.title = 'Clique para ampliar a imagem';
               thumb.addEventListener('click', () => {
-                Furia.showImageModal(anexo.url, ticket.titulo, ticket.userName || ticket.user_name);
+                Furia.showAttachment(anexo, ticket.titulo, ticket.userName || ticket.user_name);
               });
               attachBox.appendChild(thumb);
             }
@@ -100,9 +101,9 @@ document.addEventListener('DOMContentLoaded', () => {
             const btnView = document.createElement('button');
             btnView.type = 'button';
             btnView.className = 'btn-attachment-preview';
-            btnView.innerHTML = `🖼️ Ver Imagem Anexada <span style="font-size: 0.72rem; opacity: 0.8">(${Furia.escape(anexo.name)})</span>`;
+            btnView.innerHTML = `${anexo.isImage ? '🖼️ Ver Imagem Anexada' : '📎 Baixar Anexo'} <span style="font-size: 0.72rem; opacity: 0.8">(${Furia.escape(anexo.name)})</span>`;
             btnView.addEventListener('click', () => {
-              Furia.showImageModal(anexo.url, ticket.titulo, ticket.userName || ticket.user_name);
+              Furia.showAttachment(anexo, ticket.titulo, ticket.userName || ticket.user_name);
             });
             attachBox.appendChild(btnView);
           } else {
@@ -131,6 +132,10 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 
-  carregarChamados();
+  await carregarChamados();
+  Furia.watch(async () => {
+    const endpoint = user.role === 'admin' ? '/tickets' : '/tickets/user/' + encodeURIComponent(user.id);
+    chamados = await Furia.api(endpoint); renderizarChamados();
+  });
 });
 

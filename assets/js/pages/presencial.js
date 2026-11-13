@@ -5,13 +5,13 @@
  * Lógica do formulário de solicitação de técnico presencial:
  * 1. Verifica autenticação e inicializa menu do usuário.
  * 2. Captura os campos: local, tipo de serviço, nível de urgência e descrição.
- * 3. Envia o chamado diretamente para o SQLite via API (/api/tickets).
+ * 3. Envia o chamado diretamente para o Supabase via API (/api/tickets).
  * 4. Redireciona para a tela de confirmação (/enviados/index.html?id=...).
  */
 
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener('DOMContentLoaded', async () => {
   // Protege a página
-  if (!Furia.requireAuth()) return;
+  if (!await Furia.requireAuth()) return;
   Furia.initMenu();
 
   const form = document.getElementById('form-presencial');
@@ -37,7 +37,7 @@ document.addEventListener('DOMContentLoaded', () => {
       submitBtn.textContent = 'Enviando chamado...';
       esconderMensagem();
 
-      // Monta o chamado e envia para a tabela tickets no SQLite
+      // Monta o chamado e envia para a tabela tickets no Supabase
       const ticketData = {
         userId: currentUser.id,
         userName: currentUser.name,

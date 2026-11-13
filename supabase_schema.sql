@@ -36,7 +36,11 @@ CREATE TABLE IF NOT EXISTS tickets (
   created_at TIMESTAMPTZ DEFAULT NOW()
 );
 
--- 3. Criação do Administrador padrão (senha: VAG2026@)
+-- 3. Desabilita RLS para permitir que o backend Express gerencie os dados diretamente
+ALTER TABLE users DISABLE ROW LEVEL SECURITY;
+ALTER TABLE tickets DISABLE ROW LEVEL SECURITY;
+
+-- 4. Criação do Administrador padrão (senha: VAG2026@)
 INSERT INTO users (id, nome, email, senha, role, department)
 VALUES (
   'usr_admin',
@@ -48,7 +52,7 @@ VALUES (
 )
 ON CONFLICT (email) DO NOTHING;
 
--- 4. Criação do Técnico de suporte padrão (senha: TecFuria2026@)
+-- 5. Criação do Técnico de suporte padrão (senha: TecFuria2026@)
 INSERT INTO users (id, nome, email, senha, role, department)
 VALUES (
   'usr_tecnico',
@@ -59,4 +63,3 @@ VALUES (
   'Suporte Técnico & TI'
 )
 ON CONFLICT (email) DO NOTHING;
-

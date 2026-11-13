@@ -1,25 +1,25 @@
 # FURIA Helpdesk
 
-Sistema de suporte e chamados internos da FURIA.
+HTML, JavaScript e Express, com persistência Supabase PostgreSQL e Telegram opcional.
 
-## Como rodar
+## Ambiente local
 
-1. Instale as dependencias
+Node.js 24.x. Configure `.env` conforme `.env.example`, usando chave secreta somente no servidor. O `.env` existente não foi alterado automaticamente.
 
-**npm install**
+- npm start: inicia o servidor em http://localhost:3000.
+- `npm test`: testes locais, sem banco externo.
+- `npm run test:browser`: Chrome/Edge real, dados em memória, sem acesso externo; requer porta 3000 livre.
+- `npm run audit:sqlite`: verifica o banco legado somente para leitura.
 
-2. No terminal cmd, execute:
+Sem credencial secreta, a API retorna 503; não existe fallback SQLite. `/api/health` verifica o processo e `/api/ready` verifica o banco e as sessões.
 
-**npm start**
+## Implantação
 
-3. Abra no navegador:
-http://localhost:3000
+Nenhuma migração externa ou publicação foi realizada. As migrações SQL estão em `supabase/migrations` e exigem revisão, backup e autorização antes de executar. O arquivo `supabase_schema.sql` da raiz foi preservado e contém procedimento antigo inseguro; não utilizá-lo para produção.
 
-## Acessos para teste
+- [Diagnóstico](docs/etapa-1-diagnostico.md)
+- [Persistência e segurança](docs/etapa-2-persistencia-seguranca.md)
+- [Telegram](docs/etapa-3-telegram.md)
+- [Validação, limites e ativação](docs/validacao-e-ativacao.md)
 
-- **Admin:** admin@furia.gg | Senha: `VAG2026@`
-- **Técnico:** tecnico@furia.gg | Senha: `TecFuria2026@`
-
-## Banco de dados
-
-Os dados ficam salvos em `backend/database.sqlite`. Você pode abrir direto no VS Code usando a extensão SQLite Viewer para consultar ou editar as tabelas.
+As contas existentes precisam de senhas novas antes da liberação. A identidade visual e os arquivos CSS/imagens foram preservados.

@@ -5,16 +5,16 @@
  * Lógica da tela de cadastro de novos usuários:
  * 1. Ativa botões de ver/ocultar senha.
  * 2. Valida nome, e-mail, senha e confirmação de senha.
- * 3. Envia os dados para a API (/api/auth/register), gravando direto no SQLite.
+ * 3. Envia os dados para a API (/api/auth/register), gravando direto no Supabase.
  * 4. Faz login automático e redireciona para a página inicial.
  */
 
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener('DOMContentLoaded', async () => {
   // Ativa o olho para mostrar/esconder senha nos dois campos
   Furia.setupPasswordToggle();
 
   // Se já estiver logado, redireciona
-  const user = Furia.getUser();
+  const user = await Furia.restoreSession();
   if (user) {
     window.location.replace(user.role === 'admin' ? './admin/index.html' : './inicial/index.html');
     return;
@@ -43,8 +43,8 @@ document.addEventListener('DOMContentLoaded', () => {
       return;
     }
 
-    if (password.length < 3) {
-      mostrarMensagem('A senha deve ter no mínimo 3 caracteres.');
+    if (password.length < 8) {
+      mostrarMensagem('A senha deve ter no mínimo 8 caracteres.');
       return;
     }
 
@@ -53,7 +53,7 @@ document.addEventListener('DOMContentLoaded', () => {
       submitBtn.textContent = 'Criando sua conta...';
       esconderMensagem();
 
-      // Envia os dados para gravação direta no banco SQLite
+      // Envia os dados para gravação direta no banco Supabase
       const res = await Furia.api('/auth/register', 'POST', {
         name,
         email,

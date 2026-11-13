@@ -7,9 +7,9 @@
  * 2. Lê o parâmetro ?id=... da URL para exibir o código do chamado enviado.
  */
 
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener('DOMContentLoaded', async () => {
   // Protege a página
-  if (!Furia.requireAuth()) return;
+  if (!await Furia.requireAuth()) return;
   Furia.initMenu();
 
   // Obtém o ID do chamado gerado da URL

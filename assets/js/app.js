@@ -3,7 +3,7 @@
  * FURIA Helpdesk - Utilitários Compartilhados (assets/js/app.js)
  * ==============================================================================
  * Este arquivo reúne as funções essenciais compartilhadas por todas as páginas:
- * 1. Comunicação com a API do Backend (SQLite / Vercel Serverless).
+ * 1. Comunicação com a API do Backend (Supabase / Vercel Serverless).
  * 2. Gestão simples da sessão do usuário ativo.
  * 3. Controle do menu do avatar e visualização de senha (olho aberto/fechado).
  * 4. Visualização de anexos/imagens em modal com download e tela cheia.
@@ -28,42 +28,61 @@ const Furia = {
     }
   },
 
-  setUser(user, remember = false) {
-    const storage = remember ? localStorage : sessionStorage;
-    storage.setItem('furia_user', JSON.stringify(user));
-    if (remember) {
-      localStorage.setItem('furia_user', JSON.stringify(user));
-    } else {
-      localStorage.removeItem('furia_user');
-    }
-  },
-
-  logout() {
+  setUser(user, remember = null) {
+    if (remember === null) remember = Boolean(localStorage.getItem('furia_user'));
     sessionStorage.removeItem('furia_user');
     localStorage.removeItem('furia_user');
-    const root = this.getRootPath();
-    window.location.href = `${root}index.html`;
+    (remember ? localStorage : sessionStorage).setItem('furia_user', JSON.stringify(user));
   },
 
-  // Garante que páginas privadas só sejam acessadas por quem está autenticado
-  requireAuth(allowedRole = null) {
-    const user = this.getUser();
+  async restoreSession() {
+    try {
+      const result = await this.api('/auth/me');
+      this.setUser(result.user);
+      return result.user;
+    } catch {
+      sessionStorage.removeItem('furia_user');
+      localStorage.removeItem('furia_user');
+      return null;
+    }
+  },
+
+  async logout() {
+    try { await this.api('/auth/logout', 'POST', {}); }
+    catch (err) { window.alert(err.message); return; }
+    sessionStorage.removeItem('furia_user');
+    localStorage.removeItem('furia_user');
+    window.location.href = this.getRootPath() + 'index.html';
+  },
+
+  async requireAuth(allowedRole = null) {
+    const user = await this.restoreSession();
     const root = this.getRootPath();
-
-    if (!user) {
-      window.location.replace(`${root}index.html?unauthorized=1`);
-      return false;
-    }
-
-    if (allowedRole) {
-      const allowed = Array.isArray(allowedRole) ? allowedRole : [allowedRole];
-      if (!allowed.includes(user.role)) {
-        window.location.replace(`${root}inicial/index.html?forbidden=1`);
-        return false;
-      }
-    }
-
+    if (!user) { window.location.replace(root + 'index.html?unauthorized=1'); return false; }
+    const allowed = Array.isArray(allowedRole) ? allowedRole : [allowedRole];
+    if (allowedRole && !allowed.includes(user.role)) { window.location.replace(root + 'inicial/index.html?forbidden=1'); return false; }
     return true;
+  },
+
+  watch(refresh) {
+    let busy = false;
+    let stopped = false;
+    let failures = 0;
+    let timer;
+    const tick = async () => {
+      clearTimeout(timer);
+      if (stopped) return;
+      if (!busy && !document.hidden && !['SELECT', 'INPUT', 'TEXTAREA'].includes(document.activeElement?.tagName)) {
+        busy = true;
+        try { await refresh(); failures = 0; } catch { failures = Math.min(failures + 1, 3); }
+        finally { busy = false; }
+      }
+      timer = setTimeout(tick, 15000 * (2 ** failures));
+    };
+    timer = setTimeout(tick, 15000);
+    const visible = () => { if (!document.hidden && !busy) tick(); };
+    document.addEventListener('visibilitychange', visible);
+    window.addEventListener('pagehide', () => { stopped = true; clearTimeout(timer); document.removeEventListener('visibilitychange', visible); }, { once: true });
   },
 
   // Retorna o caminho relativo correto até a raiz do site
@@ -79,12 +98,13 @@ const Furia = {
   },
 
   // ----------------------------------------------------------------------------
-  // COMUNICAÇÃO COM O BANCO DE DADOS (API REST -> SQLite)
+  // COMUNICAÇÃO COM O BANCO DE DADOS (API REST -> Supabase)
   // ----------------------------------------------------------------------------
   async api(endpoint, method = 'GET', data = null) {
     const url = `${this.apiUrl}${endpoint}`;
     const options = {
       method,
+      credentials: 'include',
       headers: { 'Content-Type': 'application/json' }
     };
 
@@ -107,6 +127,10 @@ const Furia = {
     }
 
     if (!response.ok) {
+      if (response.status === 401 && !endpoint.startsWith('/auth/')) {
+        sessionStorage.removeItem('furia_user'); localStorage.removeItem('furia_user');
+        window.location.replace(this.getRootPath() + 'index.html?unauthorized=1');
+      }
       const msg = (result && (result.error || result.message)) || `Erro na requisição (${response.status})`;
       throw new Error(msg);
     }
@@ -225,10 +249,13 @@ const Furia = {
   // ----------------------------------------------------------------------------
   // GESTÃO E VISUALIZAÇÃO DE ANEXOS / IMAGENS
   // ----------------------------------------------------------------------------
+  attachmentUrl(value) {
+    return typeof value === 'string' && value.startsWith('/api/') ? this.apiUrl + value.slice(4) : value;
+  },
   parseAttachment(anexo) {
     if (!anexo) return null;
     if (typeof anexo === 'object') {
-      const url = anexo.data || anexo.url || null;
+      const url = this.attachmentUrl(anexo.data || anexo.url || null);
       const isImg = !!(anexo.type && anexo.type.startsWith('image/')) || !!(url && url.startsWith('data:image'));
       return {
         name: anexo.name || 'Anexo',
@@ -240,7 +267,7 @@ const Furia = {
     if (str.startsWith('{')) {
       try {
         const obj = JSON.parse(str);
-        const url = obj.data || obj.url || null;
+        const url = this.attachmentUrl(obj.data || obj.url || null);
         const isImg = !!(obj.type && obj.type.startsWith('image/')) || !!(url && url.startsWith('data:image'));
         return {
           name: obj.name || 'Anexo',
@@ -263,10 +290,19 @@ const Furia = {
     };
   },
 
+  showAttachment(attachment, title, author) {
+    if (!attachment?.url) return;
+    if (attachment.isImage) return this.showImageModal(attachment.url, title, author);
+    if (attachment.url.startsWith(this.apiUrl + '/tickets/')) {
+      const link = document.createElement('a'); link.href = attachment.url;
+      link.target = '_blank'; link.rel = 'noopener noreferrer'; link.click();
+    }
+  },
+
   showImageModal(imageUrl, title = 'Imagem do Chamado', author = '') {
     if (!imageUrl || typeof imageUrl !== 'string') return;
     const cleanUrl = imageUrl.trim();
-    const isSafe = cleanUrl.startsWith('data:image/') || /^https?:\/\//i.test(cleanUrl) || cleanUrl.startsWith('../') || cleanUrl.startsWith('./') || cleanUrl.startsWith('/');
+    const isSafe = /^data:image\/(png|jpeg|gif|webp);base64,/i.test(cleanUrl) || /^https?:\/\//i.test(cleanUrl) || cleanUrl.startsWith('../') || cleanUrl.startsWith('./') || cleanUrl.startsWith('/');
     if (!isSafe) {
       console.warn('URL bloqueada por segurança:', cleanUrl);
       return;
@@ -293,14 +329,14 @@ const Furia = {
         </header>
 
         <div class="image-modal-body">
-          <img src="${imageUrl}" alt="Anexo do chamado" class="image-modal-img">
+          <img src="${safeUrl}" alt="Anexo do chamado" class="image-modal-img">
         </div>
 
         <footer class="image-modal-footer">
-          <a href="${imageUrl}" download="furia-chamado-anexo.png" class="btn btn-secondary btn-sm">
+          <a href="${safeUrl}" download="furia-chamado-anexo.png" class="btn btn-secondary btn-sm">
             ⬇️ Baixar Imagem
           </a>
-          <a href="${imageUrl}" target="_blank" rel="noopener noreferrer" class="btn btn-secondary btn-sm">
+          <a href="${safeUrl}" target="_blank" rel="noopener noreferrer" class="btn btn-secondary btn-sm">
             ↗️ Abrir em Nova Aba
           </a>
           <button type="button" class="btn btn-sm image-modal-close-btn">Fechar</button>

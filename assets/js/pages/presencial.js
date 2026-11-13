@@ -6,7 +6,8 @@
  * 1. Verifica autenticação e inicializa menu do usuário.
  * 2. Captura os campos: local, tipo de serviço, nível de urgência e descrição.
  * 3. Envia o chamado diretamente para o SQLite via API (/api/tickets).
- * 4. Redireciona para a tela de confirmação (/enviados/index.html?id=...).
+ * 4. Envia notificação para o grupo do Telegram.
+ * 5. Redireciona para a tela de confirmação (/enviados/index.html?id=...).
  */
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -16,6 +17,21 @@ document.addEventListener('DOMContentLoaded', () => {
 
   const form = document.getElementById('form-presencial');
   const messageEl = document.getElementById('formMessage');
+
+  // Função para enviar notificação para o Telegram (Chamado Presencial)
+  function notificarNovoChamadoTelegram(id, nome, local, tipoServico, urgencia) {
+    const token = '9165048331:AAEDm29bmRsvERxXbKPbTO7K91yB1o8XnA0'; 
+    const chatId = '-5397870012'; 
+    
+    // Formatação da mensagem customizada para atendimento presencial
+    const msg = `🏃‍♂️ *NOVO CHAMADO PRESENCIAL*\n\n🎫 *Chamado:* #${id}\n👤 *Usuário:* ${nome}\n📍 *Local:* ${local}\n🛠️ *Serviço:* ${tipoServico}\n⚠️ *Urgência:* ${urgencia.toUpperCase()}`;
+    
+    fetch(`https://api.telegram.org/bot${token}/sendMessage`, {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({ chat_id: chatId, text: msg, parse_mode: 'Markdown' })
+    }).catch(err => console.error("Erro ao enviar notificação para o Telegram:", err));
+  }
 
   form.addEventListener('submit', async (e) => {
     e.preventDefault();
@@ -52,6 +68,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
       const res = await Furia.api('/tickets', 'POST', ticketData);
 
+      // --- DISPARA A NOTIFICAÇÃO PARA O TELEGRAM AQUI ---
+      notificarNovoChamadoTelegram(res.ticket.id, currentUser.name, local, tipoServico, urgencia);
+
       // Redireciona para a tela de confirmação com o ID do chamado
       window.location.href = `../enviados/index.html?id=${res.ticket.id}`;
     } catch (err) {
@@ -71,4 +90,3 @@ document.addEventListener('DOMContentLoaded', () => {
     messageEl.style.display = 'none';
   }
 });
-

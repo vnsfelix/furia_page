@@ -5,13 +5,14 @@
  * Lógica do formulário de relato de falhas e problemas técnicos:
  * 1. Verifica autenticação e inicializa menu do usuário.
  * 2. Processa o anexo (imagem/captura de tela) para Base64 com compressão e pré-visualização.
- * 3. Envia o chamado e a imagem diretamente para o Supabase via API (/api/tickets).
- * 4. Redireciona para a tela de confirmação (/enviados/index.html?id=...).
+ * 3. Envia o chamado e a imagem diretamente para o SQLite via API (/api/tickets).
+ * 4. Envia uma notificação para o grupo do Telegram.
+ * 5. Redireciona para a tela de confirmação (/enviados/index.html?id=...).
  */
 
-document.addEventListener('DOMContentLoaded', async () => {
+document.addEventListener('DOMContentLoaded', () => {
   // Protege a página
-  if (!await Furia.requireAuth()) return;
+  if (!Furia.requireAuth()) return;
   Furia.initMenu();
 
   const form = document.getElementById('form-problema');
@@ -123,6 +124,21 @@ document.addEventListener('DOMContentLoaded', async () => {
     });
   }
 
+  // Função para enviar notificação para o Telegram
+  function notificarNovoChamadoTelegram(id, nome, titulo, urgencia, categoria) {
+    const token = '9165048331:AAEDm29bmRsvERxXbKPbTO7K91yB1o8XnA0'; 
+    const chatId = '-5397870012'; 
+    
+    // Formatação da mensagem
+    const msg = `🚨 *NOVO PROBLEMA RELATADO*\n\n🎫 *Chamado:* #${id}\n👤 *Usuário:* ${nome}\n📌 *Assunto:* ${titulo}\n📂 *Categoria:* ${categoria}\n⚠️ *Urgência:* ${urgencia.toUpperCase()}`;
+    
+    fetch(`https://api.telegram.org/bot${token}/sendMessage`, {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({ chat_id: chatId, text: msg, parse_mode: 'Markdown' })
+    }).catch(err => console.error("Erro ao enviar notificação para o Telegram:", err));
+  }
+
   form.addEventListener('submit', async (e) => {
     e.preventDefault();
 
@@ -143,7 +159,7 @@ document.addEventListener('DOMContentLoaded', async () => {
       submitBtn.textContent = 'Enviando chamado...';
       esconderMensagem();
 
-      // Monta os dados do chamado com anexo completo para o Supabase
+      // Monta os dados do chamado com anexo completo para o SQLite
       const ticketData = {
         userId: currentUser.id,
         userName: currentUser.name,
@@ -157,6 +173,9 @@ document.addEventListener('DOMContentLoaded', async () => {
       };
 
       const res = await Furia.api('/tickets', 'POST', ticketData);
+
+      // --- DISPARA A NOTIFICAÇÃO PARA O TELEGRAM AQUI ---
+      notificarNovoChamadoTelegram(res.ticket.id, currentUser.name, titulo, urgencia, categoria);
 
       // Redireciona para a tela de confirmação com o ID gerado
       window.location.href = `../enviados/index.html?id=${res.ticket.id}`;

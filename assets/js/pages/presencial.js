@@ -5,17 +5,33 @@
  * Lógica do formulário de solicitação de técnico presencial:
  * 1. Verifica autenticação e inicializa menu do usuário.
  * 2. Captura os campos: local, tipo de serviço, nível de urgência e descrição.
- * 3. Envia o chamado diretamente para o Supabase via API (/api/tickets).
- * 4. Redireciona para a tela de confirmação (/enviados/index.html?id=...).
+ * 3. Envia o chamado diretamente para o SQLite via API (/api/tickets).
+ * 4. Envia notificação para o grupo do Telegram.
+ * 5. Redireciona para a tela de confirmação (/enviados/index.html?id=...).
  */
 
-document.addEventListener('DOMContentLoaded', async () => {
+document.addEventListener('DOMContentLoaded', () => {
   // Protege a página
-  if (!await Furia.requireAuth()) return;
+  if (!Furia.requireAuth()) return;
   Furia.initMenu();
 
   const form = document.getElementById('form-presencial');
   const messageEl = document.getElementById('formMessage');
+
+  // Função para enviar notificação para o Telegram (Chamado Presencial)
+  function notificarNovoChamadoTelegram(id, nome, local, tipoServico, urgencia) {
+    const token = '9165048331:AAEDm29bmRsvERxXbKPbTO7K91yB1o8XnA0'; 
+    const chatId = '-5397870012'; 
+    
+    // Formatação da mensagem customizada para atendimento presencial
+    const msg = `🏃‍♂️ *NOVO CHAMADO PRESENCIAL*\n\n🎫 *Chamado:* #${id}\n👤 *Usuário:* ${nome}\n📍 *Local:* ${local}\n🛠️ *Serviço:* ${tipoServico}\n⚠️ *Urgência:* ${urgencia.toUpperCase()}`;
+    
+    fetch(`https://api.telegram.org/bot${token}/sendMessage`, {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({ chat_id: chatId, text: msg, parse_mode: 'Markdown' })
+    }).catch(err => console.error("Erro ao enviar notificação para o Telegram:", err));
+  }
 
   form.addEventListener('submit', async (e) => {
     e.preventDefault();
@@ -37,7 +53,7 @@ document.addEventListener('DOMContentLoaded', async () => {
       submitBtn.textContent = 'Enviando chamado...';
       esconderMensagem();
 
-      // Monta o chamado e envia para a tabela tickets no Supabase
+      // Monta o chamado e envia para a tabela tickets no SQLite
       const ticketData = {
         userId: currentUser.id,
         userName: currentUser.name,
@@ -51,6 +67,9 @@ document.addEventListener('DOMContentLoaded', async () => {
       };
 
       const res = await Furia.api('/tickets', 'POST', ticketData);
+
+      // --- DISPARA A NOTIFICAÇÃO PARA O TELEGRAM AQUI ---
+      notificarNovoChamadoTelegram(res.ticket.id, currentUser.name, local, tipoServico, urgencia);
 
       // Redireciona para a tela de confirmação com o ID do chamado
       window.location.href = `../enviados/index.html?id=${res.ticket.id}`;
@@ -71,4 +90,3 @@ document.addEventListener('DOMContentLoaded', async () => {
     messageEl.style.display = 'none';
   }
 });
-

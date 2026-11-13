@@ -1,4 +1,4 @@
-# FURIA Helpdesk
+# FURIA
 
 HTML, JavaScript e Express, com persistência Supabase PostgreSQL e Telegram opcional.
 

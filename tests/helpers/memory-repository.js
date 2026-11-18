@@ -8,7 +8,7 @@ export function memoryRepository() {
   const users = new Map(); const tickets = new Map(); const sessions = new Map(); const limits = new Map();
   return {
     users, tickets, sessions,
-    async health() {},
+    async health() { },
     async rateLimit(key, max) { const n = (limits.get(key) || 0) + 1; limits.set(key, n); return n <= max; },
     async findUsers() { return [...users.values()].map(formatUser); },
     async findUserById(id) { return formatUser(users.get(id)); },
@@ -21,7 +21,7 @@ export function memoryRepository() {
     async createSession(row) { sessions.set(row.token_hash, row); },
     async findSession(hash) { const row = sessions.get(hash); return row && Date.parse(row.expires_at) > Date.now() ? row : null; },
     async deleteSession(hash) { sessions.delete(hash); },
-    async revokeSessions(userId) { for (const [hash,row] of sessions) if (row.user_id === userId) sessions.delete(hash); },
+    async revokeSessions(userId) { for (const [hash, row] of sessions) if (row.user_id === userId) sessions.delete(hash); },
     async findTickets({ userId, status } = {}) { return [...tickets.values()].filter(t => (!userId || t.user_id === userId) && (!status || t.status === status)).map(formatTicket); },
     async findTicketById(id) { return formatTicket(tickets.get(id)); },
     async createTicket(data, user) { const row = { ...data, id: `TK-${protocol++}`, user_id: user.id, user_name: user.nome, user_email: user.email, status: 'Recebido', created_at: new Date().toISOString() }; tickets.set(row.id, row); return formatTicket(row); },

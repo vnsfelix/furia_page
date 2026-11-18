@@ -1,6 +1,3 @@
--- Dedicated TEST project only, after migrations 001 and 002. Never run on production.
--- psql -v ON_ERROR_STOP=1 -f supabase/tests/integration.sql
--- Fixtures roll back. PostgreSQL sequence increments are not rolled back.
 begin;
 do $$
 declare
